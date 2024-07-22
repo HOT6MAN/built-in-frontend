@@ -1,17 +1,17 @@
 <template>
   <div>       
     <b-card
-      title="Team Name"
-      img-src="https://picsum.photos/600/300/?image=25"   
+      :title="item.teamName"
+      :img-src="item.imgUrl"   
       img-alt="Image"
       img-top
       style="max-width: 20rem;"
       class="mb-2"
-    > <!-- img-src: team img url -->
-      <b-card-text>        
-        team introduction <br/>
-        project domain <br/>                 
-        teammate status
+    >
+      <b-card-text>
+        {{ item.introduction }} <br/>
+        {{ item.domain }} <br/>                 
+        {{ item.desiredPositions.join(', ') }}
       </b-card-text>
 
       <div class="d-flex justify-content-end">
@@ -21,7 +21,14 @@
   </div>
 </template>
 <script setup>
+  import { defineProps } from 'vue';
 
+  const props = defineProps({
+    item: {
+      type: Object,
+      required: true
+    }
+  })
 </script>
 <style scoped>
 
