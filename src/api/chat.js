@@ -12,4 +12,13 @@ async function findAllMessageByChatroomId(chatroomId, success, fail){
 async function sendMessage(chatMessage, success, fail){
     await local.post("/chat/room/"+chatMessage.chatroomId).then(success).catch(fail);
 }
-export {findAllRoomByUserId,findAllMessageByChatroomId, sendMessage};
+
+async function createRoom(userAId, userBId, success, fail) {
+    const data = {
+        userAId: userAId,
+        userBId: userBId
+    };
+    await local.post("/chat/room", data).then(success).catch(fail);
+}
+
+export {findAllRoomByUserId,findAllMessageByChatroomId, sendMessage, createRoom};

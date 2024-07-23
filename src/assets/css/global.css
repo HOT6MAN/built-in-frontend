@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
+body {
+  	margin: 0; line-height: normal;
+}
+:root {
+  	
+  	/* fonts */
+  	--single-line-body-base: Inter;
+  	--font-roboto: Roboto;
+  	
+  	/* font sizes */
+  	--single-line-body-base-size: 16px;
+  	--font-size-5xl: 24px;
+  	
+  	/* Colors */
+  	--color-deepskyblue: #34aff7;
+  	--color-lightskyblue: #b0dcff;
+  	--text-danger-on-danger: #fee9e7;
+  	--color-white: #fff;
+  	
+  	/* Spacing */
+  	--space-200: 8px;
+  	--space-300: 12px;
+  	--radius-200: 8px;
+  	
+  	/* Gaps */
+  	--gap-5xs: 8px;
+  	
+  	/* Paddings */
+  	--padding-xs: 12px;
+  	
+  	/* Border radiuses */
+  	--br-5xs: 8px;
+  	
+}

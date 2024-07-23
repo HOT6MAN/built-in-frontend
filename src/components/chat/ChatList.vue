@@ -2,7 +2,10 @@
 import { defineProps, defineEmits } from 'vue';
 
 const props = defineProps({
-  chatroomList: Array
+  chatroomList: {
+    type: Array,
+    required: true
+  }
 });
 
 const emit = defineEmits(['chatSelected']);
@@ -17,11 +20,13 @@ const handleChatClick = (chatroomId) => {
     <div v-for="chat in chatroomList" :key="chat.chatroomId" class="chat-item" @click="handleChatClick(chat.chatroomId)">
       <div class="chat-details">
         <div class="chat-header">
-          <span class="chat-name">{{ chat.sender }}</span>
-          <span class="chat-date">{{ chat.sendDate }}</span>
+          <span>{{ chat.chatroomId }}</span>
+          <span class="chat-name">{{ chat.latestMessage.sender }}</span>
+          <span class="chat-date">{{ chat.latestMessage.sendDate }}</span>
+          <span class="chat-isRead">{{ chat.unreadCount }}</span>
         </div>
         <div class="chat-content">
-          {{ chat.content }}
+          {{ chat.latestMessage.content }}
         </div>
       </div>
     </div>
@@ -31,7 +36,7 @@ const handleChatClick = (chatroomId) => {
 <style scoped>
 .chat-list {
   overflow-y: auto;
-  height: 100%;
+  height: calc(100% - 50px);
   padding: 10px;
 }
 
@@ -40,11 +45,11 @@ const handleChatClick = (chatroomId) => {
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #e0e0e0;
-  cursor: pointer; /* Add cursor pointer for clickable items */
+  cursor: pointer;
 }
 
 .chat-item:hover {
-  background-color: #f0f0f0; /* Add hover effect */
+  background-color: #f0f0f0;
 }
 
 .chat-avatar img {

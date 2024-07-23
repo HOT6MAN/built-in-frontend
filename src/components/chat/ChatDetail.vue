@@ -59,15 +59,17 @@ function connect() {
     userId: props.userid
   };
   findAllMessageByChatroomId(props.chatroomId, (response) => {
-    messageArray.value = response.data;
+    messageArray.value = response.data.data;
   }, (error) => {
     console.error('API 호출 오류:', error);
   });
   stompClient.connect(headers, async function (frame) {
     console.log("Connect : " + frame);
+    console.log("connect success");
     stompClient.subscribe('/sub/' + props.chatroomId, function (message) {
       console.log("receive OK : " + message);
       const receivedMessage = JSON.parse(message.body);
+      console.log("array = ",messageArray.value);
       messageArray.value.push(receivedMessage);
       console.log("convert Message : ", receivedMessage);
       console.log(messageArray.value);
