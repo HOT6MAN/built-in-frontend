@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "FE-built-in-pjt",
+			"path": "../.."
+		},
+		{
+			"name": "static",
+			"path": "../../../../../../Downloads/AnimaPackage-Vue3-ZbLWt (1)/static"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "FE-built-in-pjt"
+	}
+}
