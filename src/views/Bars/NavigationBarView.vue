@@ -33,7 +33,7 @@
           </div>
       </div>
       <div class="login">
-          <div class="profile"><RouterLink to="/test">Login</RouterLink></div>
+          <div class="profile">Login</div>
       </div>
       <div class="signUp">
           <div class="profile">Sign-up</div>

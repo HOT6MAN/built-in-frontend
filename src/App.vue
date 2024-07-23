@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import ChatButton from './components/chat/ChatButton.vue';
 import ChatModal from './components/chat/ChatModal.vue';
-import NavigationBar from '@/views/Bars/NavigationBar.vue';
-import SideBar from '@/views/Bars/SideBar.vue';
+import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
+import SideBarView from '@/views/Bars/SideBarView.vue';
 import {send} from "@/api/notification.js";
 import {createRoom} from "@/api/chat.js"
 
@@ -103,6 +103,7 @@ const login = () => {
 </script>
 
 <template>
+  <NavigationBarView />
   <div id="app">
     <div>
     <h1>오류</h1>
