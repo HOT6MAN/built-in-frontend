@@ -280,6 +280,7 @@
           width: 100%;
           position: fixed;
           height: 80px;
+          top: 0px;
           overflow: hidden;
           text-align: left;
           font-size: var(--single-line-body-base-size);
