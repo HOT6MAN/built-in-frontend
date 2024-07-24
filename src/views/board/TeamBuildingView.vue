@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-tabs content-class="mt-3" align="center" class="teambuilding-tabbar">
+    <b-tabs content-class="mt-3" pills align="center" class="teambuilding-tabbar">
       <b-tab title="Recruit" active>
         <RecruitView />
       </b-tab>
