@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: '/teambuilding',
       name: 'teambuilding',
-      component : TeamBuildingRecruitView
+      component : TeamBuildingView
     },
     {
       path: '/afterlogin',
