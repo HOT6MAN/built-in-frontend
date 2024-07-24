@@ -31,7 +31,7 @@
   import RecruitItem from '../../components/board/BoardRecruitItem.vue'
 
   const curPage = ref(1)
-  const perPage = ref(5)
+  const perPage = ref(6)
 
   // TODO: request data
   // dummy data 
