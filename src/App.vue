@@ -9,7 +9,7 @@ import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
 <template>
    <NavigationBarView @toggleLoginModal="toggleLoginModal" />
   <div id="app">
-    <ChatView></ChatView>
+    <!-- <ChatView></ChatView> -->
   </div>
 </template>
 
