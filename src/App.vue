@@ -6,6 +6,12 @@ import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
 import SideBarView from '@/views/Bars/SideBarView.vue';
 import {send} from "@/api/notification.js";
 import {createRoom} from "@/api/chat.js"
+import LoginModal from './components/LoginModal.vue';
+import { my} from '@/api/Refresh'
+import { useAuthStore } from '@/stores/auth';
+
+
+const authStore = useAuthStore()
 
 const receiverUser = ref("");
 
@@ -25,6 +31,16 @@ const notiContent = ref("");
       console.log("error", error);
     });
   }
+
+  //로그인
+const showLoginModal = ref(false);
+const toggleLoginModal = () => {
+  showLoginModal.value = !showLoginModal.value;
+};
+function myf(){
+  console.log(authStore.token);
+  my()
+}
 
 const showChat = ref(false);
 
@@ -103,10 +119,11 @@ const login = () => {
 </script>
 
 <template>
-  <NavigationBarView />
+   <NavigationBarView @toggleLoginModal="toggleLoginModal" />
   <div id="app">
     <div>
     <h1>오류</h1>
+    
     <div v-if="errorMessage">
       <p>Error: {{ errorMessage }}</p>
       <img src="https://ghchart.rshah.org/socialworkprogrammer" />
@@ -118,10 +135,19 @@ const login = () => {
       </ul>
     </div>
     </div>
+    <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal" />
     <ChatButton @click="toggleChat"/>
     <ChatModal :showChat="showChat" :toggleChat="toggleChat" :userid="userid" />
     {{ showChat }}
     <div>
+      <div>
+        id : {{authStore.user.id }}<br>
+      이름 : {{ authStore.user.name }}  <br>
+      accessToken :{{ authStore.token }} <br>
+      <button @click="myf">my</button> <br>
+
+      </div>
+  
       <input type="text" v-model="userid">
       {{ userid }}
     </div>
@@ -129,6 +155,7 @@ const login = () => {
     <ChatModal :showChat="showChat" :toggleChat="toggleChat" :userid="userid" />
     {{ showChat }}
     <div>
+     
       <input type="text" v-model="userid" placeholder="Enter user ID">
       {{ userid }}
       <button @click="login">로그인</button>
@@ -141,8 +168,11 @@ const login = () => {
       <button @click="sendNoti">이벤트 전송</button>
 
     </div>
+
+  
   </div>
 </template>
 
 <style scoped>
+
 </style>

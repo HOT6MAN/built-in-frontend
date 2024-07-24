@@ -29,26 +29,65 @@
                       </div>
                   </div>
               </div>
+             
               <img class="icon" alt="" src="@/icons/Navbar/alarm.svg" />
           </div>
       </div>
-      <div class="login">
+      <template v-if="authStore.isLogin">
+        <div class="login" @click="clickLogout">
+          <div class="profile">Logout</div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="login" @click="$emit('toggleLoginModal')">
           <div class="profile">Login</div>
-      </div>
+        </div>
+      </template>
+      
       <div class="signUp">
           <div class="profile">Sign-up</div>
       </div>
+
   </div>
   <RouterView />
 </template>
 
 <script lang="ts" setup>
-  import { defineComponent } from 'vue'
-  import { RouterLink, RouterView } from 'vue-router'
+    import { defineComponent, ref } from 'vue'
+    import { RouterLink, RouterView } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth.js';
+    import refreshAxios from "@/util/axios-refresh"
 
-  defineComponent({
+
+    const authStore = useAuthStore()
+    function clickLogout(){
+        //로그아웃(access + refresh 전송)
+        refreshAxios.post('/logout', {},   
+                {
+                    headers: {Authorization: localStorage.getItem("access_token")},
+                }
+            )
+            .then(response => {
+                console.log(response);
+                localStorage.removeItem('access_token')
+                authStore.token=''
+                authStore.user={
+                    id:'',
+                    name:'',
+                    email:''
+                }
+                alert("로그아웃 완료")
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+
+    defineComponent({
     name: "NavigationBarBeforeLogged"
-  })
+    })
+    const showLoginModal = ref(false);
 </script>
 
 <style>
