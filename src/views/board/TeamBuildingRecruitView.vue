@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-end mt-5 mx-5">
+  <div class="d-flex justify-content-center mt-5 mx-5">
     <FilterDropdown class="mx-2" /> <FilterInput class="mx-2" />    
   </div>  
 
