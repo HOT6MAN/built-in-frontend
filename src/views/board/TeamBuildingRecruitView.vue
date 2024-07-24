@@ -47,19 +47,19 @@
   // TODO: request data
   // dummy data 
   const data = ref([
-    { id: 1, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 2, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 3, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 4, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 5, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 6, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 7, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 8, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 9, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 10, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 11, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 12, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
-    { id: 13, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"]},
+    { id: 1, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 2, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 3, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 4, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 5, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 6, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 7, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 8, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 9, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 10, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 11, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 12, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
+    { id: 13, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
   ])
 
   const list = computed(() => {
