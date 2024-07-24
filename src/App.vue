@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import ChatView from '@/views/ChatView.vue';
-import NavigationBar from '@/views/Bars/NavigationBar.vue';
-import SideBar from '@/views/Bars/SideBar.vue';
+import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
+// import SideBar from '@/views/Bars/SideBar.vue';
 
 </script>
 
