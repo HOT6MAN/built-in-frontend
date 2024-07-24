@@ -1,9 +1,8 @@
 <template setup>
   <div>
-    <!-- header -->
     <b-tabs content-class="mt-3" align="center">
       <b-tab title="Recruit" active>
-        
+        <RecruitView />
       </b-tab>
       <b-tab title="Self-Introduction">
         
@@ -12,7 +11,7 @@
   </div>
 </template>
 <script>
-
+  import RecruitView from './TeamBuildingREcruitVuew.vue'
 </script>
 <style scoped>
   

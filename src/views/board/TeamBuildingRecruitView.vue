@@ -4,9 +4,19 @@
   </div>  
 
   <div class="itemList">
-    <div v-for="item in list" :key="item.id">
-      <RecruitItem :item="item" />
-    </div>
+    <b-container>
+      <b-row>
+        <b-col 
+          v-for="item in list" 
+          :key="item.id"
+          cols="12"
+          md="4"
+          class="my-4"
+          >
+          <RecruitItem :item="item" />
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
   <b-pagination
       v-model="curPage"
