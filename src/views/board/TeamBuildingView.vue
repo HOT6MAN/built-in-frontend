@@ -11,7 +11,7 @@
   </div>
 </template>
 <script>
-  import RecruitView from './TeamBuildingREcruitVuew.vue'
+  import RecruitView from './TeamBuildingRecruitView.vue'
 </script>
 <style scoped>
   
