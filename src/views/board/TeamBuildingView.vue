@@ -1,8 +1,7 @@
 <template>
   <div>
-    <b-tabs content-class="mt-3">
+    <b-tabs content-class="mt-3" align="center" class="teambuilding-tabbar">
       <b-tab title="Recruit" active>
-        hello
         <RecruitView />
       </b-tab>
       <b-tab title="Self-Introduction">
@@ -15,5 +14,7 @@
   import RecruitView from './TeamBuildingRecruitView.vue'
 </script>
 <style scoped>
-
+  .teambuilding-tabbar {
+    margin-top: 100px;
+  }
 </style>

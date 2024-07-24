@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex justify-content-end m-5">
+  <div class="d-flex justify-content-end mt-5 mx-5">
     <FilterDropdown class="mx-2" /> <FilterInput class="mx-2" />    
   </div>  
 
@@ -11,18 +11,29 @@
           :key="item.id"
           cols="12"
           md="4"
-          class="my-4"
+          class="my-3"
           >
           <RecruitItem :item="item" />
         </b-col>
       </b-row>
     </b-container>
+
+    <b-container>
+      <b-row class="text-center">
+        <b-col>
+          <b-button variant="success" class="btn-new-post">New Post</b-button>
+        </b-col>
+      </b-row>
+    </b-container>
+
+    <b-pagination
+        v-model="curPage"
+       :total-rows="totRows"      
+       :per-page="perPage"
+        align="center"
+        class="mt-5"
+    />
   </div>
-  <b-pagination
-      v-model="curPage"
-     :total-rows="totRows"      
-     :per-page="perPage"
-  />
 </template>
 <script setup>
   import {ref, computed} from 'vue'

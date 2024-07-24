@@ -9,13 +9,15 @@
       class="mb-2"
     >
       <b-card-text>
-        {{ item.introduction }} <br/>
-        {{ item.domain }} <br/>                 
-        {{ item.desiredPositions.join(', ') }}
+        팀 소개: {{ item.introduction }} <br/>
+        주요 분야: {{ item.domain }} <br/>                 
+        모집 포지션: {{ item.desiredPositions.join(', ') }}
+
+        <hr>
       </b-card-text>
 
       <div class="d-flex justify-content-end">
-        <b-button href="#" variant="primary">View</b-button>      
+        <b-button href="#" variant="outline-primary">View</b-button>      
       </div>
     </b-card>
   </div>
