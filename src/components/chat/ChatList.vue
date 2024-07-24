@@ -10,23 +10,22 @@ const props = defineProps({
 
 const emit = defineEmits(['chatSelected']);
 
-const handleChatClick = (chatroomId) => {
-  emit('chatSelected', chatroomId);
+const handleChatClick = (chat) => {
+  emit('chatSelected', chat);
 };
 </script>
 
 <template>
   <div class="chat-list">
-    <div v-for="chat in chatroomList" :key="chat.chatroomId" class="chat-item" @click="handleChatClick(chat.chatroomId)">
+    <div v-for="chat in chatroomList" :key="chat.id" class="chat-item" @click="handleChatClick(chat)">
       <div class="chat-details">
         <div class="chat-header">
-          <span>{{ chat.chatroomId }}</span>
-          <span class="chat-name">{{ chat.latestMessage.sender }}</span>
-          <span class="chat-date">{{ chat.latestMessage.sendDate }}</span>
+          <span>{{ chat.chatRoom.name }}</span>
+          <span class="chat-date">{{ chat.chatRoom.last_message_date }}</span>
           <span class="chat-isRead">{{ chat.unreadCount }}</span>
         </div>
         <div class="chat-content">
-          {{ chat.latestMessage.content }}
+          {{ chat.chatRoom.last_message }}
         </div>
       </div>
     </div>

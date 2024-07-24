@@ -14,7 +14,7 @@ const props = defineProps({
 
 const chatroomList = ref([]);
 const chatMessageList = ref([]);
-const selectedChatroomId = ref(null);
+const selectedChatObject = ref(null);
 
 const loadChatRooms = () => {
   findAllRoomByUserId(props.userid, (response) => {
@@ -33,14 +33,15 @@ const loadChatRooms = () => {
 
 watch(() => props.showChat, (newVal, oldVal) => {
   if (newVal === true) {
-    selectedChatroomId.value = null;
+    selectedChatObject.value = null;
     loadChatRooms();
   }
 });
 
-const handleChatSelected = (chatroomId) => {
-  selectedChatroomId.value = chatroomId;
-  findAllMessageByChatroomId(chatroomId, (response)=>{
+const handleChatSelected = (chat) => {
+  console.log("chat object = ",chat);
+  selectedChatObject.value = chat
+  findAllMessageByChatroomId(chat.chatRoom.id, (response)=>{
       console.log(response);
       chatMessageList.value = response.data.data;
   }, (error)=>{
@@ -49,7 +50,7 @@ const handleChatSelected = (chatroomId) => {
 };
 
 const handleBackToChatList = () => {
-  selectedChatroomId.value = null;
+  selectedChatObject.value = null;
   loadChatRooms();
 };
 </script>
@@ -58,8 +59,8 @@ const handleBackToChatList = () => {
   <div v-if="showChat" class="chat-modal">
     <div class="chat-modal-content">
       <span class="close" @click="toggleChat">&times;</span>
-      <template v-if="selectedChatroomId">
-        <ChatDetail :chatroomId="selectedChatroomId" 
+      <template v-if="selectedChatObject">
+        <ChatDetail :chatObject="selectedChatObject" 
                     :messages="chatMessageList"
                     :userid="props.userid"
                     @back="handleBackToChatList"></ChatDetail>

@@ -9,9 +9,14 @@ async function findAllMessageByChatroomId(chatroomId, success, fail){
     await local.get("/chat/room/"+chatroomId).then(success).catch(fail);
 }
 
+async function findReceiver(chatroomId, userId, success, fail){
+    await local.get("/chat/receiver/"+chatroomId+"/"+userId).then(success).catch(fail);
+}
+
 async function sendMessage(chatMessage, success, fail){
     await local.post("/chat/room/"+chatMessage.chatroomId).then(success).catch(fail);
 }
+
 
 async function createRoom(userAId, userBId, success, fail) {
     const data = {
@@ -21,4 +26,4 @@ async function createRoom(userAId, userBId, success, fail) {
     await local.post("/chat/room", data).then(success).catch(fail);
 }
 
-export {findAllRoomByUserId,findAllMessageByChatroomId, sendMessage, createRoom};
+export {findAllRoomByUserId,findAllMessageByChatroomId, sendMessage, createRoom, findReceiver};
