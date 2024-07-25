@@ -6,18 +6,16 @@ body {
 :root {
   	
   	/* fonts */
-  	--single-line-body-base: Inter;
   	--font-roboto: Roboto;
   	
   	/* font sizes */
   	--single-line-body-base-size: 16px;
-  	--font-size-5xl: 24px;
+  	--font-size-menu: 24px;
   	
   	/* Colors */
   	--color-deepskyblue: #34aff7;
   	--color-lightskyblue: #b0dcff;
-  	--text-danger-on-danger: #fee9e7;
-  	--color-white: #fff;
+  	--color-buttons: #fee9e7;
   	
   	/* Spacing */
   	--space-200: 8px;
