@@ -1,7 +1,11 @@
 <template>
-  <div class="d-flex justify-content-center mt-5 mx-5">
-    <FilterDropdown class="mx-2" /> <FilterInput class="mx-2" />    
-  </div>  
+  <div class="d-flex justify-content-between align-items-center mt-5 mx-5">
+    <div class="d-flex justify-content-center w-100">
+      <FilterDropdown class="mx-2" /> 
+      <FilterInput class="mx-2" />
+    </div>
+    <b-button variant="success">New</b-button>
+  </div>
 
   <div class="itemList">
     <b-container>
@@ -16,23 +20,16 @@
           <RecruitItem :item="item" />
         </b-col>
       </b-row>
-    </b-container>
-
-    <b-container>
-      <b-row class="text-center">
-        <b-col>
-          <b-button variant="success" class="btn-new-post">New Post</b-button>
-        </b-col>
+      <b-row>
+        <b-pagination
+            v-model="curPage"
+           :total-rows="totRows"      
+           :per-page="perPage"
+            align="center"
+            class="mt-5"
+        />
       </b-row>
-    </b-container>
-
-    <b-pagination
-        v-model="curPage"
-       :total-rows="totRows"      
-       :per-page="perPage"
-        align="center"
-        class="mt-5"
-    />
+    </b-container>    
   </div>
 </template>
 <script setup>
