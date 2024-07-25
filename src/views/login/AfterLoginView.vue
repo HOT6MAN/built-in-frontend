@@ -40,8 +40,8 @@ function convert(){
 
 <template>
   <div>
-    <h1>After Login</h1>
-    <button @click="convertJwt()">헤더로 받아오기</button>
+    <!-- <h1>After Login</h1>
+    <button @click="convertJwt()">헤더로 받아오기</button> -->
   </div >
 </template>
 

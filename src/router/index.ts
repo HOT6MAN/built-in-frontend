@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TeamBuildingView from '@/views/board/TeamBuildingView.vue'
 import TeamBuildingRecruitView from '@/views/board/TeamBuildingRecruitView.vue'
-import AfterLoginView from '@/views/AfterLoginView.vue'
+import AfterLoginView from '@/views/login/AfterLoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

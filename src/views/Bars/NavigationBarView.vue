@@ -33,22 +33,22 @@
               <img class="icon" alt="" src="@/icons/Navbar/alarm.svg" />
           </div>
       </div>
-      <template v-if="authStore.isLogin">
+      <div v-if="authStore.isLogin">
         <div class="login" @click="clickLogout">
-          <div class="profile">Logout</div>
+          <div class="profile">로그아웃</div>
         </div>
-      </template>
-      <template v-else>
-        <div class="login" @click="$emit('toggleLoginModal')">
-          <div class="profile">Login</div>
-        </div>
-      </template>
-      
-      <div class="signUp">
-          <div class="profile">Sign-up</div>
       </div>
-
+      <div v-else>
+        <div class="login" @click="toggleLoginModal()">
+          <div class="profile">로그인</div>
+        </div>
+      </div>
+      
+      
   </div>
+
+  <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal"/>
+
   <RouterView />
 </template>
 
@@ -57,9 +57,14 @@
     import { RouterLink, RouterView } from 'vue-router'
     import { useAuthStore } from '@/stores/auth.js';
     import refreshAxios from "@/util/axios-refresh"
-
+    import LoginModal from '@/components/login/LoginModal.vue';
 
     const authStore = useAuthStore()
+    const showLoginModal = ref(false);
+    const toggleLoginModal = () => {
+        showLoginModal.value = !showLoginModal.value;
+    };
+
     function clickLogout(){
         //로그아웃(access + refresh 전송)
         refreshAxios.post('/logout', {},   
@@ -87,7 +92,7 @@
     defineComponent({
     name: "NavigationBarBeforeLogged"
     })
-    const showLoginModal = ref(false);
+    
 </script>
 
 <style>
