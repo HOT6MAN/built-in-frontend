@@ -1,8 +1,14 @@
 <template>
   <div>
-    <b-tabs content-class="mt-3" pills align="center" class="teambuilding-tabbar">
+    <b-tabs 
+      class="teambuilding-tabbar"
+      content-class="mt-3" 
+      pills 
+      align="center" 
+      v-model="activeTab"
+      >
       <b-tab title="Recruit" active>
-        <RecruitView :data/>
+        <RecruitView :data :loading />
       </b-tab>
       <b-tab title="Self-Introduction">
         
@@ -11,12 +17,32 @@
   </div>
 </template>
 <script setup>
-  import { ref } from 'vue';
+  import { ref, watch } from 'vue';
+  import { findRecruitList } from '@/api/teambuilding.js'
   import RecruitView from './TeamBuildingRecruitView.vue'
 
-  const data = ref([
-    { id: 1, teamName: "ssafy", imgUrl: "https://picsum.photos/600/300/?image=25", introduction: "hello", domain: "ai", desiredPositions: ["FE", "BE", "ML"], author: "ssafy kim"},
-  ])
+  const activeTab = ref(0)
+  const data = ref([])
+  const loading = ref(true)
+
+  const fetchData = (tabName) => {
+    let resp;    
+
+    if (tabName === "recruit") {
+      // TODO: param(filter, order)
+      resp = findRecruitList(
+        (res) => {
+          data.value = res.data;
+          loading.value = false;
+        },
+        (err) => console.error("response fail!" + err)) 
+    }
+  }
+
+  watch(activeTab, (newTabIdx) => {
+    loading.value = true;
+    fetchData(newTabIdx === 0 ? "recruit" : "selfIntroduction")
+  }, {immediate: true})
 </script>
 <style scoped>
   .teambuilding-tabbar {

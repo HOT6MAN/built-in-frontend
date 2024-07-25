@@ -33,7 +33,7 @@
   </div>
 </template>
 <script setup>
-  import {ref, computed, defineProps} from 'vue'
+  import {ref, defineProps, watch} from 'vue'
   import FilterDropdown from '../../components/board/BoardFilterDropdown.vue';
   import FilterInput from '../../components/board/BoardFilterInput.vue'
   import RecruitItem from '../../components/board/BoardRecruitItem.vue'
@@ -41,21 +41,26 @@
   const props = defineProps({
     data: {
       type: Array      
+    },
+    loading: {
+      type: Boolean
     }
   })
 
-  const { data } = props;
-
   const curPage = ref(1)
   const perPage = ref(6)
+  const list = ref([])
+  const totRows = ref(0)
 
-  const list = computed(() => {
+  const updateList = (data) => {
     const start = (curPage.value - 1) * perPage.value;
     const end = curPage.value * perPage.value;
-    return data.slice(start, end)
-  })
+    list.value = data?.slice(start, end);
+    totRows.value = data?.length;
+  }
 
-  const totRows = computed(() => data.length)
+  watch(() => props.data, (fetchedData) => updateList(fetchedData.data), { deep: true, immediate: true})
+  watch([curPage, perPage], () => updateList(props.data.data))
 </script>
 <style scoped>
   .itemList {
