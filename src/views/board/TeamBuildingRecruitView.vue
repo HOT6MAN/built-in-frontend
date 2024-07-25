@@ -8,7 +8,7 @@
   </div>
 
   <div class="itemList">
-    <b-container>
+    <b-container v-show="!loading">
       <b-row>
         <b-col 
           v-for="item in list" 
@@ -29,7 +29,11 @@
             class="mt-5"
         />
       </b-row>
-    </b-container>    
+    </b-container>
+    
+    <div v-show="loading" class="full-screen-center">
+      <b-spinner label="Loading..."></b-spinner>
+    </div>
   </div>
 </template>
 <script setup>
@@ -65,5 +69,16 @@
 <style scoped>
   .itemList {
     padding: 20px;
+  }
+
+  .full-screen-center {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>
