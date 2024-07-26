@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <svg
     :class="['size-16', className]"
     fill="none"
@@ -30,4 +30,4 @@ export default defineComponent({
     },
   },
 });
-</script>
+</script> -->

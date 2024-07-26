@@ -25,7 +25,7 @@
 </template>
 
 
-<script lang="ts" setup>
+<script setup>
     import { defineComponent, ref } from 'vue'
     import { RouterLink, RouterView } from 'vue-router'
     import { useAuthStore } from '@/stores/auth.js';
