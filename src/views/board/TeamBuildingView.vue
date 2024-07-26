@@ -34,7 +34,7 @@
       loading.value = true;
       
       const params = {
-        [key]: [value]
+        [key]: value
       };
 
       findRecruitList(

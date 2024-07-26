@@ -11,9 +11,9 @@ const emit = defineEmits(['update:key'])
 
 const options = ref([
   { text: " -- 선택 조건 --", disabled: true },
-  { text: "팀 이름" },
-  { text: "글쓴이" },
-  { text: "포지션" }
+  { value: "teamName", text: "팀 이름" },
+  { value: "authorName", text: "글쓴이" },
+  { value: "position", text: "포지션" }
 ]);
 
 const selected = ref('')
