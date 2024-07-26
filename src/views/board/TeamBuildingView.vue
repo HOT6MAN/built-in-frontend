@@ -8,7 +8,7 @@
       v-model="activeTab"
       >
       <b-tab title="Recruit" active>
-        <RecruitView :data :loading />
+        <RecruitView :data :loading @search="requestRecruitList"/>
       </b-tab>
       <b-tab title="Self-Introduction">
         
@@ -25,12 +25,20 @@
   const data = ref([])
   const loading = ref(true)
 
-  const fetchData = (tabName) => {
-    let resp;    
+  const requestRecruitList = (key, value) => {
+    fetchData("recruit", key, value)
+  }
 
+  const fetchData = (tabName, key, value) => {
     if (tabName === "recruit") {
-      // TODO: param(filter, order)
-      resp = findRecruitList(
+      loading.value = true;
+      
+      const params = {
+        [key]: [value]
+      };
+
+      findRecruitList(
+        params,
         (res) => {
           data.value = res.data;
           loading.value = false;
@@ -40,7 +48,6 @@
   }
 
   watch(activeTab, (newTabIdx) => {
-    loading.value = true;
     fetchData(newTabIdx === 0 ? "recruit" : "selfIntroduction")
   }, {immediate: true})
 </script>

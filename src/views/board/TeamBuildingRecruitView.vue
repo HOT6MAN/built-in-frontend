@@ -1,8 +1,8 @@
 <template>
   <div class="d-flex justify-content-between align-items-center mt-5 mx-5">
     <div class="d-flex justify-content-center w-100">
-      <FilterDropdown class="mx-2" /> 
-      <FilterInput class="mx-2" />
+      <FilterDropdown class="mx-2" @update:key="receiveKey" /> 
+      <FilterInput class="mx-2" @update:key="receiveValue" />
     </div>
     <b-button variant="success">New</b-button>
   </div>
@@ -37,7 +37,7 @@
   </div>
 </template>
 <script setup>
-  import {ref, defineProps, watch} from 'vue'
+  import {ref, defineProps, defineEmits, watch} from 'vue'
   import FilterDropdown from '../../components/board/BoardFilterDropdown.vue';
   import FilterInput from '../../components/board/BoardFilterInput.vue'
   import RecruitItem from '../../components/board/BoardRecruitItem.vue'
@@ -51,10 +51,30 @@
     }
   })
 
+  const emit = defineEmits({
+    update: (key, value) => {
+      // TODO: validation check (value null X -> key 반드시 값 존재해야)
+
+      return true;
+    }
+  })
+
+  const receiveKey = (newValue) => {
+    filterKey.value = newValue
+  }
+
+  const receiveValue = (newValue) => {
+    filterValue.value = newValue
+
+    emit('search', filterKey.value, filterValue.value)
+  }
+
   const curPage = ref(1)
   const perPage = ref(6)
   const list = ref([])
   const totRows = ref(0)
+  const filterKey = ref('')
+  const filterValue = ref('')
 
   const updateList = (data) => {
     const start = (curPage.value - 1) * perPage.value;
