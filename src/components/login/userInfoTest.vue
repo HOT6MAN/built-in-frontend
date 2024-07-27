@@ -1,6 +1,6 @@
 <script setup>
 import { my} from '@/api/Refresh'
-import { useAuthStore } from '@/stores/auth';
+import { useAuthStore } from '@/stores/authStore';
 
 const authStore = useAuthStore()
 
