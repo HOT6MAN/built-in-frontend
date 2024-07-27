@@ -4,11 +4,25 @@ import ChatButton from '@/components/chat/ChatButton.vue';
 import ChatModal from '@/components/chat/ChatModal.vue';
 import {send} from "@/api/notification.js";
 import {createRoom} from "@/api/chat.js"
+import {findAllUnreadNotificationByUserId} from "@/api/notification.js";
+import { useNotificationStore } from "@/stores/notificationStore.js";
+import { storeToRefs } from 'pinia';
 
 const receiverUser = ref("");
 const notiContent = ref("");
-  const receiver = ref("");
-  const sendNoti = ()=>{
+const receiver = ref("");
+const showChat = ref(false);
+const userid = ref('');
+const eventSource = ref(null);
+const notificationStore = useNotificationStore();
+const lastEventId = ref('');
+const { storeFindAllUnreadNotificationByUserId } = notificationStore;
+const { unreadNotificationSize } = storeToRefs(notificationStore);
+const showAlert = ref(false);
+const alertMessage = ref('');
+let alertTimeout = null;
+
+const sendNoti = ()=>{
     const notiObject = {
       receiver : receiver.value,
       content : notiContent.value,
@@ -23,14 +37,10 @@ const notiContent = ref("");
     });
   }
 
-const showChat = ref(false);
-
 const toggleChat = () => {
   showChat.value = !showChat.value;
 };
 
-const userid = ref('');
-const eventSource = ref(null);
 
 const createRooms = ()=>{
   createRoom(userid.value, receiverUser.value, (response)=>{
@@ -41,51 +51,52 @@ const createRooms = ()=>{
   });
 }
 
-const login = () => {
-  console.log("login call");
-  eventSource.value = new EventSource('http://localhost:8080/subscribe/' + userid.value);
+const showAlertMessage = (message) => {
+  if (alertTimeout) {
+    clearTimeout(alertTimeout);
+  }
+  console.log("event message = ",message);
+  alertMessage.value = message;
+  showAlert.value = true;
+  alertTimeout = setTimeout(() => {
+    showAlert.value = false;
+  }, 3000); // 3초 후 알림 숨김
+};
 
+
+const login = async () => {
+  console.log("login call");
+  
+  await storeFindAllUnreadNotificationByUserId(userid.value);
+  console.log("pinia update value = ", unreadNotificationSize.value);
+
+  // http://i11a606.p.ssafy.io:8080/
+  // eventSource.value = new EventSource('http://localhost:8080/notify/subscribe/' + userid.value);
+  eventSource.value = new EventSource('http://i11a606.p.ssafy.io:8080//notify/subscribe/' + userid.value);
+  console.log("source = ",eventSource.value);
   eventSource.value.addEventListener('open', () => {
     console.log('Connection opened');
+    showAlertMessage(`총 ${unreadNotificationSize.value} 건의 알림이 존재합니다.`);
   });
 
-  eventSource.value.addEventListener('message', (event) => {
+  eventSource.value.addEventListener('chat', (event) => {
     console.log('New message:', event.data);
+    showAlertMessage('새로운 채팅 알림이 도착했습니다.');
   });
 
   eventSource.value.addEventListener('sse', async (event) => {
     let data;
-    console.log(event);
     try {
-      console.log(event.data);
+      console.log(event);
       console.log("event call by sse");
+      if(!lastEventId.value){
+        lastEventId.value = event.lastEventId;
+      }
     } catch (e) {
       console.error('Failed to parse message as JSON:', event.data);
       return;
     }
-
-    const showNotification = () => {
-      const notification = new Notification('코드봐줘', {
-        body: data.content
-      });
-
-      setTimeout(() => {
-        notification.close();
-      }, 10 * 1000);
-
-      notification.addEventListener('click', () => {
-        window.open(data.url, '_blank');
-      });
-    };
-
-    if (Notification.permission === 'granted') {
-      showNotification();
-    } else if (Notification.permission !== 'denied') {
-      const permission = await Notification.requestPermission();
-      if (permission === 'granted') {
-        showNotification();
-      }
-    }
+    showAlertMessage('새로운 SSE 이벤트가 도착했습니다.');
   });
 
   eventSource.value.addEventListener('error', (event) => {
@@ -94,8 +105,8 @@ const login = () => {
     } else {
       console.error('EventSource error:', event);
     }
+    showAlertMessage('새로운 Error 이벤트가 도착했습니다.');
   });
-
 };
 </script>
 
@@ -125,7 +136,32 @@ const login = () => {
       <button @click="sendNoti">이벤트 전송</button>
 
     </div>
+    <transition name="fade">
+    <div v-if="showAlert" class="alert">
+      {{ alertMessage }}
+    </div>
+  </transition>
 </template>
 
 <style scoped>
+.alert {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c6cb;
+  border-radius: 5px;
+  z-index: 1000;
+  transition: opacity 1s ease-in-out;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 1s;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
 </style>

@@ -40,23 +40,25 @@ onBeforeUnmount(() => {
 });
 
 const sendMessage = () => {
-  console.log("sendMessage call");
+  console.log("receiver Id", receiverId.value);
   if (newMessage.value.trim() !== '') {
     chatroomObject.value.chatroomId = props.chatObject.chatRoom.id;
     chatroomObject.value.content = newMessage.value;
     chatroomObject.value.sender = props.chatObject.userId;
-    chatroomObject.value.receiver = props.receiverId.value;
+    chatroomObject.value.receiver = receiverId.value;
     chatroomObject.value.type = "chat";
     chatroomObject.value.receiverStatus = receiverStatus.value;
     console.log(chatroomObject.value);
-    stompClient.send(`/pub/${props.chatObject.chatRoom.chatroomId}`, {}, JSON.stringify(chatroomObject.value));
+    stompClient.send(`/pub/${props.chatObject.chatRoom.id}`, {}, JSON.stringify(chatroomObject.value));
     newMessage.value = ''; // 메시지 전송 후 입력 필드 초기화
     scrollToBottom();  // 메시지 전송 후 스크롤을 아래로
   }
 };
 
 async function connect() {
-  const socket = new SockJS(`http://localhost:8080/ws/chat`);
+  // http://i11a606.p.ssafy.io:8080/
+  // const socket = new SockJS(`http://localhost:8080/ws/chat`);
+  const socket = new SockJS(`http://3.34.252.184:8080/ws/chat`);
   console.log("props object = ",props.chatObject);
   stompClient = Stomp.over(socket);
   findAllMessageByChatroomId(props.chatObject.chatRoom.id, (response) => {
@@ -76,6 +78,7 @@ async function connect() {
   };
   stompClient.connect(headers, async function (frame) {
     stompClient.subscribe('/sub/' + props.chatObject.chatRoom.id, function (message) {
+      console.log("receive message = ",message.body);
       const receivedMessage = JSON.parse(message.body);
       messageArray.value.push(receivedMessage);
       console.log(messageArray.value);
@@ -83,8 +86,8 @@ async function connect() {
     });
 
     stompClient.subscribe('/sub/status/' + props.chatObject.chatRoom.id, function (message) {
-      console.log("set receiver Status = ",message);
-      receiverStatus.value = message;
+      console.log("set receiver Status = ",message.body);
+      receiverStatus.value = message.body;
     }, headers);
   });
 }
@@ -110,7 +113,7 @@ function disconnect() {
 
 <template>
   <div class="chat-detail">
-    <button @click="handleBack"><-</button>
+    <button @click="handleBack">취소</button>
     <div class="message-list">
       <div v-for="message in messageArray" :key="message.id" class="message-item">
         <div class="message-sender">{{ message.sender }}</div>

@@ -31,6 +31,11 @@
     import { useAuthStore } from '@/stores/auth.js';
     import refreshAxios from "@/util/axios-refresh"
     import LoginModal from '@/components/login/LoginModal.vue';
+    import { storeToRefs } from 'pinia';
+    import {useNotificationStore} from "@/stores/notificationStore.js";
+
+    const store = useNotificationStore();
+    const {unreadNotificationSize} = storeToRefs(store);
 
     const authStore = useAuthStore()
     const showLoginModal = ref(false);
