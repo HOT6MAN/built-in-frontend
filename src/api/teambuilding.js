@@ -13,3 +13,7 @@ export async function findTeamList(params, successCB, failCB) {
 export async function registerRecruit(params, successCB, failCB) {
   await local.post('/teambuilding/recruit', params).then(successCB).catch(failCB)
 }
+
+export async function findRecruit(id, successCB, failCB) {
+  await local.get('/teambuilding/recruit/' + id).then(successCB).catch(failCB)
+}

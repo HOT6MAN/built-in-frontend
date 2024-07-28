@@ -23,13 +23,14 @@
       </b-card-text>
 
       <b-card-footer class="d-flex justify-content-end">
-        <b-button href="#" variant="outline-primary">View</b-button>      
+        <b-button variant="outline-primary" @click.prevent="showDetail">View</b-button>      
       </b-card-footer>
     </b-card>
   </div>
 </template>
 <script setup>
   import { defineProps } from 'vue';
+  import { useRouter } from 'vue-router'
 
   const props = defineProps({
     item: {
@@ -37,6 +38,12 @@
       required: true
     }
   })
+
+  const router = useRouter()
+
+  const showDetail = () => {
+    router.push({path: '/teambuilding/recruit/' + props.item.id})
+  }
 </script>
 <style scoped>
 

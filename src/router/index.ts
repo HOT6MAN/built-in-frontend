@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import TeamBuildingView from '@/views/board/TeamBuildingView.vue'
 import teambuildingRecruitCreateView from '@/views/board/TeamBuildingRecruitCreateView.vue'
+import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDetailView.vue'
 import AfterLoginView from '@/views/login/AfterLoginView.vue'
 
 const router = createRouter({
@@ -29,6 +30,11 @@ const router = createRouter({
       path: '/teambuilding/recruit/create',
       name: 'teambuildingRecruitCreate',
       component : teambuildingRecruitCreateView
+    },
+    {
+      path: '/teambuilding/recruit/:id',
+      name: 'teambuildingRecruitDetail',
+      component : teambuildingRecruitDetailView
     },
     {
       path: '/afterlogin',
