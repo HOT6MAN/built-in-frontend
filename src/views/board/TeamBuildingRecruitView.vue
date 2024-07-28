@@ -4,7 +4,9 @@
       <FilterDropdown class="mx-2" @update:key="receiveKey" /> 
       <FilterInput class="mx-2" @update:key="receiveValue" />
     </div>
-    <b-button variant="success">New</b-button>
+    <b-button variant="success" :to="{path: '/teambuilding/recruit/create'}">
+      New
+    </b-button>
   </div>
 
   <div class="itemList">
