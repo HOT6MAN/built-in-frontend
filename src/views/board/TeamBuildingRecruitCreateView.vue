@@ -1,5 +1,5 @@
 <template>
-  <div>        
+  <div>     
     <div class="page container">      
       <h1 class="title">모집 게시글 생성</h1>
       <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset">
@@ -52,7 +52,10 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { findTeamList, registerRecruit } from '@/api/teambuilding.js'
+
+const router = useRouter()
 
 const teamList = ref([])
 const params = {
@@ -78,9 +81,8 @@ const onSubmit = () => {
     introduction: introduction.value,
     authorId: 1
   }, (resp) => {
-    if (resp.data.process.statusCode === 201) {
-      // TODO: alert(create success)
-      // TODO: redirect to list
+    if (resp.status === 201) {      
+      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}})
     }
   }, (err) => console.error(err))
 }

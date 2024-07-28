@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div>  
     <b-tabs 
       class="teambuilding-tabbar"
       content-class="mt-3" 
@@ -17,9 +17,12 @@
   </div>
 </template>
 <script setup>
-  import { ref, watch } from 'vue';
+  import { ref, watch, onMounted } from 'vue';
+  import { useRoute } from 'vue-router'
   import { findRecruitList } from '@/api/teambuilding.js'
   import RecruitView from './TeamBuildingRecruitView.vue'
+
+  const router = useRoute()
 
   const activeTab = ref(0)
   const data = ref([])
@@ -50,6 +53,11 @@
   watch(activeTab, (newTabIdx) => {
     fetchData(newTabIdx === 0 ? "recruit" : "selfIntroduction")
   }, {immediate: true})
+
+  onMounted(() => {
+    const redirectYN = router.query.redirectYN
+    if (redirectYN) alert(router.query.msg)
+  })
 </script>
 <style scoped>
   .teambuilding-tabbar {
