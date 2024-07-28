@@ -2,11 +2,12 @@
   <div>        
     <div class="page container">      
       <h1 class="title">모집 게시글 생성</h1>
-      <b-form class="form">
+      <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset">
         <b-form-group label="Team" for="team">
           <b-form-select
             id="team"
             :options="teamList"
+            v-model="selectedTeam"
             required
           ></b-form-select>
         </b-form-group>
@@ -36,6 +37,7 @@
           <b-form-input
             id="introduction"
             type="text"
+            v-model="introduction"
             required />          
         </b-form-group>
       
@@ -50,11 +52,45 @@
 
 <script setup>
 import { ref } from 'vue';
+import { findTeamList, registerRecruit } from '@/api/teambuilding.js'
 
-const teamList = ['A', 'B', 'C', 'D']
+const teamList = ref([])
+const params = {
+  'memberId': 1
+}
+
+findTeamList(params, (resp) => {
+  teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
+}, (err) => console.error(err))
+
+const limitCnt = 1
+
+const selectedTeam = ref('')
 const domain = ref([])
 const desiredPosList = ref([])
-const limitCnt = ref(1)
+const introduction = ref('')
+
+const onSubmit = () => {
+  registerRecruit({
+    teamId: selectedTeam.value, 
+    domain: domain.value[0], 
+    desiredPosList: desiredPosList.value,
+    introduction: introduction.value,
+    authorId: 1
+  }, (resp) => {
+    if (resp.data.process.statusCode === 201) {
+      // TODO: alert(create success)
+      // TODO: redirect to list
+    }
+  }, (err) => console.error(err))
+}
+
+const onReset = () => {
+  selectedTeam.value = ''
+  domain.value = []
+  desiredPosList.value = []
+  introduction.value = ''
+}
 </script>
 
 <style scoped>
