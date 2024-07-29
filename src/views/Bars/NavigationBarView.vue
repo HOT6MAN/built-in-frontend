@@ -27,7 +27,7 @@
 <script setup>
   import { defineComponent, ref } from 'vue'
   import { RouterLink, RouterView } from 'vue-router'
-  import { useAuthStore } from '@/stores/auth.js';
+  import { useAuthStore } from '@/stores/authStore.js';
   import refreshAxios from "@/util/axios-refresh"
   import LoginModal from '@/components/login/LoginModal.vue';
 
