@@ -11,7 +11,7 @@ import userInfoTest from './components/login/userInfoTest.vue';
     <NavigationBarView @toggleLoginModal="toggleLoginModal" />
     <!-- <ChatView></ChatView> -->
   </div>
-
+  
 
 </template>
 
