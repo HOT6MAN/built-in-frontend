@@ -10,8 +10,10 @@ export async function findTeamList(params, successCB, failCB) {
   await local.get('/team', { params }).then(successCB).catch(failCB)
 }
 
-export async function registerRecruit(params, successCB, failCB) {
-  await local.post('/teambuilding/recruit', params).then(successCB).catch(failCB)
+export function registerRecruit(formData, successCB, failCB) {
+  local.post('/teambuilding/recruit', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+    .then(successCB)
+    .catch(failCB);
 }
 
 export async function findRecruit(id, successCB, failCB) {

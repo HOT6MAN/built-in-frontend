@@ -12,6 +12,11 @@
           ></b-form-select>
         </b-form-group>
 
+        <b-form-group label="Thumbnail">
+          <input type="file" accept="image/*" @change="handleFileChange" > 
+          <b-img v-if="thumbnailPreview" :src="thumbnailPreview" alt="image preview" fluid/>
+        </b-form-group>
+
         <b-form-group label="Domain" for="domain">
           <b-form-tags 
           input-id="domain"           
@@ -78,24 +83,32 @@ findTeamList(params, (resp) => {
 const limitCnt = 1
 
 const selectedTeam = ref('')
+const thumbnail = ref('')
+const thumbnailPreview = ref('')
 const domain = ref([])
 const desiredPosList = ref([])
 const contents = ref('')
 const introduction = ref('')
 
 const onSubmit = () => {
-  registerRecruit({
-    teamId: selectedTeam.value, 
-    domain: domain.value[0], 
-    desiredPosList: desiredPosList.value,
-    contents: contents.value,
-    introduction: introduction.value,    
-    authorId: 1
-  }, (resp) => {
-    if (resp.status === 201) {      
-      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}})
-    }
-  }, (err) => console.error(err))
+  const form = new FormData();
+  form.append('teamId', selectedTeam.value);
+  form.append('thumbnail', thumbnail.value);
+  form.append('domain', domain.value[0]);
+  form.append('desiredPosList', JSON.stringify(desiredPosList.value));
+  form.append('contents', contents.value);
+  form.append('introduction', introduction.value);
+  form.append('authorId', 1); // TODO: logged in user id
+
+  registerRecruit(
+    form,
+    (resp) => {
+      if (resp.status === 201) {
+        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}});
+      }
+    }, 
+    (err) => console.error(err)
+  );  
 }
 
 const onReset = () => {
@@ -103,6 +116,17 @@ const onReset = () => {
   domain.value = []
   desiredPosList.value = []
   introduction.value = ''
+}
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    thumbnail.value = file;
+
+    const reader = new FileReader();
+    reader.onload = (e) => { thumbnailPreview.value = e.target.result; };
+    reader.readAsDataURL(file);
+  }
 }
 </script>
 
