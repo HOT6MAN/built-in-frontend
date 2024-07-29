@@ -1,5 +1,5 @@
 <template>
-  <div class="navigationBar">
+  <nav class="navigationBar">
 	<div class="sitelogo">
 	  <img class="logoIcon" alt="로고" src="@/icons/Navbar/Logo.svg" />
 	  <div class="logoText">Built-In</div>
@@ -24,49 +24,32 @@
         <RouterLink :to="{name:'member'}">마이페이지</RouterLink>
       </div>
     </div>
-  </div>
+  </nav>
   <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal"/>
 </template>
 
 
 <script setup>
-  import { defineComponent, ref } from 'vue'
-  import { RouterLink, RouterView } from 'vue-router'
-  import { useAuthStore } from '@/stores/authStore.js';
-  import refreshAxios from "@/util/axios-refresh"
-  import LoginModal from '@/components/login/LoginModal.vue';
+    import { defineComponent, ref } from 'vue'
+    import { RouterLink, RouterView } from 'vue-router'
+    import { useAuthStore } from '@/stores/authStore';
+    import LoginModal from '@/components/login/LoginModal.vue';
+    import { storeToRefs } from 'pinia';
+    import {useNotificationStore} from "@/stores/notificationStore.js";
+
+    const store = useNotificationStore();
+    const {unreadNotificationSize} = storeToRefs(store);
 
     const authStore = useAuthStore()
+    const {authLogout } = authStore
+
     const showLoginModal = ref(false);
     const toggleLoginModal = () => {
         showLoginModal.value = !showLoginModal.value;
     };
 
-    const routeToMemberProfile = ()=>{
-
-    }
-
     function clickLogout(){
-        //로그아웃(access + refresh 전송)
-        refreshAxios.post('/logout', {},   
-                {
-                    headers: {Authorization: localStorage.getItem("access_token")},
-                }
-            )
-            .then(response => {
-                console.log(response);
-                localStorage.removeItem('access_token')
-                authStore.token=''
-                authStore.user={
-                    id:'',
-                    name:'',
-                    email:''
-                }
-                alert("로그아웃 완료")
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        authLogout()
     }
 
 
@@ -105,6 +88,8 @@
 	position : relative;
   left: 80px;
   width: 80%;
+  left: 80px;
+  width: 80%;
 }
 .menuButton {
 	color : white;
@@ -113,6 +98,7 @@
 
 }
 .alarmicon {
+  position: relative;
   position: relative;
 	right : 70px;
 	width : 40px;
@@ -132,10 +118,31 @@
   justify-content: center;
   padding: var(--space-300);
   gap: var(--space-200);
+  position: relative;
+  /* right: 37px; */
+  border-radius: var(--radius-200);
+  background-color: rgba(255, 212, 58, 0.99);
+  border: 1px solid #ffedad;
+  box-sizing: border-box;
+  width: 101px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-300);
+  gap: var(--space-200);
 	right : 30px;
 }
 .navigationBar{
 	width: 100%;
+  position: fixed;
+	display : flex;
+	flex-direction : row;
+	align-items : center;
+  height: 80px;
+  top: 0px;
+  overflow: hidden;
+  text-align: left;
   position: fixed;
   height: 80px;
   top: 0px;
@@ -144,10 +151,10 @@
 	/* 아래 color와 font-family는 버튼 글자 색상과 폰트 스타일. 차후 버튼에 직접 넣을 것 */
   color: var(--color-buttons);
   font-family: var(--font-roboto);
+  color: var(--color-buttons);
+  font-family: var(--font-roboto);
 	background-color: #2d3648;
-	display : flex;
-	flex-direction : row;
-	align-items : center;
+  z-index: 999;
   z-index: 999;
 }
 /* .login:active {

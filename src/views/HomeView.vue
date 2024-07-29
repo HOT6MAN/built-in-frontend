@@ -1,6 +1,8 @@
 <template>
+  <div>
   <div class="home">
-    <div class="intro1">
+    <section>
+      <div class="intro1">
       <div class="introTextBox">
         <div class="textBoxP"><p>팀빌딩부터 빌드까지, 이 모든 것을 한번에</p></div>
         <div class="textBoxH1"><p>Built-In</p></div>
@@ -10,6 +12,8 @@
       <img class="dockerIcon" alt="" src="@/icons/Home/docker-icon.svg" />
       <img class="gitlabIcon" alt="" src="@/icons/Home/gitlab-icon.svg" />
     </div>
+    </section>
+    <section>
     <div class="intro2">
       <img class="imageIcon1" alt="" src="@/icons/Home/teambuilding-image.png" />
       <div class="intro2Box">
@@ -18,6 +22,8 @@
         <b-button class="enterButton" href="/teambuilding">팀빌딩 시작하기</b-button>
       </div>
     </div>
+    </section>
+    <section>
     <div class="intro3">
       <img class="imageIcon2" alt="" src="@/icons/Home/pipeline-image.png" />
       <div class="intro3Box">
@@ -28,10 +34,14 @@
       <b-button class="enterButton" href="/teambuilding">프로젝트 관리 시작하기</b-button>
     </div>
     </div>
+  </section>
   </div>
+</div>
+<router-view></router-view>
 </template>
 
 <script setup>
+import { RouterView } from 'vue-router';
 // querySelectorALl을 쓰기 위해서는 onMounted 함수를 써야함.
 import { onMounted } from 'vue';
 // onMounted를 통해 DOM 추가 이후 바로 작동
@@ -76,13 +86,18 @@ onMounted(() => {
 </script>
 
 
+
 <style scoped>
 .home {
   display: flex;
+  overflow: hidden;
   flex-direction: column;
   text-align: center;
   color: var(--color-black);
   font-family: var(--font-roboto);
+}
+section {
+  box-sizing: border-box;
 }
 /* 첫 페이지 구성요소들 */
 .intro1 {
@@ -94,7 +109,7 @@ onMounted(() => {
 .introTextBox {
   position : relative;
   top : 40%;
-  z-index: 2;
+  /* z-index: 2;  */
   color : white;
   font-weight : 600;
 }

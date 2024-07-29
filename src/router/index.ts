@@ -4,6 +4,7 @@ import TeamBuildingView from '@/views/board/TeamBuildingView.vue'
 import teambuildingRecruitCreateView from '@/views/board/TeamBuildingRecruitCreateView.vue'
 import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDetailView.vue'
 import AfterLoginView from '@/views/login/AfterLoginView.vue'
+import RegisterView from '@/views/login/RegisterView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,7 +46,13 @@ const router = createRouter({
       path : '/member',
       name : 'member',
       component : ()=>import('@/views/member/MemberView.vue')
-    }
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component : RegisterView
+    },
+
   ]
 })
 export default router
