@@ -105,6 +105,8 @@
 	position : relative;
   left: 80px;
   width: 80%;
+  left: 80px;
+  width: 80%;
 }
 .menuButton {
 	color : white;
@@ -114,11 +116,25 @@
 }
 .alarmicon {
   position: relative;
+  position: relative;
 	right : 70px;
 	width : 40px;
 	height : 40px;
 }
 .login {
+  position: relative;
+  /* right: 37px; */
+  border-radius: var(--radius-200);
+  background-color: rgba(255, 212, 58, 0.99);
+  border: 1px solid #ffedad;
+  box-sizing: border-box;
+  width: 101px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-300);
+  gap: var(--space-200);
   position: relative;
   /* right: 37px; */
   border-radius: var(--radius-200);
@@ -141,13 +157,21 @@
   top: 0px;
   overflow: hidden;
   text-align: left;
+  position: fixed;
+  height: 80px;
+  top: 0px;
+  overflow: hidden;
+  text-align: left;
 	/* 아래 color와 font-family는 버튼 글자 색상과 폰트 스타일. 차후 버튼에 직접 넣을 것 */
+  color: var(--color-buttons);
+  font-family: var(--font-roboto);
   color: var(--color-buttons);
   font-family: var(--font-roboto);
 	background-color: #2d3648;
 	display : flex;
 	flex-direction : row;
 	align-items : center;
+  z-index: 999;
   z-index: 999;
 }
 /* .login:active {
