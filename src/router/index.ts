@@ -41,6 +41,11 @@ const router = createRouter({
       name: 'afterlogin',
       component : AfterLoginView
     },
+    {
+      path : '/member',
+      name : 'member',
+      component : ()=>import('@/views/member/MemberView.vue')
+    }
   ]
 })
 export default router
