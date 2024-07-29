@@ -8,6 +8,7 @@ import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
   <div>
    <NavigationBarView />
     <!-- <ChatView></ChatView> -->
+
   </div>
   <router-view></router-view>
 </template>
