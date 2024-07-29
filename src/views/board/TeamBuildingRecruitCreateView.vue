@@ -40,7 +40,16 @@
             v-model="introduction"
             required />          
         </b-form-group>
-      
+
+        <b-form-group label="Contents">
+          <b-form-textarea
+            id="textarea-formatter"
+            v-model="contents"
+            size="lg"
+            no-resize
+          ></b-form-textarea>
+        </b-form-group>
+
         <b-form-group class="d-flex justify-content-center mt-3">
           <b-button type="submit" variant="primary" class="mx-1">Submit</b-button>
           <b-button type="reset" variant="danger" class="mx-1">Reset</b-button>
@@ -71,6 +80,7 @@ const limitCnt = 1
 const selectedTeam = ref('')
 const domain = ref([])
 const desiredPosList = ref([])
+const contents = ref('')
 const introduction = ref('')
 
 const onSubmit = () => {
@@ -78,7 +88,8 @@ const onSubmit = () => {
     teamId: selectedTeam.value, 
     domain: domain.value[0], 
     desiredPosList: desiredPosList.value,
-    introduction: introduction.value,
+    contents: contents.value,
+    introduction: introduction.value,    
     authorId: 1
   }, (resp) => {
     if (resp.status === 201) {      
