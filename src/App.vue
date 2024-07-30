@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ChatView from '@/views/ChatView.vue';
 import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
+import SideBarView from './views/Bars/SideBarView.vue';
 </script>
 
 <template>

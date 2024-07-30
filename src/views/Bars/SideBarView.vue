@@ -13,11 +13,11 @@
           <p>환경설정</p>
       </div>
       <div class="dropdown-content" :class="{ show: isOpen }">
-        <a href="about"><div class="collab ol">빌드 환경 설정</div></a>
-        <div class="collab ol">Git 연동 확인</div>
-        <div class="collab ol">Jenkins 환경 설정</div>
-        <div class="collab ol">배포 환경 설정</div>
-        <div class="collab ol">빌드 결과 확인</div>
+        <b-button class="collab ol" href="about">빌드 환경 설정</b-button>
+        <b-button class="collab ol">Git 연동 확인</b-button>
+        <b-button class="collab ol">Jenkins 환경 설정</b-button>
+        <b-button class="collab ol">배포 환경 설정</b-button>
+        <b-button class="collab ol">빌드 결과 확인</b-button>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
@@ -55,14 +55,14 @@
 <style scoped>
 .sideBar {
   width: 220px;
-  position: relative;
+  position: fixed;
   background-color: #102a43;
   height: 1024px;
-  overflow: hidden;
+  /* overflow: hidden; */
   text-align: left;
   font-size: var(--font-size-base);
-  color: var(--flowkit-white);
-  font-family: var(--font-inter);
+  color: white;
+  font-family: var(--font-roboto);
   z-index: 0;
 }
 
@@ -103,7 +103,7 @@
 .ol {
   font-family: inherit;
   font-size: inherit;
-  padding-left: var(--padding-base);
+  padding-left: 20px;
 }
 
 .collab {
@@ -113,9 +113,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--padding-3xs) var(--padding-lg);
+  padding: 10px 18px;
   box-sizing: border-box;
-  color: var(--flowkit-white);
+  color: white;
 }
 
 .dropdown-content {
@@ -126,11 +126,11 @@
   /* position: absolute;-> 이렇게 설정하면 다른 상위메뉴가 밀려나지 않았음 */
   flex-direction: column;
   align-items: center;
-  padding: var(--padding-xs) 0px;
+  padding: 12px 0px;
   box-sizing: border-box;
-  gap: var(--gap-xs);
-  font-size: var(--font-size-xs);
-  color: var(--icon-disabled);
+  gap: 12px;
+  font-size: 12px;
+  color: white;
   font-family: var(--font-roboto);
   z-index: 1;
 }
