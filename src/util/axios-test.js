@@ -18,23 +18,22 @@ api.interceptors.response.use(function(response){
 
   return response;
 }, async function(error){
-
+  console.log(error.response.status);
   if(error.response.status==401){
     
     try {
       // /reissue 엔드포인트로 쿠키를 포함하여 재요청
-      const reissueResponse = await refreshAxios.post('/reissue', {
-        headers: {Authorization: localStorage.getItem("access_token")}
-      }, 
-      {withCredentials: true })// 재요청에는 쿠키를 포함
+      const reissueResponse = await refreshAxios.post('/reissue', 
+        {}, {withCredentials: true })// 재요청에는 쿠키를 포함
       .then(response => {
         const accessToken = response.headers['authorization'];
         
         const authStore = useAuthStore()
         if (accessToken) {
+            console.log("리이슈", accessToken);
             localStorage.setItem('access_token', accessToken.split(' ')[1]);
             authStore.token = accessToken.split(' ')[1]
-            authStore.setUser()
+            authStore.setUser(authStore.token)
             console.log("액세스토큰 로컬스토리지에 저장");
         }
     })
@@ -42,6 +41,14 @@ api.interceptors.response.use(function(response){
         console.error('Error:', error);
         if(error.response.status==400){
           alert("로그인 필요")
+          const authStore = useAuthStore()
+          localStorage.removeItem('access_token')
+          authStore.token=''
+          user.value={
+              id:'',
+              name:'',
+              email:''
+          }
         }
     });
     } catch (retryError) {

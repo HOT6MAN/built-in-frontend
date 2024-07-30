@@ -13,7 +13,7 @@
         </b-form-group>
 
         <b-form-group label="Thumbnail">
-          <input type="file" accept="image/*" @change="handleFileChange" > 
+          <input type="file" ref="thumbnailInput" accept="image/*" @change="handleFileChange" > 
           <b-img v-if="thumbnailPreview" :src="thumbnailPreview" alt="image preview" fluid/>
         </b-form-group>
 
@@ -85,6 +85,7 @@ const limitCnt = 1
 const selectedTeam = ref('')
 const thumbnail = ref('')
 const thumbnailPreview = ref('')
+const thumbnailInput = ref('')
 const domain = ref([])
 const desiredPosList = ref([])
 const contents = ref('')
@@ -104,7 +105,8 @@ const onSubmit = () => {
     form,
     (resp) => {
       if (resp.status === 201) {
-        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}});
+        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}})
+        .then(() => router.replace({path: '/teambuilding'}))
       }
     }, 
     (err) => console.error(err)
@@ -113,9 +115,13 @@ const onSubmit = () => {
 
 const onReset = () => {
   selectedTeam.value = ''
+  thumbnail.value = ''
+  thumbnailPreview.value = ''  
+  thumbnailInput.value.value = ''
   domain.value = []
   desiredPosList.value = []
   introduction.value = ''
+  contents.value = ''
 }
 
 const handleFileChange = (event) => {

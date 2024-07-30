@@ -26,6 +26,7 @@
     </div>
   </nav>
   <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal"/>
+  
 </template>
 
 

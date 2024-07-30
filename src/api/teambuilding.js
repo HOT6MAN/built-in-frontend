@@ -19,3 +19,7 @@ export function registerRecruit(formData, successCB, failCB) {
 export async function findRecruit(id, successCB, failCB) {
   await local.get('/teambuilding/recruit/' + id).then(successCB).catch(failCB)
 }
+
+export function deleteRecruit(id, successCB, failCB) {
+  local.delete('/teambuilding/recruit/'+ id).then(successCB).catch(failCB)
+}
