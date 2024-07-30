@@ -36,3 +36,5 @@ build/
 out/
 src/main/
 secure/
+
+.env
