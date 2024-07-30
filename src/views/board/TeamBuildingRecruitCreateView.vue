@@ -105,7 +105,8 @@ const onSubmit = () => {
     form,
     (resp) => {
       if (resp.status === 201) {
-        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}});
+        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}})
+        .then(() => router.replace({path: '/teambuilding'}))
       }
     }, 
     (err) => console.error(err)
