@@ -27,29 +27,17 @@ const router = createRouter({
       path: '/teambuilding',
       name: 'teambuilding',
       component : TeamBuildingView,
-      children: [
-      {
-        path: 'recruit/create',
-        name: 'teambuildingRecruitCreate',
-        component : teambuildingRecruitCreateView
-      },
-      {
-        path: 'recruit/:id',
-        name: 'teambduildingRecruitDetail',
-        component : teambuildingRecruitDetailView
-      }
-    ]
     },
-    // {
-    //   path: '/teambuilding/recruit/create',
-    //   name: 'teambuildingRecruitCreate',
-    //   component : teambuildingRecruitCreateView
-    // },
-    // {
-    //   path: '/teambuilding/recruit/:id',
-    //   name: 'teambuildingRecruitDetail',
-    //   component : teambuildingRecruitDetailView
-    // },
+    {
+      path: '/teambuilding/recruit/create',
+      name: 'teambuildingRecruitCreate',
+      component : teambuildingRecruitCreateView
+    },
+    {
+      path: '/teambuilding/recruit/:id',
+      name: 'teambuildingRecruitDetail',
+      component : teambuildingRecruitDetailView
+    },
     {
       path: '/afterlogin',
       name: 'afterlogin',
