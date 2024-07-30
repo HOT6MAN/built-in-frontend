@@ -31,12 +31,12 @@ const router = createRouter({
       {
         path: 'recruit/create',
         name: 'teambuildingRecruitCreate',
-        component: teambuildingRecruitCreateView
+        component : teambuildingRecruitCreateView
       },
       {
         path: 'recruit/:id',
         name: 'teambduildingRecruitDetail',
-        component: teambuildingRecruitDetailView
+        component : teambuildingRecruitDetailView
       }
     ]
     },
@@ -67,8 +67,14 @@ const router = createRouter({
     },
     {
       path : '/project',
-      name : 'projectdashboard',
-      component : ProjectDashboardView,
+      children : [
+        {
+        path: 'dashboard',
+        name: 'dashboard',
+        component : ProjectDashboardView
+        },
+      ]
+      
     }
 
   ]

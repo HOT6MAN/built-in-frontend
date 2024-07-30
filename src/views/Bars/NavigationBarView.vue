@@ -8,7 +8,7 @@
     <a href="/teambuilding">팀</a>
 	  <RouterLink :to="{name : 'home'}" class="menuButton">홈</RouterLink>
 	  <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
-    <RouterLink :to="{name: 'projectdashboard'}" class="menuButton">프로젝트 관리</RouterLink>
+    <RouterLink :to="{name: 'dashboard'}" class="menuButton">프로젝트 관리</RouterLink>
 	</div>
 	<img class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
 	  <div v-if="authStore.isLogin">
@@ -65,7 +65,7 @@
 <style scoped>
 	/* 현재 각 요소들이 top, left를 이용해 위치를 잡고 있음. 코드를 쉽게 만들기 위해 div로 분류된 아이템들을 align-items를 통해 해결해야 함 */
 .sitelogo {
-	position: relative;
+	position: absolute;
 	left: 9px;
 	width : auto;
 	display: flex;
@@ -84,15 +84,12 @@
 	font-weight: 700;
 }
 .menu {
-	position: absolute;
 	display: flex;
 	flex-direction: row;
 	gap: 40px;
 	position : relative;
-  left: 80px;
-  width: 80%;
-  left: 80px;
-  width: 80%;
+  left: 200px;
+  width: 90%;
 }
 .menuButton {
 	color : white;
