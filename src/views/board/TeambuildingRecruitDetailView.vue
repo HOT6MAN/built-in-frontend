@@ -9,12 +9,23 @@
     <b-card class="board">
       <div></div>
       <b-card-header class="d-flex justify-content-between align-items-center py-3">
-        <b-card-title>{{ board.teamName }} </b-card-title>          
-        <b-card-sub-header>{{ board.authorName }} {{ board.createdDate }} </b-card-sub-header>
+        <b-card-title>
+          {{ board.teamName }}
+          <h6 class="domain"><b-badge variant="info">{{ board.domain }}</b-badge></h6>
+          <h6 class="desired-positions">
+            <b-badge 
+              v-for="pos in board.desiredPositions" :key="pos.id"  
+              class="mx-1" 
+              variant="secondary" 
+              >{{ pos }}
+            </b-badge>
+          </h6>
+        </b-card-title>          
+        <b-card-sub-header><b-badge class="mx-2" variant="info">{{ board.authorName }}</b-badge> {{ board.createdDate }} </b-card-sub-header>
       </b-card-header>
       <b-card-body>          
         <b-card-title>{{ board.introduction }} </b-card-title>          
-        <b-card-text> {{ board.content }} </b-card-text>        
+        <b-card-text> {{ board.content }} </b-card-text>
       </b-card-body>
     </b-card>    
   </div>
@@ -56,5 +67,14 @@ const del = () => {
 
   .auth-buttons > .delete-btn {
     margin-right: 15px;
+  }
+
+  .domain {
+    display: inline;
+    margin-right: 5px;
+  }
+
+  .desired-positions {
+    display: inline;
   }
 </style>
