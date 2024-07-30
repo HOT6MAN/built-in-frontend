@@ -1,4 +1,3 @@
-# Logs
 logs
 *.log
 npm-debug.log*
@@ -17,7 +16,6 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
-# Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -29,7 +27,6 @@ coverage
 
 *.tsbuildinfo
 
-# Backend 관련 소스코드 무시
 .gradle/
 bin/
 build/
