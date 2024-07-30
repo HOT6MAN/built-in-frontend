@@ -9,13 +9,10 @@ function my(success, fail){
     }
   )
     .then(response => {
-        console.log(response.data);
-        alert(response.data)
+        alert(response.data.process.message)
       })
       .catch(error => {
-        //console.error('Error:', error);
-        console.log(error.response.data);
-        console.log(error.response.status);
+        console.log('Error:', error);
   
         // if(error.response.status==401){
         //   console.log("액세스토큰 재발행");

@@ -8,6 +8,6 @@ export default axios.create({
     baseURL : VITE_VUE_API_URL,
     headers : {
         "Content-Type" : "application/json",
-        Authorization: localStorage.getItem("access_token")
+        // Authorization: localStorage.getItem("access_token")
     }
 })

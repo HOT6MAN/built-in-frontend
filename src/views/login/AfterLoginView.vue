@@ -7,7 +7,9 @@ const authStore = useAuthStore()
 const {authSaveAccessLocalStorage} = authStore
 
 onMounted(()=> {
-authSaveAccessLocalStorage()})
+  console.log("afterLogin");
+  authSaveAccessLocalStorage()
+})
 
 </script>
 

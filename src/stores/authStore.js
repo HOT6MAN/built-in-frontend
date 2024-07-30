@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router';
-import { saveAccessLocalStorage,logout,emailLink} from '@/api/auth'
+import { saveAccessLocalStorage,logout,getEmailLink, setUserProfile} from '@/api/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
@@ -36,8 +36,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function parseJwt(token) {
+    //console.log(token);
     let base64Url = (token||'').split('.')[1];
-    console.log(base64Url);
+    //console.log(base64Url);
     let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
@@ -49,7 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
     await saveAccessLocalStorage(
       async (response) => {
         let accessToken = response.headers['authorization'];
-        console.log(accessToken);
+    
         if (accessToken) {
           accessToken = (accessToken || '').split(' ')[1];
           localStorage.setItem('access_token', accessToken);
@@ -90,7 +91,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const authEmailLink = async (email) =>{
-    await emailLink(
+    await getEmailLink(
       email,
       (response) =>{
         console.log(response.data);
@@ -101,10 +102,26 @@ export const useAuthStore = defineStore('auth', () => {
     )
   }
 
+  const authSignUp = async (param) =>{
+    await setUserProfile(
+      param,
+      (response)=>{
+        console.log(response.data);
+        alert("가입완료")
+        router.replace({ path: '/' });
+      },
+      (error)=>{
+        console.error('Error:', error);
+      }
+    )
+  }
+
+
 
   return { token, user, computedToken,isLogin, setUser,
     authSaveAccessLocalStorage,
     authLogout,
     authEmailLink,
-    }
+    authSignUp,
+  }
 })

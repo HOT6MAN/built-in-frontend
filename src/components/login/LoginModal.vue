@@ -39,9 +39,9 @@ function changeTitle(){
     <span class="close" @click="toggleLoginModal">&times;</span>
     <h3>{{title}}</h3>
     
-    <form class="auth-email-form">
+    <form v-on:submit.prevent class="auth-email-form">
       <input type="email" placeholder="이메일을 입력하세요." v-model="email" required
-      @keyup.enter="sendEmail">
+      @keyup.enter="sendEmail()">
       <button type="button" @click="sendEmail()">{{title}}</button>
     </form>
     <div class="social-login">
