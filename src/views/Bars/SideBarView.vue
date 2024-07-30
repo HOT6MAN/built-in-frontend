@@ -55,14 +55,14 @@
 <style scoped>
 .sideBar {
   width: 220px;
-  position: relative;
+  position: fixed;
   background-color: #102a43;
   height: 1024px;
   overflow: hidden;
   text-align: left;
   font-size: var(--font-size-base);
-  color: var(--flowkit-white);
-  font-family: var(--font-inter);
+  color: white;
+  font-family: var(--font-roboto);
   z-index: 0;
 }
 

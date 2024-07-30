@@ -5,6 +5,7 @@ import teambuildingRecruitCreateView from '@/views/board/TeamBuildingRecruitCrea
 import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDetailView.vue'
 import AfterLoginView from '@/views/login/AfterLoginView.vue'
 import RegisterView from '@/views/login/RegisterView.vue'
+import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,18 +26,30 @@ const router = createRouter({
     {
       path: '/teambuilding',
       name: 'teambuilding',
-      component : TeamBuildingView
+      component : TeamBuildingView,
+      children: [
+      {
+        path: 'recruit/create',
+        name: 'teambuildingRecruitCreate',
+        component: teambuildingRecruitCreateView
+      },
+      {
+        path: 'recruit/:id',
+        name: 'teambduildingRecruitDetail',
+        component: teambuildingRecruitDetailView
+      }
+    ]
     },
-    {
-      path: '/teambuilding/recruit/create',
-      name: 'teambuildingRecruitCreate',
-      component : teambuildingRecruitCreateView
-    },
-    {
-      path: '/teambuilding/recruit/:id',
-      name: 'teambuildingRecruitDetail',
-      component : teambuildingRecruitDetailView
-    },
+    // {
+    //   path: '/teambuilding/recruit/create',
+    //   name: 'teambuildingRecruitCreate',
+    //   component : teambuildingRecruitCreateView
+    // },
+    // {
+    //   path: '/teambuilding/recruit/:id',
+    //   name: 'teambuildingRecruitDetail',
+    //   component : teambuildingRecruitDetailView
+    // },
     {
       path: '/afterlogin',
       name: 'afterlogin',
@@ -52,6 +65,11 @@ const router = createRouter({
       name: 'register',
       component : RegisterView
     },
+    {
+      path : '/project',
+      name : 'projectdashboard',
+      component : ProjectDashboardView,
+    }
 
   ]
 })
