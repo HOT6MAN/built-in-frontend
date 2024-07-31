@@ -46,10 +46,10 @@
             required />          
         </b-form-group>
 
-        <b-form-group label="Contents">
+        <b-form-group label="Content">
           <b-form-textarea
             id="textarea-formatter"
-            v-model="contents"
+            v-model="content"
             size="lg"
             no-resize
           ></b-form-textarea>
@@ -88,7 +88,7 @@ const thumbnailPreview = ref('')
 const thumbnailInput = ref('')
 const domain = ref([])
 const desiredPosList = ref([])
-const contents = ref('')
+const content = ref('')
 const introduction = ref('')
 
 const onSubmit = () => {
@@ -97,7 +97,7 @@ const onSubmit = () => {
   form.append('thumbnail', thumbnail.value);
   form.append('domain', domain.value[0]);
   form.append('desiredPosList', JSON.stringify(desiredPosList.value));
-  form.append('contents', contents.value);
+  form.append('content', content.value);
   form.append('introduction', introduction.value);
   form.append('authorId', 1); // TODO: logged in user id
 
@@ -121,7 +121,7 @@ const onReset = () => {
   domain.value = []
   desiredPosList.value = []
   introduction.value = ''
-  contents.value = ''
+  content.value = ''
 }
 
 const handleFileChange = (event) => {

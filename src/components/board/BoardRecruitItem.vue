@@ -1,7 +1,7 @@
 <template>
   <div>       
     <b-card
-      :img-src="item.imgUrl"   
+      :img-src="item.thumbnailUrl"   
       img-alt="Image"
       img-top      
       style="max-width: 20rem;"
