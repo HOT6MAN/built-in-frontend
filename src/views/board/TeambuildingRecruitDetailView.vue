@@ -1,6 +1,8 @@
 <template>
   <div class="page">
-    <h1 class="page-title">Recruit</h1>
+    <div :style="headerStyle" class="header">
+      <h1 class="page-title">Recruit</h1>
+    </div>
 
     <div v-if="isAuth" class="auth-buttons d-flex justify-content-end mb-2 w-100">
       <b-button variant="success" class="mx-1" @click.prevent="upd">Update</b-button>
@@ -32,11 +34,14 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { findRecruit, deleteRecruit } from '@/api/teambuilding.js'
 
 const board = ref({})
+const headerStyle = computed(() => ({
+  '--background-image': `url(${board.value.thumbnailUrl})`
+}));
 const isAuth = ref(true)
 const route = useRoute()
 const router = useRouter()
@@ -68,14 +73,24 @@ const del = () => {
 }
 </script>
 <style scoped>
+  .header {
+    display: flex;
+    justify-content: center;
+    height: 300px;
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    margin: 10px;
+  }
+
   .page {
-    margin-top: 130px;
+    margin-top: 100px;
   }  
 
   .page-title {
-    margin-bottom: 60px;
-    display: flex;
-    justify-content: center    
+    margin-top: 70px;
   }
 
   .auth-buttons > .delete-btn {

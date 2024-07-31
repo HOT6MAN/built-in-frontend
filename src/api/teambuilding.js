@@ -23,3 +23,13 @@ export async function findRecruit(id, successCB, failCB) {
 export function deleteRecruit(id, successCB, failCB) {
   local.delete('/teambuilding/recruit/'+ id).then(successCB).catch(failCB)
 }
+
+export function getImageFromUrl(url, successCB, failCB) {
+  local.get(url, {responseType: 'blob'}).then(successCB).catch(failCB)
+}
+
+export function updateRecruit(id, formData, successCB, failCB) {
+  local.patch('/teambuilding/recruit/'+id, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+    .then(successCB)
+    .catch(failCB);
+}

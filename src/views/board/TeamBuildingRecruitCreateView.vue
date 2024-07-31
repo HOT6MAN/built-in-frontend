@@ -1,10 +1,12 @@
 <template>
   <div>     
     <div class="page container">      
-      <h1 class="title">모집 게시글 생성</h1>
+      <h1 class="title">모집 게시글 {{ title }}</h1>
       <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset">
         <b-form-group label="Team" for="team">
+          <b-form-input v-if="isUpdateMode" v-model="selectedTeam" disabled />
           <b-form-select
+            v-if="!isUpdateMode"
             id="team"
             :options="teamList"
             v-model="selectedTeam"
@@ -65,10 +67,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { findTeamList, registerRecruit } from '@/api/teambuilding.js'
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { findTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
 
+const route = useRoute()
 const router = useRouter()
 
 const teamList = ref([])
@@ -76,22 +79,25 @@ const params = {
   'memberId': 1
 }
 
-findTeamList(params, (resp) => {
-  teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
-}, (err) => console.error(err))
-
 const limitCnt = 1
 
+const title = ref('생성')
 const selectedTeam = ref('')
 const thumbnail = ref('')
 const thumbnailPreview = ref('')
-const thumbnailInput = ref('')
+const thumbnailInput = ref(null)
 const domain = ref([])
 const desiredPosList = ref([])
 const content = ref('')
 const introduction = ref('')
 
-const onSubmit = () => {
+const isUpdateMode = computed(() => !!route.params.id)
+
+const onSubmit =() => {
+  isUpdateMode.value ? onUpdate(): onCreate()
+}
+
+const onCreate = () => {
   const form = new FormData();
   form.append('teamId', selectedTeam.value);
   form.append('thumbnail', thumbnail.value);
@@ -106,6 +112,27 @@ const onSubmit = () => {
     (resp) => {
       if (resp.status === 201) {
         router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}})
+        .then(() => router.replace({path: '/teambuilding'}))
+      }
+    }, 
+    (err) => console.error(err)
+  );  
+}
+
+const onUpdate = () => {
+  const id = route.params.id
+  
+  const form = new FormData();
+  form.append('thumbnail', thumbnail.value);
+  form.append('domain', domain.value[0]);
+  form.append('desiredPosList', JSON.stringify(desiredPosList.value));
+  form.append('content', content.value);
+  form.append('introduction', introduction.value);
+
+  updateRecruit(id, form, 
+    (resp) => {
+      if (resp.status === 204) {
+        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Update'}})
         .then(() => router.replace({path: '/teambuilding'}))
       }
     }, 
@@ -134,6 +161,40 @@ const handleFileChange = (event) => {
     reader.readAsDataURL(file);
   }
 }
+onMounted(() => {
+  if (isUpdateMode.value) {
+    title.value = "수정"
+
+    const boardData = JSON.parse(route.query.board);
+    const thumbnailUrl = boardData.thumbnailUrl
+    getImageFromUrl(thumbnailUrl, (resp) => {      
+      const urlParts = thumbnailUrl.split('/')
+      const fileName = urlParts[urlParts.length - 1]
+
+      const blob = resp.data;
+      const file = new File([blob], fileName, {type: blob.type});
+      
+      thumbnail.value = file;
+      thumbnailPreview.value = URL.createObjectURL(blob);
+
+      if (thumbnailInput.value) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        thumbnailInput.value.files = dataTransfer.files;
+      }
+    }, (err) => console.error(err));
+
+    selectedTeam.value = boardData.teamName;    
+    domain.value = [boardData.domain];
+    desiredPosList.value = boardData.desiredPosList;
+    introduction.value = boardData.introduction;
+    content.value = boardData.content;
+  } else {
+    findTeamList(params, (resp) => {
+      teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
+    }, (err) => console.error(err))
+  }  
+})
 </script>
 
 <style scoped>
