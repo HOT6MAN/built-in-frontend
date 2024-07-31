@@ -34,6 +34,11 @@ const router = createRouter({
       component : teambuildingRecruitCreateView
     },
     {
+      path: '/teambuilding/recruit/update/:id',
+      name: 'teambuildingRecruitUpdate',
+      component : teambuildingRecruitCreateView
+    },
+    {
       path: '/teambuilding/recruit/:id',
       name: 'teambuildingRecruitDetail',
       component : teambuildingRecruitDetailView

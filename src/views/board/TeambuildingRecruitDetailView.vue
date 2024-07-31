@@ -1,8 +1,9 @@
 <template>
   <div class="page">
     <h1 class="page-title">Recruit</h1>
+
     <div v-if="isAuth" class="auth-buttons d-flex justify-content-end mb-2 w-100">
-      <b-button variant="success" class="mx-1">Update</b-button>
+      <b-button variant="success" class="mx-1" @click.prevent="upd">Update</b-button>
       <b-button variant="danger" class="delete-btn" @click.prevent="del">Delete</b-button>
     </div>
     
@@ -45,6 +46,18 @@ findRecruit(id, (resp) => {
   board.value = resp.data.data
 }, (err) => console.error(err))
 
+const upd = () => {
+  router.push({
+    name: 'teambuildingRecruitUpdate',
+    params: {
+      id
+    },
+    query: {
+      board: JSON.stringify(board.value)
+    }
+  })
+}
+
 const del = () => {
   deleteRecruit(id, (resp) => {
     if (resp.status === 204) {
@@ -62,7 +75,7 @@ const del = () => {
   .page-title {
     margin-bottom: 60px;
     display: flex;
-    justify-content: center
+    justify-content: center    
   }
 
   .auth-buttons > .delete-btn {
