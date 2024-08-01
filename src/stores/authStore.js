@@ -14,6 +14,22 @@ export const useAuthStore = defineStore('auth', () => {
     email:''
   })
 
+  function getUserId(token){
+    const decodedToken = parseJwt(token);
+    return decodedToken.id;
+  }
+
+  function getUserName(token){
+    const decodedToken = parseJwt(token);
+    return decodedToken.name;
+  }
+
+  function getUserEmail(token){
+    const decodedToken = parseJwt(token);
+    return decodedToken.email;
+  }
+
+
   const computedToken = computed((access_token) => {  
     token.value = access_token
   })
@@ -118,7 +134,11 @@ export const useAuthStore = defineStore('auth', () => {
 
 
 
-  return { token, user, computedToken,isLogin, setUser,
+  return { token, user, computedToken,isLogin,
+    getUserId,
+    getUserName,
+    getUserEmail,
+    setUser,
     authSaveAccessLocalStorage,
     authLogout,
     authEmailLink,

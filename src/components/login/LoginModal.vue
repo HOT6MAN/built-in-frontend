@@ -69,8 +69,6 @@ function changeTitle(){
         <div v-show="!showJoin">
           <h6>계정이 이미 있으신가요? <span @click="changeTitle">로그인</span></h6>
         </div>
-        <b-button href="/">로그인 시</b-button>
-        <b-button href="/register">회원가입 폼으로 가는 버튼</b-button>
       </div>
     </div>
   </div>

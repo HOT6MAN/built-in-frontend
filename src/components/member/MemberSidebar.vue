@@ -16,6 +16,8 @@ const toggleTeam = () => {
 const toggleResume = () => {
   isResumeOpen.value = !isResumeOpen.value;
 };
+
+
 </script>
 
 <template>
@@ -29,7 +31,7 @@ const toggleResume = () => {
       </ul>
       <li @click="toggleTeam">팀</li>
       <ul v-if="isTeamOpen">
-        <li>프로필</li>
+        <li><router-link :to="{name:'myteam'}">나의 팀</router-link></li>
         <li>모집공고</li>
         <li>팀원관리</li>
       </ul>
