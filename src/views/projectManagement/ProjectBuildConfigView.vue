@@ -87,7 +87,7 @@ const types = ref([
   'Git-url',
   'Git-Access-Token',
   'Git-Branch',
-  'user-name',
+  'user-name', 
 ])
 // 각 input box의 값을 저장할 객체
 const inputValues = reactive({});
@@ -104,7 +104,6 @@ const inputValue = computed(()=> {
   for (const type of types.value) {
     formValue[type] = inputValues[type];
   }
-  console.log(formValue)
   return formValue;
 })
 
