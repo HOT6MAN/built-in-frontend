@@ -6,6 +6,7 @@ import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDeta
 import AfterLoginView from '@/views/login/AfterLoginView.vue'
 import RegisterView from '@/views/login/RegisterView.vue'
 import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView.vue'
+import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfigView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +67,11 @@ const router = createRouter({
         name: 'dashboard',
         component : ProjectDashboardView
         },
+        {
+          path: 'config',
+          name: 'projectbuildconfig',
+          component: ProjectBuildConfigView
+        }
       ]
       
     }

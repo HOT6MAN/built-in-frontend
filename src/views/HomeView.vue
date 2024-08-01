@@ -31,7 +31,7 @@
       <h1>Built-in</h1>
       <p>※ 팀 빌딩이 된 상태에서만 들어갈 수 있습니다</p>
       <!-- 프로젝트 관리 url 추가한 아래 href 수정 필요 -->
-      <b-button class="enterButton" href="/teambuilding">프로젝트 관리 시작하기</b-button>
+      <b-button class="enterButton" :to="{name : 'dashboard'}">프로젝트 관리 시작하기</b-button>
     </div>
     </div>
   </section>
@@ -60,7 +60,6 @@ onMounted(() => {
       // Scroll down
       for (let i = 0; i < sections.length; i++) { // 한 section의 높이까지 i를 추가(다음 섹션으로 이동하라는 의미)
         if (currentScrollPosition < clientHeight * (i + 1) && currentScrollPosition >= clientHeight * i) {
-          console.log(clientHeight * (i+1))
           scrollTo({
             top: clientHeight * (i + 1),
             behavior: "smooth",
