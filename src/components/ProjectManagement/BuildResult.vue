@@ -24,19 +24,19 @@ const testObject = {
 		          {
 				        "name": "Declarative: Tool Install",
 				        "status": "Failed",
-				        "logs": "Task: CompileJava failed: // class com.example.hotsix.dto.common.APIResponse cannot be cast to class java.lang.String"
+				        "logs": "Task: CompileJava failed: // class com.example.hotsix.dto.common.APIResponse cannot be cast to class java.lang.String",
 				        "duration": 122
 			        },
 			        {
 				        "name": "jdk 확인",
 				        "status": "Success",
-				        "logs": "Stage 1 completed successfully.\nAll tests passed.\nNo issues found."
+				        "logs": "Stage 1 completed successfully.\nAll tests passed.\nNo issues found.",
 				        "duration": 3000
 			        },
 			        {
 				        "name": "Add Gradle Plugin",
 				        "status": "Failed",
-				        "logs": "Task: CompileJava failed: // class com.example.hotsix.dto.common.APIResponse cannot be cast to class java.lang.String"
+				        "logs": "Task: CompileJava failed: // class com.example.hotsix.dto.common.APIResponse cannot be cast to class java.lang.String",
 				        "duration": 5
 			        },
 		        ]
@@ -48,13 +48,13 @@ const testObject = {
 			        {
 				        "name": "jdk 확인",
 				        "status": "Success",
-				        "logs": "Stage 1 completed successfully.\nAll tests passed.\nNo issues found."
+				        "logs": "Stage 1 completed successfully.\nAll tests passed.\nNo issues found.",
 				        "duration": 32
 			        },
 			        {
 				        "name": "Add Gradle Plugin",
 				        "status": "Failed",
-				        "logs": "Task: CompileJava failed: // class com.example.hotsix.dto.common.APIResponse cannot be cast to class java.lang.String"
+				        "logs": "Task: CompileJava failed: // class com.example.hotsix.dto.common.APIResponse cannot be cast to class java.lang.String",
 				        "duration": 12
 			        }
 		        ]
