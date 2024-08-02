@@ -12,7 +12,7 @@ import userInfoTest from './components/login/userInfoTest.vue';
     <!-- <ChatView></ChatView> -->
 
   </div>
-  <userInfoTest/>
+  <!-- <userInfoTest/> -->
   <router-view></router-view>
 
 </template>

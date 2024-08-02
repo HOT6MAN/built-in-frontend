@@ -11,3 +11,7 @@ export function sendBuildConfigForm(formData, success, fail) {
     .then(success)
     .catch(fail);
 }
+
+export function receiveBuildResult(formData, success, fail) {
+  local.get('/team/{teamid}/lastBuild').then(success).catch(fail);
+}

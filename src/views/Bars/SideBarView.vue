@@ -13,11 +13,11 @@
           <p>환경설정</p>
       </div>
       <div class="dropdown-content" :class="{ show: isOpen }">
-        <b-button class="collab ol" href="about">빌드 환경 설정</b-button>
-        <b-button class="collab ol">Git 연동 확인</b-button>
-        <b-button class="collab ol">Jenkins 환경 설정</b-button>
-        <b-button class="collab ol">배포 환경 설정</b-button>
-        <b-button class="collab ol">빌드 결과 확인</b-button>
+        <b-button :to="{name: 'projectbuildconfig'}" class="collab">빌드 환경 설정</b-button>
+        <b-button class="collab">Git 연동 확인</b-button>
+        <b-button class="collab">Jenkins 환경 설정</b-button>
+        <b-button class="collab">배포 환경 설정</b-button>
+        <b-button :to="{name : 'projectbuildresult'}" class="collab">빌드 결과 확인</b-button>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
