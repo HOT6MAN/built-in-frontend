@@ -14,6 +14,7 @@ import userInfoTest from './components/login/userInfoTest.vue';
   </div>
   <userInfoTest/>
   <router-view></router-view>
+
 </template>
 
 <style scoped>

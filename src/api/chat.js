@@ -26,4 +26,6 @@ async function createRoom(userAId, userBId, success, fail) {
     await local.post("/chat/room", data).then(success).catch(fail);
 }
 
+
+
 export {findAllRoomByUserId,findAllMessageByChatroomId, sendMessage, createRoom, findReceiver};
