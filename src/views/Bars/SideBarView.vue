@@ -3,21 +3,21 @@
   <div class="sideBar">
     <div class="sidebar-position">
       <!-- 대시보드 영역 -->
-      <RouterLink :to="{name: 'dashboard'}"><div class="main-category">
+      <div class="main-category">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/DashBoard.svg" />
           <p>대시보드</p>
-      </div></RouterLink>
+      </div>
       <!-- 환경설정 영역 -> 5개의 드랍다운 메뉴가 있음-->
       <div class="main-category" @click="toggleDropdown">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Config.svg" />
           <p>환경설정</p>
       </div>
       <div class="dropdown-content" :class="{ show: isOpen }">
-        <RouterLink :to="{name: 'projectbuildconfig'}"><b-button class="collab">빌드 환경 설정</b-button></RouterLink>
-        <b-button class="collab">Git 연동 확인</b-button>
-        <b-button class="collab">Jenkins 환경 설정</b-button>
-        <b-button class="collab">배포 환경 설정</b-button>
-        <b-button class="collab">빌드 결과 확인</b-button>
+        <b-button class="collab ol" href="about">빌드 환경 설정</b-button>
+        <b-button class="collab ol">Git 연동 확인</b-button>
+        <b-button class="collab ol">Jenkins 환경 설정</b-button>
+        <b-button class="collab ol">배포 환경 설정</b-button>
+        <b-button class="collab ol">빌드 결과 확인</b-button>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
@@ -34,7 +34,6 @@
 </template>
 <script>
   import { defineComponent, ref } from 'vue'
-  import { RouterLink } from 'vue-router';
   export default defineComponent({
   name: 'VerticalDropdownMenu',
   setup() {
@@ -100,18 +99,23 @@
   font-weight: 600;
   cursor : pointer;
 }
+
+.ol {
+  font-family: inherit;
+  font-size: inherit;
+  padding-left: 20px;
+}
+
 .collab {
   width: 150px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding-left: 20px;
   align-items: center;
   justify-content: center;
   padding: 10px 18px;
   box-sizing: border-box;
   color: white;
-  font-size: 12px;
 }
 
 .dropdown-content {

@@ -5,6 +5,7 @@
 	  <div class="logoText">Built-In</div>
 	</div>
 	<div class="menu">
+    <a href="/teambuilding">팀</a>
 	  <RouterLink :to="{name : 'home'}" class="menuButton">홈</RouterLink>
 	  <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
     <RouterLink :to="{name: 'dashboard'}" class="menuButton">프로젝트 관리</RouterLink>
