@@ -23,7 +23,11 @@ async function deployTest(){
 }
 
 async function find400Log(){
-    await local.get("/log/1");
+    await local.get("/log/realtime/1");
 }
 
-export{createJenkinsJob, updateJenkinsJob,createJenkinsCredential,jenkinsTest, deployTest, find400Log};
+async function addDynamicListener(){
+    await local.get("/log/active/1");
+}
+
+export{createJenkinsJob, updateJenkinsJob,createJenkinsCredential,jenkinsTest, deployTest, find400Log, addDynamicListener};
