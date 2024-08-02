@@ -19,50 +19,17 @@
           <div class="profile">로그인</div>
       </div>
     </div>
-    <div >
-       <div>
-          <div >
-             <button @click="createJenkins">잡 생성</button>
-          </div>
-        </div>
-    <div>
-        <div>
-            <button @click="updateJenkins">잡 보기</button>
-         </div>
-    </div>
     <div>
       <div @click="routeToMemberProfile">
         <RouterLink :to="{name:'member'}">마이페이지</RouterLink>
       </div>
-    </div>
-      
     </div>
     <div>
         <div>
             <button @click="navTest">test</button>
         </div>
     </div>
-    <div>
-      <div>
-        <button @click="createCredential">인증 생성</button>
-      </div>
     </div>
-    <div>
-        <div>
-            <button @click="deployControllTest">빌드 요청</button>
-        </div>
-    </div>
-    <div>
-        <div>
-            <button @click="findLog">로그 보기</button>
-        </div>
-    </div>
-    <div>
-        <div>
-            <button @click="realtimeLog">로그 실시간 연결</button>
-        </div>
-    </div>
-  </div>
   <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal"/>
 </template>
 
@@ -117,42 +84,6 @@
     defineComponent({
     name: "NavigationBarBeforeLogged"
     })
-
-    const createJenkins = ()=>{
-      alert("젠킨스 호출");
-      createJenkinsJob();
-    }
-    const updateJenkins = ()=>{
-      alert("잡 보기 호출");
-      updateJenkinsJob();
-    }
-
-    const createCredential = ()=>{
-      alert("Credentials 생성");
-      createJenkinsCredential();
-    }
-
-    const deployControllTest = ()=>{
-      alert("빌드 시작.");
-      deployTest();
-    }
-
-    const findLog = ()=>{
-      alert("로그 보기");
-      find400Log();
-    }
-    let stompClient = null;
-    const logArray = ref([]);
-    const realtimeLog = ()=>{
-       const socket = new SockJS("http://localhost:8080/ws/log");
-       stompClient = Stomp.over(socket);
-       addDynamicListener();
-       stompClient.connect({'destination':'/ws/log'}, async function (frame){
-          stompClient.subscribe("/sub/1", function(message){
-            console.log("message = ",message);
-          })
-       })
-    }
 </script>
 
 <style scoped>
