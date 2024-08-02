@@ -7,6 +7,7 @@
 	<div class="menu">
 	  <RouterLink :to="{name : 'home'}" class="menuButton">홈</RouterLink>
 	  <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
+    <RouterLink :to="{name: 'dashboard'}" class="menuButton">프로젝트 관리</RouterLink>
 	</div>
 	<img class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
 	  <div v-if="authStore.isLogin">
@@ -24,11 +25,6 @@
         <RouterLink :to="{name:'member'}">마이페이지</RouterLink>
       </div>
     </div>
-    <div>
-        <div>
-            <button @click="navTest">test</button>
-        </div>
-    </div>
     </div>
   <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal"/>
 </template>
@@ -40,6 +36,7 @@
   import { useAuthStore } from '@/stores/authStore.js';
   import refreshAxios from "@/util/axios-refresh"
   import LoginModal from '@/components/login/LoginModal.vue';
+  import ProjectBuildConfigView from '../projectManagement/ProjectBuildConfigView.vue';
   import {createJenkinsJob, updateJenkinsJob, createJenkinsCredential, jenkinsTest, deployTest, find400Log
     ,addDynamicListener} from '@/api/jenkins.js';
 
@@ -51,11 +48,6 @@
 
     const routeToMemberProfile = ()=>{
 
-    }
-
-    const navTest = () =>{
-      alert("test 호출");
-      jenkinsTest();
     }
 
     function clickLogout(){
