@@ -13,7 +13,7 @@ const options = ref([
   { text: " -- 선택 조건 --", disabled: true },
   { value: "teamName", text: "팀 이름" },
   { value: "authorName", text: "글쓴이" },
-  { value: "position", text: "포지션" }
+  { value: "desiredPos", text: "포지션" }
 ]);
 
 const selected = ref('')

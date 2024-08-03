@@ -2,7 +2,7 @@
   <div>     
     <div class="page container">      
       <h1 class="title">모집 게시글 {{ title }}</h1>
-      <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset">
+      <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset" @keydown.enter.prevent >
         <b-form-group label="Team" for="team">
           <b-form-input v-if="isUpdateMode" v-model="selectedTeam" disabled />
           <b-form-select

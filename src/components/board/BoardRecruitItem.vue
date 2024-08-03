@@ -1,14 +1,10 @@
 <template>
   <div>       
-    <b-card
-      :img-src="item.thumbnailUrl"   
-      img-alt="Image"
-      img-top      
-      style="max-width: 20rem;"
-      class="mb-2"
-    >
-      <b-card-title tag="h3">
-        {{ item.teamName }}
+    <b-card class="card">
+      <b-card-img :src="item.thumbnailUrl" alt="Thumbnail" class="mb-2" height="180px" top />
+      <b-card-title tag="h3" class="d-flex justify-content-between align-items-center">
+        <span>{{ item.teamName }}</span> 
+        <span class="small-text">{{ item.hit }}</span>
       </b-card-title>
 
       <b-card-sub-title class="d-flex justify-content-end">
@@ -46,5 +42,11 @@
   }
 </script>
 <style scoped>
+  .card {
+    max-width: 20rem;
+  }
 
+  .small-text {
+    font-size: 17px;
+  }
 </style>
