@@ -2,9 +2,10 @@
 import { defineProps, ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
 import { RouterLink } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore()
-const {authEmailLink } = authStore
+const {authEmailLink } = storeToRefs(authStore)
 
 const props = defineProps({
   showLoginModal: Boolean,

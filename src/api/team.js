@@ -5,9 +5,15 @@ async function setTeam(param, success, fail){
 }
 
 
+async function getAllMyTeamByUserId(memberId,success, fail){
+    await api.get(`/teams/${memberId}`).then(success).catch(fail);
+}
+
+
 
 
 export{
-    setTeam
+    setTeam,
+    getAllMyTeamByUserId
 
 }

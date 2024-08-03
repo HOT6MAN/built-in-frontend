@@ -1,8 +1,10 @@
 <script setup>
 import { my} from '@/api/Refresh'
 import { useAuthStore } from '@/stores/authStore';
-
+import { storeToRefs } from 'pinia';
 const authStore = useAuthStore()
+
+const {token,userId,userName,userEmail }  = storeToRefs(authStore)
 
 function myfunc(){
     my()
@@ -16,9 +18,9 @@ function myfunc(){
       
         <div>
             <button @click="myfunc">my</button>
-            id : {{authStore.user.id }}<br>
-            이름 : {{ authStore.user.name }}  <br>
-            accessToken :{{ authStore.token }} <br>
+            id : {{userId }}<br>
+            이름 : {{ userName }}  <br>
+            accessToken :{{ token }} <br>
         </div>
 
     </div>

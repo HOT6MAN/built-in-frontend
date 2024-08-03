@@ -3,16 +3,16 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTeamStore } from '@/stores/teamStore';
 import { useAuthStore } from '../../stores/authStore';
-
+import { storeToRefs } from 'pinia';
 
 const teamStore = useTeamStore()
 const {createTeam} = teamStore
 const authStore = useAuthStore()
-const {getUserId} = authStore
+const {userId} = storeToRefs(authStore)
 
 const route = useRoute();
 
-const memberId = ref(getUserId(localStorage.getItem('access_token')))
+const memberId = ref(userId)
 
 const team = ref({
     name:'',

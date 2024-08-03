@@ -7,15 +7,19 @@ export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
 
   let token = ref(localStorage.getItem('access_token') || '')
- 
-  const user = ref({
-    id:'',
-    name:'',
-    email:''
-  })
+  let userId = ref('');
+  let userName = ref('');
+  let userEmail = ref('');
+
+  // const user = ref({
+  //   id:'',
+  //   name:'',
+  //   email:''
+  // })
 
   function getUserId(token){
     const decodedToken = parseJwt(token);
+    console.log(decodedToken.id);
     return decodedToken.id;
   }
 
@@ -30,26 +34,40 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
 
-  const computedToken = computed((access_token) => {  
-    token.value = access_token
-  })
+  // const computedToken = computed((access_token) => {  
+  //   token.value = access_token
+  // })
 
   const isLogin = computed(() => {
     return token.value!='' ? true : false
   })
   
-  function setUser(token) {
+  function setAuthData(newToken) {
     return new Promise((resolve, reject) => {
       try {
-        const decodedToken = parseJwt(token);
-        user.value.id = decodedToken.id;
-        user.value.name = decodedToken.name;
+        const decodedToken = parseJwt(newToken);
+        localStorage.setItem('access_token', newToken);
+        console.log(decodedToken.id, decodedToken.name, decodedToken.email);
+        token.value = newToken
+        userId.value = decodedToken.id;
+        userName.value = decodedToken.name;
+        userEmail.value = decodedToken.email;
         resolve(); // 완료되면 resolve 호출
       } catch (error) {
         reject(error); // 에러 발생 시 reject 호출
       }
     });
   }
+
+  function clearAuthData() {
+    localStorage.removeItem('access_token')
+    token.value = '';
+    userId.value = '';
+    userName.value = '';
+    userEmail.value = '';
+}
+
+
 
   function parseJwt(token) {
     //console.log(token);
@@ -69,10 +87,9 @@ export const useAuthStore = defineStore('auth', () => {
     
         if (accessToken) {
           accessToken = (accessToken || '').split(' ')[1];
-          localStorage.setItem('access_token', accessToken);
-          token.value = accessToken;
+
           try {
-            await setUser(token.value); // setUser가 완료될 때까지 기다림
+            await setAuthData(accessToken); // setUser가 완료될 때까지 기다림
             console.log("액세스토큰 로컬스토리지에 저장");
             // '/'로 리디렉트
             router.replace({ path: '/' });
@@ -91,14 +108,9 @@ export const useAuthStore = defineStore('auth', () => {
     await logout(
       (response) =>{
         console.log(response);
-        localStorage.removeItem('access_token')
-        token.value=''
-        user.value={
-            id:'',
-            name:'',
-            email:''
-        }
+        clearAuthData()
         alert("로그아웃 완료")
+        router.replace({ path: '/' });
       },
       (error)=>{
         console.error('Error:', error);
@@ -134,14 +146,18 @@ export const useAuthStore = defineStore('auth', () => {
 
 
 
-  return { token, user, computedToken,isLogin,
+  return { token,userId,userName,userEmail, 
+    //computedToken,
+    isLogin,
     getUserId,
-    getUserName,
-    getUserEmail,
-    setUser,
+    setAuthData,
+    clearAuthData,
     authSaveAccessLocalStorage,
     authLogout,
     authEmailLink,
     authSignUp,
   }
-})
+},
+{persist:true}
+
+)

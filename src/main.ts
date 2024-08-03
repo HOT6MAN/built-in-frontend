@@ -8,8 +8,11 @@ import '@/assets/css/global.css'
 import BootstrapVue3 from "bootstrap-vue-3"
 import 'bootstrap/dist/css/bootstrap.css'
 
+import piniaPluginPersitedstate from 'pinia-plugin-persistedstate'
 
 const pinia = createPinia()
+pinia.use(piniaPluginPersitedstate)
+
 const app = createApp(App);
 app.use(pinia)
 app.use(BootstrapVue3)

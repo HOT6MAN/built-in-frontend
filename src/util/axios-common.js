@@ -1,6 +1,7 @@
 import axios from 'axios'
 import refreshAxios from "@/util/axios-refresh"
 import { useAuthStore } from '../stores/authStore';
+import { storeToRefs } from 'pinia';
 
 const { VITE_VUE_API_URL } = import.meta.env;
 
@@ -29,11 +30,13 @@ api.interceptors.response.use(function(response){
         const accessToken = response.headers['authorization'];
         
         const authStore = useAuthStore()
+        const {setAuthData} = authStore
         if (accessToken) {
-            console.log("리이슈", accessToken);
-            localStorage.setItem('access_token', accessToken.split(' ')[1]);
-            authStore.token = accessToken.split(' ')[1]
-            authStore.setUser(authStore.token)
+          const newToken = accessToken.split(' ')[1];
+          console.log("리이슈", newToken);
+
+            setAuthData(newToken)
+          
             console.log("액세스토큰 로컬스토리지에 저장");
         }
     })
@@ -42,13 +45,8 @@ api.interceptors.response.use(function(response){
         if(error.response.status==400){
           alert("로그인 필요")
           const authStore = useAuthStore()
-          localStorage.removeItem('access_token')
-          authStore.token=''
-          user.value={
-              id:'',
-              name:'',
-              email:''
-          }
+          const {clearAuthData} = authStore
+          clearAuthData()
         }
     });
     } catch (retryError) {
