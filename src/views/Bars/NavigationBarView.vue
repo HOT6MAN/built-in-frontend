@@ -8,6 +8,7 @@
 	  <RouterLink :to="{name : 'home'}" class="menuButton">홈</RouterLink>
 	  <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
     <RouterLink :to="{name: 'dashboard'}" class="menuButton">프로젝트 관리</RouterLink>
+    <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
 	</div>
 	<img class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
 	  <div v-if="authStore.isLogin">

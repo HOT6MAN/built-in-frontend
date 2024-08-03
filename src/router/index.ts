@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import ResumesView from '@/views/resume/ResumesView.vue'
 import TeamBuildingView from '@/views/board/TeamBuildingView.vue'
 import teambuildingRecruitCreateView from '@/views/board/TeamBuildingRecruitCreateView.vue'
 import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDetailView.vue'
@@ -24,6 +25,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('@/views/Bars/SideBarView.vue')
+    },
+    {
+      path: '/resumes',
+      name: 'resumes',
+      component : ResumesView
     },
     {
       path: '/teambuilding',
