@@ -41,7 +41,9 @@
   import {createJenkinsJob, updateJenkinsJob, createJenkinsCredential, jenkinsTest, deployTest, find400Log
     ,addDynamicListener} from '@/api/jenkins.js';
 
+    
     const authStore = useAuthStore()
+    const {authLogout} = authStore
     const showLoginModal = ref(false);
     const toggleLoginModal = () => {
         showLoginModal.value = !showLoginModal.value;
@@ -53,26 +55,9 @@
 
     function clickLogout(){
         //로그아웃(access + refresh 전송)
-        refreshAxios.post('/logout', {},   
-                {
-                    headers: {Authorization: localStorage.getItem("access_token")},
-                }
-            )
-            .then(response => {
-                console.log(response);
-                localStorage.removeItem('access_token')
-                authStore.token=''
-                authStore.user={
-                    id:'',
-                    name:'',
-                    email:''
-                }
-                alert("로그아웃 완료")
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        authLogout()
     }
+    
 
     defineComponent({
     name: "NavigationBarBeforeLogged"

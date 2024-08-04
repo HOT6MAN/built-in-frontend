@@ -77,6 +77,11 @@ const router = createRouter({
       component : ()=>import('@/views/team/MyTeamRegisterView.vue')
     },
     {
+      path : '/teams/:teamId',
+      name : 'myTeamDetail',
+      component : ()=>import('@/views/team/MyTeamDetailView.vue')
+    },
+    {
       path : '/project',
       children : [
         {

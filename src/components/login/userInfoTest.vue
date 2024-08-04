@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 const authStore = useAuthStore()
 
-const {token,userId,userName,userEmail }  = storeToRefs(authStore)
+const {token, getUserId:userId, getUserName: userName, getUserEmail: userEmail }  = storeToRefs(authStore)
 
 function myfunc(){
     my()

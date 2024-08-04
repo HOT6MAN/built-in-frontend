@@ -10,7 +10,7 @@ import userInfoTest from './components/login/userInfoTest.vue';
   <div>
    <NavigationBarView />
     <!-- <ChatView></ChatView> -->
-
+    
   </div>
   <!-- <userInfoTest/> -->
   <router-view></router-view>

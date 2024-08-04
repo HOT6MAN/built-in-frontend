@@ -9,11 +9,16 @@ async function getAllMyTeamByUserId(memberId,success, fail){
     await api.get(`/teams/${memberId}`).then(success).catch(fail);
 }
 
+async function getMyTeamById(teamId,success, fail){
+    await api.get(`/teams/${teamId}/detail`).then(success).catch(fail);
+}
+
 
 
 
 export{
     setTeam,
-    getAllMyTeamByUserId
+    getAllMyTeamByUserId,
+    getMyTeamById
 
 }

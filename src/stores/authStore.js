@@ -11,32 +11,22 @@ export const useAuthStore = defineStore('auth', () => {
   let userName = ref('');
   let userEmail = ref('');
 
-  // const user = ref({
-  //   id:'',
-  //   name:'',
-  //   email:''
-  // })
-
-  function getUserId(token){
-    const decodedToken = parseJwt(token);
-    console.log(decodedToken.id);
-    return decodedToken.id;
-  }
-
-  function getUserName(token){
-    const decodedToken = parseJwt(token);
-    return decodedToken.name;
-  }
-
-  function getUserEmail(token){
-    const decodedToken = parseJwt(token);
-    return decodedToken.email;
-  }
-
-
+  
+  const getUserId = computed(()=>userId.value)
+  const getUserName = computed(()=>userName.value)
+  const getUserEmail = computed(()=>userEmail.value)
   // const computedToken = computed((access_token) => {  
   //   token.value = access_token
   // })
+
+  // function getUserId(token){
+  //   const decodedToken = parseJwt(token);
+  //   console.log(decodedToken.id);
+  //   return decodedToken.id;
+  // }
+
+
+
 
   const isLogin = computed(() => {
     return token.value!='' ? true : false
@@ -47,7 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
       try {
         const decodedToken = parseJwt(newToken);
         localStorage.setItem('access_token', newToken);
-        console.log(decodedToken.id, decodedToken.name, decodedToken.email);
+  
         token.value = newToken
         userId.value = decodedToken.id;
         userName.value = decodedToken.name;
@@ -60,11 +50,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function clearAuthData() {
-    localStorage.removeItem('access_token')
+    // Pinia 상태 값 초기화
     token.value = '';
     userId.value = '';
     userName.value = '';
     userEmail.value = '';
+
+
+ // `localStorage`에서 항목 제거
+  setTimeout(() => {
+    localStorage.removeItem('auth');
+    localStorage.removeItem('access_token');
+  }, 0);
+
 }
 
 
@@ -107,8 +105,8 @@ export const useAuthStore = defineStore('auth', () => {
   const authLogout = async () =>{
     await logout(
       (response) =>{
-        console.log(response);
         clearAuthData()
+        
         alert("로그아웃 완료")
         router.replace({ path: '/' });
       },
@@ -150,6 +148,8 @@ export const useAuthStore = defineStore('auth', () => {
     //computedToken,
     isLogin,
     getUserId,
+    getUserName,
+    getUserEmail,
     setAuthData,
     clearAuthData,
     authSaveAccessLocalStorage,
@@ -158,6 +158,9 @@ export const useAuthStore = defineStore('auth', () => {
     authSignUp,
   }
 },
-{persist:true}
-
-)
+{
+  persist: {
+    key: 'auth', // 키를 설정할 수도 있습니다.
+    storage: localStorage, // 로컬스토리지에 저장
+  },
+});

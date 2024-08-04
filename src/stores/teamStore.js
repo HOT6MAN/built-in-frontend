@@ -1,17 +1,17 @@
-import {setTeam, getAllMyTeamByUserId} from '@/api/team'
+import {setTeam, getAllMyTeamByUserId, getMyTeamById} from '@/api/team'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useTeamStore = defineStore('team', ()=>{
     const router = useRouter()
     const teams= ref([])
     const members = ref([])
-    const team = ref({
-        name:'',
-        content:'',
-        memberTeams:[]
-    })
+    const team = ref({})
+
+    const getTeam = computed(()=>team.value)
+    const getTeams = computed(()=>teams.value)
+
 
     const createTeam = async(team) =>{
         await setTeam(
@@ -34,9 +34,21 @@ export const useTeamStore = defineStore('team', ()=>{
         await getAllMyTeamByUserId(
             memberId,
             (response)=>{
-                console.log(response.data);
-                console.log(response.data.data);
                 teams.value = response.data.data;
+                return response.data.data
+            },
+            (error)=>{
+                console.log(error);
+            }
+        )
+    }
+
+    const fetchOneTeamsForUser = async(teamId) =>{
+
+        await getMyTeamById(
+            teamId,
+            (response)=>{
+                team.value = response.data.data;
                 return response.data.data
             },
             (error)=>{
@@ -49,9 +61,10 @@ export const useTeamStore = defineStore('team', ()=>{
 
 
     return{
-        teams,members, team,
+        teams,members, team,getTeam,getTeams,
         createTeam,
-        fetchAllTeamsForUser
+        fetchAllTeamsForUser,
+        fetchOneTeamsForUser
     }
 })
 
