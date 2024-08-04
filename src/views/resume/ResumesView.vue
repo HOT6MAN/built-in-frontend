@@ -5,7 +5,8 @@
       <div class="d-flex justify-content-end">
         <b-button variant="success" :to="{path: '/resume/create'}">Add New Resume</b-button>
       </div>
-      <b-list-group class="resume-list">
+      
+      <b-list-group v-show="!loading" class="resume-list">
         <b-list-group-item 
           v-for="resume in list"
           :key="resume.id"
@@ -28,32 +29,24 @@
           </b-row>
         </b-list-group-item>
       </b-list-group>
+
+      <div v-show="loading" class="full-screen-center">
+        <b-spinner label="Loading..."></b-spinner>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
 import {ref} from 'vue'
+import {findMyResumeList} from '@/api/resume.js'
 
 const list = ref([]);
+const loading = ref(true);
 
-// TODO: request
-
-list.value = [{
-  id: 1,
-  title: "ssafy kim's resume",
-  updatedDate: "2024-08-03",
-  profileUrl: "https://picsum.photos/250/250/?image=54"
-}, {
-  id: 1,
-  title: "ssafy kim's resume",
-  updatedDate: "2024-08-03",
-  profileUrl: "https://picsum.photos/250/250/?image=54"
-}, {
-  id: 1,
-  title: "ssafy kim's resume",
-  updatedDate: "2024-08-03",
-  profileUrl: "https://picsum.photos/250/250/?image=54"
-}]
+findMyResumeList((res) => {
+  list.value = res.data.data;
+  loading.value = false;
+}, (err) => console.error(err))
 
 // TODO: handler: create btn
 // TODO: handler: preview btn
@@ -86,5 +79,16 @@ list.value = [{
   .resume-img {
     height: 48px;
     width: 48px;
+  }
+
+  .full-screen-center {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>
