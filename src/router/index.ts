@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import ResumesView from '@/views/resume/ResumesView.vue'
+import ResumeCreateView from '@/views/resume/ResumeCreateView.vue'
 import TeamBuildingView from '@/views/board/TeamBuildingView.vue'
 import teambuildingRecruitCreateView from '@/views/board/TeamBuildingRecruitCreateView.vue'
 import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDetailView.vue'
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/resumes',
       name: 'resumes',
       component : ResumesView
+    },
+    {
+      path: '/resume/create',
+      name: 'resumeCreate',
+      component : ResumeCreateView
     },
     {
       path: '/teambuilding',
