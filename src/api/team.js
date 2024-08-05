@@ -14,11 +14,25 @@ async function getMyTeamById(teamId,success, fail){
 }
 
 
+async function setJiraUrl(param, success, fail){
+    await api.patch(`/teams/jira`, param).then(success).catch(fail);
+}
+
+async function setGitUrl(param, success, fail){
+    await api.patch(`/teams/git`, param).then(success).catch(fail);
+}
+
+async function setStatus(param, success, fail){
+    await api.patch(`/teams/status`, param).then(success).catch(fail);
+}
 
 
 export{
     setTeam,
     getAllMyTeamByUserId,
-    getMyTeamById
+    getMyTeamById,
+    setJiraUrl,
+    setGitUrl,
+    setStatus,
 
 }

@@ -12,7 +12,7 @@ const teamId = ref(cuurentRoute.params.teamId)
 
 const teamStore = useTeamStore()
 const {getTeam: team} = storeToRefs(teamStore)
-const { fetchOneTeamsForUser} = teamStore
+const { fetchOneTeamsForUser, updateJiraUrl, updateGitUrl, updateStatus } = teamStore
 
 const editingJiraUrl = ref(false);
 const editingGitUrl = ref(false);
@@ -29,7 +29,7 @@ onMounted( async ()=> {
         console.error("팀 ID가 존재하지 않습니다.");
     }
     console.log(team.value);
-
+    initializeUrls()
 })
 
 const fetchTeamInfo = async(teamId) =>{
@@ -45,17 +45,31 @@ const initializeUrls = () => {
 
 const toggleEditJiraUrl = () => {
     if (editingJiraUrl.value) {
-        team.value.jiraUrl = newJiraUrl.value;
+        const newteam ={
+            id:teamId.value,
+            jiraUrl:newJiraUrl.value
+        }
+        updateJiraUrl(newteam)
     }
     editingJiraUrl.value = !editingJiraUrl.value;
 };
 
 const toggleEditGitUrl = () => {
     if (editingGitUrl.value) {
-        team.value.gitUrl = newGitUrl.value;
+        const newteam ={
+            id:teamId.value,
+            gitUrl:newGitUrl.value
+        }
+        updateGitUrl(newteam)
     }
     editingGitUrl.value = !editingGitUrl.value;
 };
+
+const changeStatus = async () =>{
+    await updateStatus({id:teamId.value})
+
+}
+
 </script>
 
 <template>
@@ -100,7 +114,12 @@ const toggleEditGitUrl = () => {
 
                     <div class="status-group">
                         <label class="status-label">Status:</label>
-                        <p class="status-text">{{ team.status }}</p>
+                        <p class="status-text" v-if="team.status==='RECRUIT'">
+                            <span class="badge badge-recruit" @click="changeStatus">모집중</span>
+                        </p>
+                        <p class="status-text" v-else>
+                            <span class="badge badge-finish" @click="changeStatus">모집완료</span>
+                        </p>
                     </div>
                 </div>   
                     
@@ -122,6 +141,32 @@ const toggleEditGitUrl = () => {
 </template>
 
 <style scoped>
+.badge-recruit {
+    background-color: green; /* Leader 배경 색상 */
+    color: #fff; /* Leader 텍스트 색상 */
+    padding: 5px 10px;
+    border-radius: 12px; /* 배지 둥근 모서리 */
+    font-size: 0.875rem; /* 배지 폰트 크기 */
+    font-weight: 600; /* 배지 폰트 두께 */
+    cursor: pointer;
+}
+.badge-recruit:hover {
+    background-color: #033d07;
+}
+
+.badge-finish {
+    background-color: red; /* Leader 배경 색상 */
+    color: #fff; /* Leader 텍스트 색상 */
+    padding: 5px 10px;
+    border-radius: 12px; /* 배지 둥근 모서리 */
+    font-size: 0.875rem; /* 배지 폰트 크기 */
+    font-weight: 600; /* 배지 폰트 두께 */
+    cursor: pointer;
+}
+.badge-finish:hover {
+    background-color: #960606;
+}
+
     .container {
         display: flex;
         padding-top: 120px;

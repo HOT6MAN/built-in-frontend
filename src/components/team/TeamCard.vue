@@ -12,6 +12,14 @@ defineProps({
 <template>
     <router-link :to="{ name: 'myTeamDetail', params: { teamId: team.id } }" style="text-decoration: none; color: white" class="team-card-link">
         <div class="card mb-3" style="max-width: 540px;">
+            <div class="status">
+                <p class="status-text" v-if="team.status==='RECRUIT'">
+                            <span class="badge badge-recruit">모집중</span>
+                        </p>
+                        <p class="status-text" v-else>
+                            <span class="badge badge-finish">모집완료</span>
+                        </p>
+            </div> <!-- Status Display -->
             <div class="row g-0">
                 <div class="col-md-4">
                     <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="Team Image">
@@ -33,6 +41,29 @@ defineProps({
 </template>
 
 <style scoped>
+.badge-recruit {
+    background-color: green; /* Leader 배경 색상 */
+    color: #fff; /* Leader 텍스트 색상 */
+    padding: 5px 10px;
+    border-radius: 12px; /* 배지 둥근 모서리 */
+    font-size: 0.875rem; /* 배지 폰트 크기 */
+    font-weight: 600; /* 배지 폰트 두께 */
+}
+.badge-finish {
+    background-color: red; /* Leader 배경 색상 */
+    color: #fff; /* Leader 텍스트 색상 */
+    padding: 5px 10px;
+    border-radius: 12px; /* 배지 둥근 모서리 */
+    font-size: 0.875rem; /* 배지 폰트 크기 */
+    font-weight: 600; /* 배지 폰트 두께 */
+}
+
+.status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+}
 .card {
     border: 1px solid #ddd;
     border-radius: 10px;

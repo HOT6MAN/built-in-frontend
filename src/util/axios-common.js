@@ -9,10 +9,24 @@ const api = axios.create({
     baseURL : VITE_VUE_API_URL,
     headers : {
         "Content-Type" : "application/json",
-        Authorization: localStorage.getItem("access_token")
+       // Authorization: localStorage.getItem("access_token")
     },
     withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
   });
+
+// 요청 인터셉터
+api.interceptors.request.use(
+  config => {
+      // 요청이 발생할 때마다 현재의 access token을 가져와 헤더에 설정
+      const token = localStorage.getItem("access_token");
+      if (token) {
+          config.headers.Authorization = token;
+      }
+      return config;
+  },
+  error => Promise.reject(error)
+);
+
 
 
 api.interceptors.response.use(function(response){
