@@ -10,6 +10,7 @@ import RegisterView from '@/views/login/RegisterView.vue'
 import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView.vue'
 import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfigView.vue'
 import ProjectBuildResultView from '@/views/projectManagement/ProjectBuildResultView.vue'
+import ProjectBuildStartView from '@/views/projectManagement/ProjectBuildStartView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -104,6 +105,11 @@ const router = createRouter({
           path: 'result',
           name: 'projectbuildresult',
           component: ProjectBuildResultView
+        },
+        {
+          path: 'build',
+          name: 'projectBuildStart',
+          component: ProjectBuildStartView
         }
       ]
       
