@@ -2,83 +2,91 @@
   <div class="page">
     <h1 class="title">이력서 생성</h1>
     <div>
-      <b-form-group label="Title">
-        <b-form-input size="lg" class="text-center mb-3" />
-      </b-form-group>
-      <b-form-group label="Profile">
-        <input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3"> 
-        <b-img v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/>
-      </b-form-group>
-      <b-form-group label="Position">
-        <b-form-tags 
-          v-model="selected" 
-          placeholder=""
-          :limit="1" 
-          tag-variant="primary"
-          tag-pills
-          disabled  
-          class="mb-2"
-        />
-        <b-form-tag
-          v-for="(tag, idx) in positions"
-          :key="idx"
-          :title="tag"
-          variant="primary"              
-          no-remove
-          pill          
-          @click="selectTag(tag)"
-          class="tag-btn mx-1 mb-3"
-        />
-      </b-form-group>
-      <b-form-group label="Tech Stack">
-        <b-form-tags 
-          v-model="techStack" 
-          placeholder="" 
-          tag-variant="primary"
-          tag-pills          
-          separator=" "
-          is-duplicate="false"
-          remove-on-delete
-          class="mb-3"
-        />
-      </b-form-group>
-      <b-form-group label="Experience">
-        <div v-for="(experience, idx) in experiences" :key="idx">
-          <b-card bg-variant="light" class="mb-2">
-            <b-form-group label="Title" :label-for="'nested-title-' + idx">
-              <b-form-input v-model="experience.title" :id="'nested-title-' + idx" />
-            </b-form-group>
-            <b-form-group label="Description" :label-for="'nested-description-' + idx">
-              <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize />
-            </b-form-group>
-            <div class="d-flex justify-content-end">
-              <b-button v-if="idx !== 0" variant="outline-danger" @click="removeExperience(idx)"  >Delete</b-button>
-            </div>
-          </b-card>
-        </div>
-        <b-button class="b-button-block mb-4 mx-auto" pill variant="primary" @click="addExperience">Add</b-button>
-      </b-form-group>
-      <b-form-group label="Comment">
-        <b-form-input class="mb-3" />
-      </b-form-group>
-      <b-form-group class="d-flex justify-content-center mt-3">
-        <b-button type="submit" variant="primary" class="mx-1">Submit</b-button>
-      </b-form-group>
+      <b-form @submit.prevent="onSubmit" @keydown.enter.prevent>
+        <b-form-group label="Title">
+          <b-form-input v-model="title" size="lg" class="text-center mb-3" />
+        </b-form-group>
+        <b-form-group label="Profile">
+          <input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3"> 
+          <b-img v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/>
+        </b-form-group>
+        <b-form-group label="Position">
+          <b-form-tags 
+            v-model="selectedPos" 
+            placeholder=""
+            :limit="1" 
+            tag-variant="primary"
+            tag-pills
+            disabled  
+            class="mb-2"
+          />
+          <b-form-tag
+            v-for="(tag, idx) in positions"
+            :key="idx"
+            :title="tag"
+            variant="primary"              
+            no-remove
+            pill          
+            @click="selectTag(tag)"
+            class="tag-btn mx-1 mb-3"
+          />
+        </b-form-group>
+        <b-form-group label="Tech Stack">
+          <b-form-tags 
+            v-model="techStack" 
+            placeholder="" 
+            tag-variant="primary"
+            tag-pills          
+            separator=" "
+            is-duplicate="false"
+            remove-on-delete
+            class="mb-3"
+          />
+        </b-form-group>
+        <b-form-group label="Experience">
+          <div v-for="(experience, idx) in experiences" :key="idx">
+            <b-card bg-variant="light" class="mb-2">
+              <b-form-group label="Title" :label-for="'nested-title-' + idx">
+                <b-form-input v-model="experience.title" :id="'nested-title-' + idx" />
+              </b-form-group>
+              <b-form-group label="Description" :label-for="'nested-description-' + idx">
+                <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize />
+              </b-form-group>
+              <div class="d-flex justify-content-end">
+                <b-button v-if="idx !== 0" variant="outline-danger" @click="removeExperience(idx)"  >Delete</b-button>
+              </div>
+            </b-card>
+          </div>
+          <b-button class="b-button-block mb-4 mx-auto" pill variant="primary" @click="addExperience">Add</b-button>
+        </b-form-group>
+        <b-form-group label="Comment">
+          <b-form-input v-model="comment" class="mb-3" />
+        </b-form-group>
+        <b-form-group class="d-flex justify-content-center mt-3">
+          <b-button type="submit" variant="primary" class="mx-1">Submit</b-button>
+        </b-form-group>
+      </b-form>
     </div>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { registerResume } from '@/api/resume.js'
 
+const router = useRouter()
+
+const title = ref('')
 const profile = ref('')
 const profilePreview = ref('')
 const profileInput = ref(null)
 const positions = ref(['FE', 'BE', 'DevOps', 'ML', 'DBA'])
-const selected = ref([])
+const selectedPos = ref([])
 const techStack = ref([])
 const experiences = ref([{ title: '', description: '' }])
+const comment = ref('')
 
-const selectTag = (tag) => { selected.value = [tag] }
+const selectTag = (tag) => { selectedPos.value = [tag] }
 const addExperience = () => {
   experiences.value.push({ title: '', description: '' })
 }
@@ -98,6 +106,26 @@ const handleFileChange = (event) => {
   }
 }
 
+const onSubmit = () => {
+  const form = new FormData();
+  form.append('title', title.value);
+  form.append('profile', profile.value);
+  form.append('position', selectedPos.value[0]);
+  form.append('techStack', JSON.stringify(techStack.value));
+  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title !== '' && item.description !== '')));
+  form.append('comment', comment.value);
+
+  registerResume(
+    form,
+    (resp) => {
+      if (resp.status === 201) {
+        router.push({path: '/resumes', query: {redirectYN: true, msg: 'Success Create'}})
+        .then(() => router.replace({path: '/resumes'}))
+      }
+    }, 
+    (err) => console.error(err)
+  );  
+}
 
 </script>
 <style scoped>
