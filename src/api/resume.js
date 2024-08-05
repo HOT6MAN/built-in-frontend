@@ -11,3 +11,7 @@ export function registerResume(formData, successCB, failCB) {
     .then(successCB)
     .catch(failCB);
 }
+
+export function deleteResumeById(id, successCB, failCB) {
+  local.delete('/resume/'+id).then(successCB).catch(failCB);
+}

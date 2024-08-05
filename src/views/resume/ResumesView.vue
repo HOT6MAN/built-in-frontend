@@ -24,7 +24,7 @@
             <b-col md="auto">
               <b-button variant="outline-primary" class="m-1">preview</b-button>
               <b-button variant="outline-success" class="m-1">update</b-button>
-              <b-button variant="outline-danger" class="m-1">delete</b-button>
+              <b-button variant="outline-danger" class="m-1" @click.prevent="onDelete(resume.id)">delete</b-button>
             </b-col>
           </b-row>
         </b-list-group-item>
@@ -38,7 +38,7 @@
 </template>
 <script setup>
 import {ref} from 'vue'
-import {findMyResumeList} from '@/api/resume.js'
+import {findMyResumeList, deleteResumeById } from '@/api/resume.js'
 
 const list = ref([]);
 const loading = ref(true);
@@ -51,8 +51,15 @@ findMyResumeList((res) => {
 // TODO: handler: create btn
 // TODO: handler: preview btn
 // TODO: handler: update btn
-// TODO: handler: delete btn
 
+const onDelete = (id) => {
+  deleteResumeById(id, (resp) => {
+    if (resp.status === 204) {
+      router.push({path: '/resumes', query: {redirectYN: true, msg: 'Success Delete'}})        
+      .then(() => router.replace({path: '/resumes'}))
+    }
+  }, (err) => console.error(err))
+}
 </script>
 <style scoped>
   .page {
