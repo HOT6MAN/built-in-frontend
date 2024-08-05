@@ -70,6 +70,9 @@
 <script setup>
 import { ref } from 'vue';
 
+const profile = ref('')
+const profilePreview = ref('')
+const profileInput = ref(null)
 const positions = ref(['FE', 'BE', 'DevOps', 'ML', 'DBA'])
 const selected = ref([])
 const techStack = ref([])
@@ -83,7 +86,19 @@ const addExperience = () => {
 const removeExperience = (idx) => {
   experiences.value.splice(idx, 1)
 }
- 
+
+const handleFileChange = (event) => {
+  const file = event.target.files[0];
+  if (file && file.type.startsWith('image/')) {
+    profile.value = file;
+
+    const reader = new FileReader();
+    reader.onload = (e) => { profilePreview.value = e.target.result; };
+    reader.readAsDataURL(file);
+  }
+}
+
+
 </script>
 <style scoped>
   .page {
