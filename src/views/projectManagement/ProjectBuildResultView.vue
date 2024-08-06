@@ -56,14 +56,15 @@
 					</div>
 				</div>
 		</div>
-		<div class="overflow-auto">
-			<b-pagination
-				v-model="currentPage"
-				:total-rows="pages"
-				:per-page="perPage"
-				aria-controls="my-table">
-			</b-pagination>
-		</div>
+				<!-- 페이지네이션 -->
+				<div class="d-flex justify-content-center mt-1">
+					<b-pagination class="mb-0"
+						v-model="currentPage"
+						:total-rows="pages"
+						:per-page="perPage"
+						aria-controls="my-table">
+					</b-pagination>
+				</div>
 	</b-container>
 </template>
 
@@ -95,11 +96,10 @@ const perPage = ref(5)
 const pageBuilds = computed (() => {
 	const pageStart = (pages.value) - ((currentPage.value) * perPage.value)
 	const pageEnd = (pages.value) - ((currentPage.value-1) * perPage.value)
-	console.log(builds.value.slice(pageStart, pageEnd))
 	return builds.value.slice(pageStart, pageEnd)
 })
 
-// 시간 나타내는 함수
+// 빌드 시작 시간 나타내는 함수
 const formatDate = (dateString) => {
 	const date = new Date(dateString)
 	return {
@@ -144,8 +144,7 @@ const isLogOpen = (index) => openIndex.value === index
 	position: relative;
   width: 110px;
   height : 90px;
-  color: #34AFF7;
-  font-weight: 600;
+  color: green;
   border: 2px solid white;
 	background-color: #c3e7cb;
   margin : 3px;
@@ -166,9 +165,10 @@ const isLogOpen = (index) => openIndex.value === index
   position: absolute;
   top : 80px;
   left: 220px;
-  height: auto;
+  height: calc(100% - 80px);
   width: calc(100% - 220px);
-  background-color: #4A5468;
+	font: var(--font-roboto);
+	z-index: 1;
 }
 /* 전체 컨테이너2 */
 .boxContainer {
@@ -184,7 +184,7 @@ const isLogOpen = (index) => openIndex.value === index
 }
 /* 각 메뉴 항목 */
 .menuBox {
-  display: inline-block;
+	display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -207,9 +207,10 @@ const isLogOpen = (index) => openIndex.value === index
 	position: relative;
 	height: 90px;
 	width: 150px;
-	border: 1px dashed black;
-	border-width: 0px 2px 0px 0px;
-	color: white;
+	border: solid black;
+	border-width: 0px 0.1px 0px 0px;
+	color: black;
+	font-weight: 600;
 }
 .menuBoxBlank p {
 	margin: 0px;
@@ -227,9 +228,9 @@ const isLogOpen = (index) => openIndex.value === index
   position: relative;
   height: 90px;
   width: 150px;
-  border: 1px dashed black;
-  border-width: 0px 2px 0px 0px;
-	color: white;
+  border: solid black;
+  border-width: 0px 0.1px 0px 0px;
+	color: black;
 }
 .buildRow p {
 	margin: 2px;
