@@ -125,8 +125,6 @@
 .navigationBar{
 	width: 100%;
   position: fixed;
-  height: 80px;
-  top: 0px;
   overflow: hidden;
   text-align: left;
 	/* 아래 color와 font-family는 버튼 글자 색상과 폰트 스타일. 차후 버튼에 직접 넣을 것 */
