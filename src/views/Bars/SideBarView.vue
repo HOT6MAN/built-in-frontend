@@ -15,7 +15,7 @@
       <div class="dropdown-content" :class="{ show: isOpen }">
         <b-button :to="{name: 'projectbuildconfig'}" class="collab">빌드 환경 설정</b-button>
         <b-button :to="{name: 'projectBuildStart'}"  class="collab">빌드 시작</b-button>
-        <b-button :to="{name: 'projectBuildResultAndLogs'}"  class="collab">배포 보기</b-button>
+        <!-- <b-button :to="{name: 'projectBuildResultAndLogs'}"  class="collab">배포 보기</b-button> -->
         <b-button class="collab">Jenkins 환경 설정</b-button>
         <b-button class="collab">배포 환경 설정</b-button>
         <b-button :to="{name : 'projectbuildresult'}" class="collab">빌드 결과 확인</b-button>
@@ -60,21 +60,20 @@
   background-color: #102a43;
   height: 1024px;
   /* overflow: hidden; */
-  text-align: left;
-  font-size: var(--font-size-base);
+  font-size: 18px;
   color: white;
   font-family: var(--font-roboto);
-  z-index: 0;
+  z-index: 5;
 }
 
 .sidebar-position {
-  position: absolute;
+  position: relative;
   top: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: left;
-  gap: var(--gap-xs);
+  gap: 25px;
 }
 
 .sidebar-icon {
@@ -83,7 +82,8 @@
 }
 
 .main-category {
-  width: 160px;
+  width: 220px;
+  left : 20px;
   display: flex;
   flex-direction: row;
   /* 문제 : display를 flex로 한 후 flex-direction을 row로 하면 메뉴 그림와 메뉴 이름(ex : 환경설정)이
@@ -101,39 +101,31 @@
   cursor : pointer;
 }
 
-.ol {
-  font-family: inherit;
-  font-size: inherit;
-  padding-left: 20px;
-}
-
 .collab {
-  width: 150px;
+  width: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 10px 18px;
+  padding-left : 20px;
   box-sizing: border-box;
   color: white;
 }
 
 .dropdown-content {
-  width: 188px;
+  width: 220px;
   background-color: rgba(238, 238, 238, 0.03);
-  height: 258px;
   display: none;
   /* position: absolute;-> 이렇게 설정하면 다른 상위메뉴가 밀려나지 않았음 */
   flex-direction: column;
   align-items: center;
-  padding: 12px 0px;
-  box-sizing: border-box;
+  padding: 12px;
   gap: 12px;
-  font-size: 12px;
   color: white;
   font-family: var(--font-roboto);
-  z-index: 1;
+  z-index: 5;
 }
 
 .dropdown-content.show {
