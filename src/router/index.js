@@ -18,7 +18,9 @@ const router = createRouter({
     {
       path : '/',
       name : 'home',
-      component : HomeView
+      component : HomeView,
+      meta: { showNavbar: true },
+      
     },
     {
       path: '/about',
@@ -26,67 +28,80 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('@/views/Bars/SideBarView.vue')
+      component: () => import('@/views/Bars/SideBarView.vue'),
+      meta: { showNavbar: true },
     },
     {
       path: '/resumes',
       name: 'resumes',
-      component : ResumesView
+      component : ResumesView,
+      meta: { showNavbar: true },
     },
     {
       path: '/resume/create',
       name: 'resumeCreate',
-      component : ResumeCreateView
+      component : ResumeCreateView,
+      meta: { showNavbar: true },
     },
     {
       path: '/teambuilding',
       name: 'teambuilding',
       component : TeamBuildingView,
+      meta: { showNavbar: true },
     },
     {
       path: '/teambuilding/recruit/create',
       name: 'teambuildingRecruitCreate',
-      component : teambuildingRecruitCreateView
+      component : teambuildingRecruitCreateView,
+      meta: { showNavbar: true },
     },
     {
       path: '/teambuilding/recruit/update/:id',
       name: 'teambuildingRecruitUpdate',
-      component : teambuildingRecruitCreateView
+      component : teambuildingRecruitCreateView,
+      meta: { showNavbar: true },
     },
     {
       path: '/teambuilding/recruit/:id',
       name: 'teambuildingRecruitDetail',
-      component : teambuildingRecruitDetailView
+      component : teambuildingRecruitDetailView,
+      meta: { showNavbar: true },
     },
     {
       path: '/afterlogin',
       name: 'afterlogin',
-      component : AfterLoginView
+      component : AfterLoginView,
+      meta: { showNavbar: true },
     },
     {
       path : '/member',
       name : 'member',
-      component : ()=>import('@/views/member/MemberView.vue')
+      component : ()=>import('@/views/member/MemberView.vue'),
+      meta: { showNavbar: true },
     },
     {
       path: '/register',
       name: 'register',
-      component : RegisterView
+      component : RegisterView,
+      meta: { showNavbar: true },
     },
     {
       path : '/teams',
       name : 'myteam',
-      component : ()=>import('@/views/team/MyTeamView.vue')
+      component : ()=>import('@/views/team/MyTeamView.vue'),
+      meta: { showNavbar: true },
     },
     {
       path : '/teams/register',
       name : 'myTeamRegister',
-      component : ()=>import('@/views/team/MyTeamRegisterView.vue')
+      component : ()=>import('@/views/team/MyTeamRegisterView.vue'),
+      meta: { showNavbar: true },
     },
     {
       path : '/teams/:teamId',
       name : 'myTeamDetail',
-      component : ()=>import('@/views/team/MyTeamDetailView.vue')
+      component : ()=>import('@/views/team/MyTeamDetailView.vue'),
+      meta: { showNavbar: true },
     },
     {
       path : '/project',
@@ -111,7 +126,8 @@ const router = createRouter({
           name: 'projectBuildStart',
           component: ProjectBuildStartView
         }
-      ]
+      ],
+      meta: { showNavbar: true },
       
     }
 
