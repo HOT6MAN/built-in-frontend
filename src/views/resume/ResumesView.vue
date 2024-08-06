@@ -22,8 +22,8 @@
               <p class="text-sm mb-0 px-2">{{ resume.updatedDate }}</p>
             </b-col>
             <b-col md="auto">
-              <b-button variant="outline-primary" class="m-1">preview</b-button>
-              <b-button variant="outline-success" class="m-1">update</b-button>
+              <b-button variant="outline-primary" class="m-1" @click.prevent="onPreview(resume.id)">preview</b-button>
+              <b-button variant="outline-success" class="m-1" >update</b-button>
               <b-button variant="outline-danger" class="m-1" @click.prevent="onDelete(resume.id)">delete</b-button>
             </b-col>
           </b-row>
@@ -34,23 +34,31 @@
         <b-spinner label="Loading..."></b-spinner>
       </div>
     </div>
+
+    <PreviewModal v-model="showModal" :resumeId="resumeId"/>
   </div>
 </template>
 <script setup>
 import {ref} from 'vue'
 import {findMyResumeList, deleteResumeById } from '@/api/resume.js'
+import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
 
 const list = ref([]);
 const loading = ref(true);
+const showModal = ref(false)
+const resumeId = ref('')
 
 findMyResumeList((res) => {
   list.value = res.data.data;
   loading.value = false;
 }, (err) => console.error(err))
 
-// TODO: handler: create btn
-// TODO: handler: preview btn
 // TODO: handler: update btn
+
+const onPreview = (id) => {
+  showModal.value = true
+  resumeId.value = id
+}
 
 const onDelete = (id) => {
   deleteResumeById(id, (resp) => {
