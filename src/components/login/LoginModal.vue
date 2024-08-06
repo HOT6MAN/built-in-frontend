@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router';
 import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore()
-const {authEmailLink } = storeToRefs(authStore)
+const {authEmailLink } = authStore
 const url = import.meta.env.VITE_VUE_API_URL;
 
 const props = defineProps({
