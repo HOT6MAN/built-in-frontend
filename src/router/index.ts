@@ -11,7 +11,7 @@ import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView
 import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfigView.vue'
 import ProjectBuildResultView from '@/views/projectManagement/ProjectBuildResultView.vue'
 import ProjectBuildStartView from '@/views/projectManagement/ProjectBuildStartView.vue';
-import {useTeamStore} from '@/stores/teamStore';
+import {useTeamStore} from '@/stores/teamStore.js';
 
 
 const router = createRouter({
