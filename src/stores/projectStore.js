@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import {findAllProjectInfosByTeamId, 
+    findUsedProjectInfosByTeamId,
     insertNewProjectInfo, 
     saveBackendConfigs, 
     saveFrontendConfigs, 
@@ -10,12 +11,23 @@ import {findAllProjectInfosByTeamId,
 export const useProjectStore = defineStore('project', () => {
    
     const projectInfos = ref([]);
+    const usedProjectInfos = ref([]);
 
     const storeFindAllProjectInfosByTeamId = async(teamId)=>{
         await findAllProjectInfosByTeamId(teamId, (response)=>{
             projectInfos.value = response.data.data;
         },(error)=>{
             console.log("error = ",error);
+        })
+    }
+
+    const storeFindUsedProjectInfosByTeamId = async (teamId)=>{
+        await findUsedProjectInfosByTeamId(teamId, (response)=>{
+            alert("불러오기");
+            console.log("response = ",response);
+            usedProjectInfos.value = response.data.data;
+        }, (error)=>{
+            console.log(error);
         })
     }
 
@@ -53,7 +65,7 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeBuildStart = (teamId, teamProjectInfoId) =>{
         buildStart(teamId, teamProjectInfoId, (response)=>{
-
+        
         }, (error)=>{
             console.log(error);
         })
@@ -61,7 +73,9 @@ export const useProjectStore = defineStore('project', () => {
 
     return {
         projectInfos,
+        usedProjectInfos,
         storeFindAllProjectInfosByTeamId,
+        storeFindUsedProjectInfosByTeamId,
         storeInsertNewProjectInfo,
         storeSaveBackendConfigs,
         storeSaveFrontendConfigs,

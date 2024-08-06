@@ -4,11 +4,14 @@ import ChatView from '@/views/ChatView.vue';
 import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
 import SideBarView from './views/Bars/SideBarView.vue';
 import userInfoTest from './components/login/userInfoTest.vue';
+import {useRoute} from 'vue-router';
+
+const route = useRoute();
 </script>
 
 <template>
   <div>
-   <NavigationBarView />
+   <NavigationBarView v-if="route.meta.showNavbar"/>
     <!-- <ChatView></ChatView> -->
     
   </div>

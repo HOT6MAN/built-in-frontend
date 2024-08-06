@@ -15,6 +15,7 @@
       <div class="dropdown-content" :class="{ show: isOpen }">
         <b-button :to="{name: 'projectbuildconfig'}" class="collab">빌드 환경 설정</b-button>
         <b-button :to="{name: 'projectBuildStart'}"  class="collab">빌드 시작</b-button>
+        <b-button :to="{name: 'projectBuildResultAndLogs'}"  class="collab">배포 보기</b-button>
         <b-button class="collab">Jenkins 환경 설정</b-button>
         <b-button class="collab">배포 환경 설정</b-button>
         <b-button :to="{name : 'projectbuildresult'}" class="collab">빌드 결과 확인</b-button>
