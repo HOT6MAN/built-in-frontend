@@ -147,8 +147,8 @@ const isLogOpen = (index) => openIndex.value === index
   color: #34AFF7;
   font-weight: 600;
   border: 2px solid white;
+	background-color: #c3e7cb;
   margin : 3px;
-  background-image: url('@/icons/happycat.jpg');
   background-size: 100%;
 }
 .boxFailed {
@@ -156,8 +156,8 @@ const isLogOpen = (index) => openIndex.value === index
   width: 110px;
   height : 90px;
   color: #EC221F;
-  background-image: url('@/icons/sadcat.jpg');
   background-size: 100%;
+	background-color: #f2dede;
   border: 2px solid white;
   margin : 3px;
 }
