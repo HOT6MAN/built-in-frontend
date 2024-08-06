@@ -60,20 +60,21 @@
   background-color: #102a43;
   height: 1024px;
   /* overflow: hidden; */
-  font-size: 18px;
+  text-align: left;
+  font-size: var(--font-size-base);
   color: white;
   font-family: var(--font-roboto);
-  z-index: 5;
+  z-index: 0;
 }
 
 .sidebar-position {
-  position: relative;
+  position: absolute;
   top: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: left;
-  gap: 25px;
+  gap: var(--gap-xs);
 }
 
 .sidebar-icon {
@@ -82,8 +83,7 @@
 }
 
 .main-category {
-  width: 220px;
-  left : 20px;
+  width: 160px;
   display: flex;
   flex-direction: row;
   /* 문제 : display를 flex로 한 후 flex-direction을 row로 하면 메뉴 그림와 메뉴 이름(ex : 환경설정)이
@@ -101,31 +101,39 @@
   cursor : pointer;
 }
 
+.ol {
+  font-family: inherit;
+  font-size: inherit;
+  padding-left: 20px;
+}
+
 .collab {
-  width: 100%;
+  width: 150px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 10px 18px;
-  padding-left : 20px;
   box-sizing: border-box;
   color: white;
 }
 
 .dropdown-content {
-  width: 220px;
+  width: 188px;
   background-color: rgba(238, 238, 238, 0.03);
+  height: 258px;
   display: none;
   /* position: absolute;-> 이렇게 설정하면 다른 상위메뉴가 밀려나지 않았음 */
   flex-direction: column;
   align-items: center;
-  padding: 12px;
+  padding: 12px 0px;
+  box-sizing: border-box;
   gap: 12px;
+  font-size: 12px;
   color: white;
   font-family: var(--font-roboto);
-  z-index: 5;
+  z-index: 1;
 }
 
 .dropdown-content.show {

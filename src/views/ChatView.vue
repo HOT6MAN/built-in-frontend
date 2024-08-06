@@ -153,7 +153,7 @@ const login = async () => {
   padding: 10px;
   border: 1px solid #f5c6cb;
   border-radius: 5px;
-  z-index: 5;
+  z-index: 1000;
   transition: opacity 1s ease-in-out;
 }
 
