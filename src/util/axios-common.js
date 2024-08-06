@@ -2,6 +2,9 @@ import axios from 'axios'
 import refreshAxios from "@/util/axios-refresh"
 import { useAuthStore } from '../stores/authStore';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const { VITE_VUE_API_URL } = import.meta.env;
 
@@ -33,8 +36,9 @@ api.interceptors.response.use(function(response){
 
   return response;
 }, async function(error){
-  console.log(error.response.status);
-  if(error.response.status==401){
+  console.log(error.response.data.process.message);
+
+  if(error.response.data.process.message=='유효기간이 만료된 Token입니다.'){
     
     try {
       // /reissue 엔드포인트로 쿠키를 포함하여 재요청
@@ -50,13 +54,11 @@ api.interceptors.response.use(function(response){
           console.log("리이슈", newToken);
 
             setAuthData(newToken)
-          
-            console.log("액세스토큰 로컬스토리지에 저장");
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        if(error.response.status==400){
+        if(error.response.status==401){
           alert("로그인 필요")
           const authStore = useAuthStore()
           const {clearAuthData} = authStore
@@ -70,6 +72,7 @@ api.interceptors.response.use(function(response){
 
   }
 
+  return Promise.reject(error)
 
 })
 

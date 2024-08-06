@@ -11,6 +11,8 @@ import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView
 import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfigView.vue'
 import ProjectBuildResultView from '@/views/projectManagement/ProjectBuildResultView.vue'
 import ProjectBuildStartView from '@/views/projectManagement/ProjectBuildStartView.vue';
+import {useTeamStore} from '@/stores/teamStore';
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -86,7 +88,26 @@ const router = createRouter({
     {
       path : '/teams/:teamId',
       name : 'myTeamDetail',
-      component : ()=>import('@/views/team/MyTeamDetailView.vue')
+      component : ()=>import('@/views/team/MyTeamDetailView.vue'),
+      beforeEnter: async(to, from, next)=>{
+        const teamStore = useTeamStore()
+        const {fetchOneTeamsForUser} = teamStore
+        const teamId = to.params.teamId;
+
+        try {
+          await fetchOneTeamsForUser(teamId);
+          
+          next(); // 팀이 존재하면 페이지를 계속 진행
+        } catch (error) {
+          console.log(error);
+          router.back();
+          //next('/not-found'); // 팀이 존재하지 않거나 오류 발생 시 NotFound 페이지로 리디렉션
+        }
+
+
+
+      }
+
     },
     {
       path : '/project',

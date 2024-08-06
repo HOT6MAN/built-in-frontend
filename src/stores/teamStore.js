@@ -53,10 +53,13 @@ export const useTeamStore = defineStore('team', ()=>{
                 return response.data.data
             },
             (error)=>{
-                console.log(error);
+                console.log("store", error.response);
+                throw error;
             }
         )
     }
+
+
 
     
     const updateJiraUrl = async(team) =>{
