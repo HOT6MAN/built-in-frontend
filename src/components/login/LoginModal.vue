@@ -6,8 +6,10 @@ import { storeToRefs } from 'pinia';
 
 const authStore = useAuthStore()
 const {authEmailLink } = authStore
+
 const url = import.meta.env.VITE_VUE_API_URL;
 console.log("url = ",url);
+
 const props = defineProps({
   showLoginModal: Boolean,
   toggleLoginModal: Function
