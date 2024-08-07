@@ -63,8 +63,8 @@ const onPreview = (id) => {
 const onDelete = (id) => {
   deleteResumeById(id, (resp) => {
     if (resp.status === 204) {
-      router.push({path: '/resumes', query: {redirectYN: true, msg: 'Success Delete'}})        
-      .then(() => router.replace({path: '/resumes'}))
+      alert("Delete Success")
+      window.location.reload(); 
     }
   }, (err) => console.error(err))
 }
