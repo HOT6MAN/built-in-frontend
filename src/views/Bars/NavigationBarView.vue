@@ -15,14 +15,14 @@
           <div class="login" @click="clickLogout">
           <div class="profile">로그아웃</div>
           </div>
+          <div @click="routeToMemberProfile">
+            <b-button variant="secondary"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
+          </div>
       </div>
       <div v-else>
         <b-button class="login" @click="toggleLoginModal()">
             <div class="profile">로그인</div>
         </b-button>
-      </div>
-      <div @click="routeToMemberProfile">
-        <b-button variant="secondary"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
       </div>
     </div>
   </div>
@@ -124,7 +124,7 @@ a {
   position: relative;
   margin-left: auto;
   right: 30px;
-  gap : 15px;
+  gap : 40px;
 }
 .alarmicon {
 	right : 70px;
