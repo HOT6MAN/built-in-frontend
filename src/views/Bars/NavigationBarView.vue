@@ -23,7 +23,7 @@
     </div>
     <div>
       <div @click="routeToMemberProfile">
-        <RouterLink :to="{name:'member'}">마이페이지</RouterLink>
+        <b-button><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
       </div>
     </div>
     </div>
@@ -108,6 +108,7 @@
 }
 .login {
   position: relative;
+  display: flex;
   /* right: 37px; */
   border-radius: var(--radius-200);
   background-color: rgba(255, 212, 58, 0.99);
@@ -115,7 +116,6 @@
   box-sizing: border-box;
   width: 101px;
   height: 40px;
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-300);
