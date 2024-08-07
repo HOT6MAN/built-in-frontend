@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <h1 class="title">이력서 생성</h1>
+    <h1 class="title">이력서 {{ pageTitle }}</h1>
     <div>
       <b-form @submit.prevent="onSubmit" @keydown.enter.prevent>
         <b-form-group label="Title">
@@ -53,7 +53,7 @@
                 <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize />
               </b-form-group>
               <div class="d-flex justify-content-end">
-                <b-button v-if="idx !== 0" variant="outline-danger" @click="removeExperience(idx)"  >Delete</b-button>
+                <b-button v-if="idx != 0" variant="outline-danger" @click="removeExperience(idx)"  >Delete</b-button>
               </div>
             </b-card>
           </div>
@@ -70,10 +70,11 @@
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { registerResume } from '@/api/resume.js'
+import { ref, computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { findResumeById, registerResume, updateResume, getImageFromUrl } from '@/api/resume.js'
 
+const route = useRoute()
 const router = useRouter()
 
 const title = ref('')
@@ -85,6 +86,9 @@ const selectedPos = ref([])
 const techStack = ref([])
 const experiences = ref([{ title: '', description: '' }])
 const comment = ref('')
+
+const isUpdateMode = computed(() => !!route.params.id)
+const pageTitle = computed(() => route.params.id ? '수정' : '생성') 
 
 const selectTag = (tag) => { selectedPos.value = [tag] }
 const addExperience = () => {
@@ -106,7 +110,11 @@ const handleFileChange = (event) => {
   }
 }
 
-const onSubmit = () => {
+const onSubmit =() => {
+  isUpdateMode.value ? onUpdate(): onCreate()
+}
+
+const onCreate = () => {
   const form = new FormData();
   form.append('title', title.value);
   form.append('profile', profile.value);
@@ -126,6 +134,64 @@ const onSubmit = () => {
     (err) => console.error(err)
   );  
 }
+
+const onUpdate = () => {
+  const id = route.params.id
+
+  const form = new FormData();
+  form.append('title', title.value);
+  form.append('profile', profile.value);
+  form.append('position', selectedPos.value[0]);
+  form.append('techStack', JSON.stringify(techStack.value));
+  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title !== '' && item.description !== '')));
+  form.append('comment', comment.value);
+
+  updateResume(id, form,    
+    (resp) => {
+      if (resp.status === 204) {
+        router.push({path: '/resumes'}).then(() => {
+          alert('Success Update')
+          router.replace({path: '/resumes'})
+        })
+      }
+    }, 
+    (err) => console.error(err)
+  );  
+}
+
+onMounted(async () => {
+  if (isUpdateMode.value) {
+    const result = await findResumeById(route.params.id);
+    const resumeData = result.data
+
+    console.log(resumeData)
+    
+    const profileUrl = resumeData.profileUrl
+    getImageFromUrl(profileUrl, (resp) => {      
+      const urlParts = profileUrl.split('/')
+      const fileName = urlParts[urlParts.length - 1]
+
+      const blob = resp.data;
+      const file = new File([blob], fileName, {type: blob.type});
+      
+      profile.value = file;
+      profilePreview.value = URL.createObjectURL(blob);
+
+      if (profileInput.value) {
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        profileInput.value.files = dataTransfer.files;
+      }
+    }, (err) => console.error(err));
+
+    title.value = resumeData.title;    
+    profile.value = resumeData.profile;    
+    selectedPos.value = [resumeData.position];
+    techStack.value = resumeData.techStack;
+    experiences.value = resumeData.experiences;
+    comment.value = resumeData.comment;
+  }
+})
 
 </script>
 <style scoped>

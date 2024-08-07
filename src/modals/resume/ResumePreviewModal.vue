@@ -62,24 +62,12 @@ const resume = reactive({
   comment: ''
 })
 
-watch(() => props.resumeId, (resumeId) => {
+watch(() => props.resumeId, async (resumeId) => {
   if (!resumeId) return false;
 
-  // findResumeById(resumeId, (res) => {
-  //   Object.assign(resume, res.data.data)
-  // }, (err) => console.error(err))
+  const result = await findResumeById(resumeId);
 
-  Object.assign(resume, {
-    profileUrl: "https://picsum.photos/250/250/?image=54",
-    title: "ssafy kim's resume",
-    position: "FE",
-    techStack: ["Java", "SpringBoot"],
-    experiences: [
-      {title: '1', description: '네이버 부동산 클론코딩'},
-      {title: '1', description: '당근마켓 클론코딩'},
-    ],
-    comment: "열심히 하겠습니다!",
-  })
+  Object.assign(resume, result.data);
 }, {immediate: true})
 </script>
 <style scoped>
