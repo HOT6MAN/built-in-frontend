@@ -3,7 +3,7 @@
   <div class="sideBar">
     <div class="sidebar-position">
       <!-- 대시보드 영역 -->
-      <div class="main-category">
+      <div class="main-category" :to="{name: 'dashboard'}">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/DashBoard.svg" />
           <p>대시보드</p>
       </div>
@@ -12,13 +12,13 @@
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Config.svg" />
           <p>환경설정</p>
       </div>
-      <div class="dropdown-content" :class="{ show: isOpen }">
-        <b-button :to="{name: 'projectbuildconfig'}" class="collab">빌드 환경 설정</b-button>
-        <b-button :to="{name: 'projectBuildStart'}"  class="collab">빌드 시작</b-button>
-        <b-button :to="{name: 'projectBuildResultAndLogs'}"  class="collab">배포 보기</b-button>
-        <b-button class="collab">Jenkins 환경 설정</b-button>
-        <b-button class="collab">배포 환경 설정</b-button>
-        <b-button :to="{name : 'projectbuildresult'}" class="collab">빌드 결과 확인</b-button>
+      <div class="dropdownBuild">
+        <div><RouterLink :to="{name: 'projectbuildconfig'}"><b-button class="collab">빌드 환경 설정</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildStart'}"><b-button class="collab">빌드 시작</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildResultAndLogs'}"><b-button class="collab">배포 보기</b-button></RouterLink></div>
+        <div><RouterLink ><b-button class="collab">Jenkins 환경 설정</b-button></RouterLink></div>
+        <div><RouterLink ><b-button class="collab">배포 환경 설정</b-button></RouterLink></div>
+        <div><RouterLink :to="{name : 'projectbuildresult'}"><b-button class="collab">빌드 결과 확인</b-button></RouterLink></div>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
@@ -59,17 +59,16 @@
   position: fixed;
   background-color: #102a43;
   height: 1024px;
-  /* overflow: hidden; */
   text-align: left;
-  font-size: var(--font-size-base);
   color: white;
+  font-size: var(--font-size-base);
   font-family: var(--font-roboto);
   z-index: 0;
 }
 
 .sidebar-position {
   position: absolute;
-  top: 120px;
+  top: 120px; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,49 +95,39 @@
   /* align-items: center; */
   /* align-items를 통해 각 메뉴 그림을 중앙에 위치시킴 */
   box-sizing: border-box;
-  gap: 8px;
+  gap: 20px;
   font-weight: 600;
   cursor : pointer;
 }
-
-.ol {
-  font-family: inherit;
-  font-size: inherit;
-  padding-left: 20px;
+a {
+  text-decoration: none;
 }
-
 .collab {
-  width: 150px;
-  overflow: hidden;
+  width: 188px;
+  height: 30px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px;
-  box-sizing: border-box;
+  border-radius: 0%;
   color: white;
+  padding: 20px;
 }
 
-.dropdown-content {
+.dropdownBuild {
   width: 188px;
   background-color: rgba(238, 238, 238, 0.03);
-  height: 258px;
-  display: none;
-  /* position: absolute;-> 이렇게 설정하면 다른 상위메뉴가 밀려나지 않았음 */
+  height: auto;
+  display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   padding: 12px 0px;
-  box-sizing: border-box;
-  gap: 12px;
   font-size: 12px;
   color: white;
   font-family: var(--font-roboto);
   z-index: 1;
 }
 
-.dropdown-content.show {
-display: flex;
-}
 
 .collab.ol:hover {
   background-color: #292525;
