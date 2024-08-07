@@ -20,8 +20,9 @@ const {getTeams: teams} = storeToRefs(teamStore)
 const teamsList = ref([])
 
 onMounted(  ()=> {
+  console.log('올팀');
   fetchAllTeamsForUser(userId.value)
-
+  console.log(teams.value);
 
 })
 
