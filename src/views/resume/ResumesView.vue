@@ -23,7 +23,7 @@
             </b-col>
             <b-col md="auto">
               <b-button variant="outline-primary" class="m-1" @click.prevent="onPreview(resume.id)">preview</b-button>
-              <b-button variant="outline-success" class="m-1" >update</b-button>
+              <b-button variant="outline-success" class="m-1" :to="{path: '/resume/update/' + resume.id}">update</b-button>
               <b-button variant="outline-danger" class="m-1" @click.prevent="onDelete(resume.id)">delete</b-button>
             </b-col>
           </b-row>
@@ -63,8 +63,8 @@ const onPreview = (id) => {
 const onDelete = (id) => {
   deleteResumeById(id, (resp) => {
     if (resp.status === 204) {
-      router.push({path: '/resumes', query: {redirectYN: true, msg: 'Success Delete'}})        
-      .then(() => router.replace({path: '/resumes'}))
+      alert("Delete Success")
+      window.location.reload(); 
     }
   }, (err) => console.error(err))
 }

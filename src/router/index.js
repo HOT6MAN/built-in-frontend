@@ -44,6 +44,11 @@ const router = createRouter({
       meta: { showNavbar: true },
     },
     {
+      path: '/resume/update/:id',
+      name: 'resumeUpdate',
+      component : ResumeCreateView
+    },
+    {
       path: '/teambuilding',
       name: 'teambuilding',
       component : TeamBuildingView,
