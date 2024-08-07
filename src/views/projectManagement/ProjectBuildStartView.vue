@@ -16,9 +16,6 @@ const handleConfigSelect = (config) => {
 
 <template>
   <div class="container">
-    <div class="sidebar">
-      <SideBarView />
-    </div>
     <div class="content">
       <br>
       <br>

@@ -1,5 +1,4 @@
 <template>
-<template>
   <div class="navigationBar">
       <RouterLink :to="{name: 'home'}" class="logo">
         <img class="logoIcon" alt="로고" src="@/icons/Navbar/Logo.svg" />

@@ -1,5 +1,5 @@
 <template>
-  <SideBarView />
+  <!-- <SideBarView /> -->
 	<b-container class="buildResultContainer">
 		<b-form-group class="dropdownBox">
             <b-row><b-col sm="1">세팅 설정</b-col>

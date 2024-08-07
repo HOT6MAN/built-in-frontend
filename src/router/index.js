@@ -12,6 +12,8 @@ import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfig
 import ProjectBuildResultView from '@/views/projectManagement/ProjectBuildResultView.vue'
 import ProjectBuildStartView from '@/views/projectManagement/ProjectBuildStartView.vue'
 import ProjectBuildResultAndLogsView from '@/views/projectManagement/ProjectBuildResultAndLogsView.vue';
+import SideBarView from '@/views/Bars/SideBarView.vue';
+import ProjectManagementView from '../views/projectManagement/ProjectManagementView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +31,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('@/views/Bars/SideBarView.vue'),
+      component: SideBarView,
       meta: { showNavbar: true },
     },
     {
@@ -111,11 +113,13 @@ const router = createRouter({
     },
     {
       path : '/project',
+      name : 'projectManagementView',
+      component : ProjectManagementView,
       children : [
         {
-        path: 'dashboard',
-        name: 'dashboard',
-        component : ProjectDashboardView
+          path: 'dashboard',
+          name: 'dashboard',
+          component : ProjectDashboardView
         },
         {
           path: 'config',

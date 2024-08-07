@@ -33,9 +33,6 @@ const openLogWindow = (dataObject) => {
 
 <template>
   <div class="container">
-    <div class="sidebar">
-      <SideBarView></SideBarView>
-    </div>
     <div v-if="dataLoaded" class="content">
       <ProjectBuildResult :allConfig="allConfig" @viewLogs="viewLogs"></ProjectBuildResult>
     </div>
