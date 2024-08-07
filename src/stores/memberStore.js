@@ -7,6 +7,7 @@ import { findMemberProfileByMemberId,
     findMemberProfileImageByMemberId } from '@/api/member.js';
 
 export const useMemberStore = defineStore('member', () => {
+  
   const userObject = ref({});
   const profileImage = ref(null);
 

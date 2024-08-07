@@ -1,4 +1,5 @@
 <template>
+<template>
   <div class="navigationBar">
       <RouterLink :to="{name: 'home'}" class="logo">
         <img class="logoIcon" alt="로고" src="@/icons/Navbar/Logo.svg" />
@@ -10,13 +11,18 @@
         <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
       </div>
     <div class="rightMenu">
-      <img class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
-      <div v-if="authStore.isLogin">
+      <img v-if="userId" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
+      <div v-if="userId">
           <div class="login" @click="clickLogout">
           <div class="profile">로그아웃</div>
           </div>
           <div @click="routeToMemberProfile">
             <b-button variant="secondary"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
+          </div>
+      </div>
+      <div v-if="userId">
+          <div class="login" @click="clickLogout">
+              <div class="profile">로그아웃</div>
           </div>
       </div>
       <div v-else>
@@ -39,13 +45,17 @@
   import ProjectBuildConfigView from '../projectManagement/ProjectBuildConfigView.vue';
   import {createJenkinsJob, updateJenkinsJob, createJenkinsCredential, jenkinsTest, deployTest, find400Log
     ,addDynamicListener} from '@/api/jenkins.js';
+  import { storeToRefs } from 'pinia';
 
-    
-    const authStore = useAuthStore()
-    const {authLogout} = authStore
-    const showLoginModal = ref(false);
-    const toggleLoginModal = () => {
-        showLoginModal.value = !showLoginModal.value;
+  
+  const authStore = useAuthStore()
+  const {authLogout} = authStore
+  const showLoginModal = ref(false);
+  const {userId, userName, userEmail} = storeToRefs(authStore);
+  
+  console.log("userId = ",userId.value, " // userName = ", userName.value + " // userEmail = ",userEmail.value);
+  const toggleLoginModal = () => {
+    showLoginModal.value = !showLoginModal.value;
     };
 
     const routeToMemberProfile = ()=>{

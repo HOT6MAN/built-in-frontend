@@ -1,5 +1,5 @@
 import { localAxios } from "@/util/http-commons";
-
+import api from '@/util/axios-common.js';
 const local = localAxios();
 
 async function findMemberProfileByMemberId(userId, success, fail){
@@ -7,11 +7,11 @@ async function findMemberProfileByMemberId(userId, success, fail){
 }
 
 async function findMemberProfileImageByMemberId(userId, success, fail){
-    await local.get("/member/image/"+userId, { responseType: 'blob' }).then(success).catch(fail);
+    await api.get("/member/image/"+userId, { responseType: 'blob' }).then(success).catch(fail);
 }
 
 async function deleteMemberByMemberId(userId, success, fail){
-    await local.delete("/member/"+userId).then(success).catch(fail);
+    await api.delete("/member/"+userId).then(success).catch(fail);
 }
 
 async function updateMemberProfileByMemberId(memberObject, success, fail){

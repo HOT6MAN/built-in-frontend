@@ -1,11 +1,14 @@
 <script setup>
 import { ref, onMounted, watch, defineEmits } from 'vue';
 import { useMemberStore } from '@/stores/memberStore.js';
+import { useAuthStore } from '@/stores/authStore.js';
 import MemberSidebar from '@/components/member/MemberSidebar.vue';
 import MemberProfileInfo from '@/components/member/MemberProfileInfo.vue';
 import { storeToRefs } from 'pinia';
 
 const store = useMemberStore();
+const authStore = useAuthStore();
+const {userId, userName, userEmail} = storeToRefs(authStore);
 const { userObject, profileImage } = storeToRefs(store);
 const { storeFindMemberProfileByMemberId, 
     storeDeleteMemberByMemberId, 
@@ -17,8 +20,8 @@ const componenetProfileImage = ref(null);
 const dataLoad = ref(false);
 
 onMounted(async () => {
-  await storeFindMemberProfileByMemberId(1);
-  await storeFindMemberProfileImageByMemberId(1);
+  await storeFindMemberProfileByMemberId(userId.value);
+  await storeFindMemberProfileImageByMemberId(userId.value);
   memberObject.value = {...userObject.value};
   componenetProfileImage.value = profileImage.value;
   console.log("componenet view value = ",componenetProfileImage.value);

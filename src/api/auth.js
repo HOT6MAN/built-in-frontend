@@ -17,7 +17,7 @@ async function getEmailLink(email, success, fail){
 }
 
 async function setUserProfile(param, success, fail){
-  await local.post('/signup', param).then(success).catch(fail);
+  await local.post('/signup', param) .then(success).catch(fail);
 }
 
 

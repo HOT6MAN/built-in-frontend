@@ -138,10 +138,8 @@ const router = createRouter({
           component: ProjectBuildResultAndLogsView
         }
       ],
-      meta: { showNavbar: true },
-      
+      meta: { showNavbar: true }, 
     }
-
   ]
 })
 export default router

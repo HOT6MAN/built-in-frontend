@@ -13,6 +13,7 @@ const email = ref('');
 const user = ref({
     email:'',
     nickname:'',
+    name:'',
     phone:''
 })
 
@@ -41,9 +42,21 @@ function signUp(){
                     <label>이름</label>
                     <div class="group">
                         <div class="input-wrapper">
-                            <input name="displayName" v-model="user.nickname" placeholder="이름을 입력하세요" size="20">
+                            <input name="displayName" v-model="user.name" placeholder="이름을 입력하세요" size="20">
                         </div>
                         <div class="width-maker">이름을 입력하세요</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jlNcEk">
+                <div class="sc-crHmcD fLCeMm">
+                    <label>닉네임</label>
+                    <div class="group">
+                        <div class="input-wrapper">
+                            <input name="displayName" v-model="user.nickname" placeholder="닉네임을 입력하세요" size="20">
+                        </div>
+                        <div class="width-maker">닉네임을 입력하세요</div>
                     </div>
                 </div>
             </div>
@@ -69,6 +82,18 @@ function signUp(){
                             <input name="displayName" v-model="user.phone" placeholder="전화번호을 입력하세요" size="20">
                         </div>
                         <div class="width-maker">전화번호을 입력하세요</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="jlNcEk">
+                <div class="sc-crHmcD fLCeMm">
+                    <label>주소</label>
+                    <div class="group">
+                        <div class="input-wrapper">
+                            <input name="displayName" v-model="user.address" placeholder="주소를 입력하세요" size="20">
+                        </div>
+                        <div class="width-maker">주소를 입력하세요</div>
                     </div>
                 </div>
             </div>

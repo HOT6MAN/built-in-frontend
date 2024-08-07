@@ -13,6 +13,8 @@ const props = defineProps({
   toggleLoginModal: Function
 });
 
+console.log("env url = ",url);
+
 const email = ref('')
 const title = ref('로그인')
 const showJoin = ref(true)
