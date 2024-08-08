@@ -1,16 +1,6 @@
 <template>
   <!-- <SideBarView /> -->
 	<b-container class="buildResultContainer">
-		<b-form-group class="dropdownBox">
-            <b-row><b-col sm="1">세팅 설정</b-col>
-            <b-col sm="3">
-            <b-form-select
-              id="input-3"
-              required>
-            </b-form-select>
-            </b-col>
-            </b-row>
-          </b-form-group>		 
 			<div class="boxContainer">
 			 <div class="menuboxWrapper">
 				 <div class="menuBoxBlank"><p>전체 빌드 횟수 : {{response.totalCount}}</p></div>
@@ -132,6 +122,9 @@ const isLogOpen = (index) => openIndex.value === index
 </script>
 
 <style scoped>
+* {
+	border: 1px solid red;
+}
 .boxSuccess {
 	position: relative;
   width: 110px;
@@ -143,9 +136,8 @@ const isLogOpen = (index) => openIndex.value === index
   background-size: 100%;
 }
 .boxFailed {
-  width: 150px;
-  /* width : calc(10vw * 3.3); */
-  height : 120px;
+  width: 110px;
+  height : 90px;
   color: #EC221F;
   background-size: 100%;
 	background-color: #f2dede;
@@ -158,7 +150,7 @@ const isLogOpen = (index) => openIndex.value === index
   top : 100px;
   left: 220px;
   height: calc(100% - 80px);
-  width: calc(100% - 220px);
+  width: 100%;
 	font: var(--font-roboto);
 	z-index: 1;
 }
@@ -237,5 +229,4 @@ img {
 	margin-top: 0px;
 	border-radius: 0%;
 }
-/* 페이지네이션 */
 </style>
