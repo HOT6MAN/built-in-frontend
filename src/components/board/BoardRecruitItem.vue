@@ -4,7 +4,7 @@
       <b-card-img :src="item.thumbnailUrl" alt="Thumbnail" class="mb-2" height="180px" top />
       <b-card-title tag="h3" class="d-flex justify-content-between align-items-center">
         <span>{{ item.teamName }}</span> 
-        <span class="small-text">{{ item.hit }}</span>
+        <span class="small-text"> <strong>조회: </strong> {{ item.hit }}</span>
       </b-card-title>
 
       <b-card-sub-title class="d-flex justify-content-end">

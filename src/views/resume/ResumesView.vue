@@ -13,16 +13,15 @@
           class="group-item"
           action
         >
-          <b-row align-v="center">
+          <b-row class="resume-item" align-v="center" @click.prevent="onPreview(resume.id)">
             <b-col md="auto">
-              <b-img :src="resume.profileUrl" class="resume-img" rounded />
+              <b-img :src="resume.profileUrl" alt="" class="resume-img" rounded />
             </b-col>
             <b-col>
               <h4 class="mb-1 px-2">{{ resume.title }}</h4>
               <p class="text-sm mb-0 px-2">{{ resume.updatedDate }}</p>
             </b-col>
             <b-col md="auto">
-              <b-button variant="outline-primary" class="m-1" @click.prevent="onPreview(resume.id)">preview</b-button>
               <b-button variant="outline-success" class="m-1" :to="{path: '/resume/update/' + resume.id}">update</b-button>
               <b-button variant="outline-danger" class="m-1" @click.prevent="onDelete(resume.id)">delete</b-button>
             </b-col>
@@ -94,6 +93,10 @@ const onDelete = (id) => {
   .resume-img {
     height: 48px;
     width: 48px;
+  }
+
+  .resume-item:hover {
+    cursor: pointer;
   }
 
   .full-screen-center {

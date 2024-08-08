@@ -34,7 +34,7 @@
         <b-form-group label="Tech Stack">
           <b-form-tags 
             v-model="techStack" 
-            placeholder="" 
+            placeholder="작성 후 스페이스 바 눌러주세요" 
             tag-variant="primary"
             tag-pills          
             separator=" "
