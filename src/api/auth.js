@@ -3,7 +3,7 @@ import {localAxios} from "../util/http-commons";
 const local = localAxios();
 async function saveAccessLocalStorage(success,fail){
     console.log("JWT 헤더 변환 요청");
-    await refreshAxios.get('/convert').then(success).catch(fail);
+    await refreshAxios.get('/convert', {}, {withCredentials: true }).then(success).catch(fail);
   }
 
 async function logout(success,fail){

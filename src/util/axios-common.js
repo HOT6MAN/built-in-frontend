@@ -12,9 +12,9 @@ const api = axios.create({
     baseURL : VITE_VUE_API_URL,
     headers : {
         "Content-Type" : "application/json",
-       //Authorization: localStorage.getItem("access_token")
+        //Authorization: localStorage.getItem("access_token")
     },
-    withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
+    //withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
   });
 
 // 요청 인터셉터

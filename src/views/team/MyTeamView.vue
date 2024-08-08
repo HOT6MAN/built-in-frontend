@@ -11,7 +11,7 @@ import TeamCard from '@/components/team/TeamCard.vue';
 const authStore = useAuthStore()
 const {token,userId} = storeToRefs(authStore)
 const teamStore = useTeamStore()
-const { fetchAllTeamsForUser} = teamStore
+const { fetchAllTeamsForUser, isTeamsEmpty} = teamStore
 const {getTeams: teams} = storeToRefs(teamStore)
 
 //온마운트해서 팀리스트 가져오고
@@ -23,7 +23,6 @@ onMounted(  ()=> {
   console.log('올팀');
   fetchAllTeamsForUser(userId.value)
   console.log(teams.value);
-
 })
 
 // const fetchAllTeamsForUser = async(memberId) =>{
@@ -51,7 +50,7 @@ onMounted(  ()=> {
         </button>
       </div>
       <!-- 팀이 없을 때 표시되는 메시지 -->
-      <p v-if="teams.length === 0" class="no-teams-message">팀이 없습니다.</p>
+      <p v-if="isTeamsEmpty" class="no-teams-message">팀이 없습니다.</p>
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->
       <div v-else class="teams">
         <div v-for="(item, index) in teams" :key="index">

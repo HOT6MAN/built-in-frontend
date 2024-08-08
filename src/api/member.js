@@ -3,7 +3,7 @@ import api from '@/util/axios-common.js';
 const local = localAxios();
 
 async function findMemberProfileByMemberId(userId, success, fail){
-    await local.get("/member/"+userId).then(success).catch(fail);
+    await api.get("/member/"+userId).then(success).catch(fail);
 }
 
 async function findMemberProfileImageByMemberId(userId, success, fail){
