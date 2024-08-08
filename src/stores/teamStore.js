@@ -37,6 +37,7 @@ export const useTeamStore = defineStore('team', ()=>{
             memberId,
             (response)=>{
                 teams.value = response.data.data;
+                console.log("팀 스토어 올팀");
                 return response.data.data
             },
             (error)=>{

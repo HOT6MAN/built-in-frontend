@@ -22,7 +22,8 @@ const teamsList = ref([])
 onMounted(  ()=> {
   console.log('올팀');
   fetchAllTeamsForUser(userId.value)
-  console.log(teams.value);
+  console.log("마이팀 리스트: ",teams.value);
+
 })
 
 // const fetchAllTeamsForUser = async(memberId) =>{
