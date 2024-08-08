@@ -1,6 +1,5 @@
 <template>
   <div>
-    <SideBarView class="sidebar"/>
     <article class="project-dashboard">
       <div class="dashboard">
         <div class="jira-graph">

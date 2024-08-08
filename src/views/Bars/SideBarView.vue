@@ -30,6 +30,9 @@
           <img class="sidebar-icon" alt="" src="@/icons/Sidebar/ServerMornitoring.svg" />
             <p>서버 모니터링</p>
       </div>
+      <div class="dropdownBuild">
+        <div><RouterLink :to="{name: 'projectGrafanaServiceView'}"><b-button class="collab">서비스 메트릭</b-button></RouterLink></div>
+      </div>
     </div>
   </div>
 </template>

@@ -17,15 +17,9 @@ const handleConfigSelect = (config) => {
 <template>
   <div class="container">
     <div class="content">
-      <br>
-      <br>
-      <br>
       <ProjectBuildStartComponent @configSelect="handleConfigSelect" />
     </div>
     <div class="content" v-if="dataLoaded">
-      <br>
-      <br>
-      <br>
       <ProjectBuildStartDataCheck :config="selectedConfig" />
     </div>
   </div>
