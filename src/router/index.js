@@ -121,6 +121,7 @@ const router = createRouter({
         const teamId = to.params.teamId;
 
         try {
+          console.log("비포 엔터");
           await fetchOneTeamsForUser(teamId);
           next(); // 팀이 존재하면 페이지를 계속 진행
         } catch (error) {
