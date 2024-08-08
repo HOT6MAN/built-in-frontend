@@ -7,12 +7,14 @@ import {createRoom} from "@/api/chat.js"
 import {findAllUnreadNotificationByUserId} from "@/api/notification.js";
 import { useNotificationStore } from "@/stores/notificationStore.js";
 import { storeToRefs } from 'pinia';
+import { useAuthStore } from '../stores/authStore';
 
+const authStore = useAuthStore();
+const {userId} = storeToRefs(authStore);
 const receiverUser = ref("");
 const notiContent = ref("");
 const receiver = ref("");
 const showChat = ref(false);
-const userid = ref('');
 const eventSource = ref(null);
 const notificationStore = useNotificationStore();
 const lastEventId = ref('');
@@ -60,7 +62,7 @@ const showAlertMessage = (message) => {
   showAlert.value = true;
   alertTimeout = setTimeout(() => {
     showAlert.value = false;
-  }, 3000); // 3초 후 알림 숨김
+  }, 3000);
 };
 
 
@@ -112,34 +114,12 @@ const login = async () => {
 
 <template>
   <ChatButton @click="toggleChat"/>
-    <ChatModal :showChat="showChat" :toggleChat="toggleChat" :userid="userid" />
-    {{ showChat }}
-    <div>
-      <input type="text" v-model="userid">
-      {{ userid }}
-    </div>
+    <ChatModal :showChat="showChat" :toggleChat="toggleChat"/>
     <ChatButton @click="toggleChat"/>
-    <ChatModal :showChat="showChat" :toggleChat="toggleChat" :userid="userid" :receiverUser="receiverUser" />
-    {{ showChat }}
-    <div>
-      <br><br>
-      <input type="text" v-model="userid" placeholder="Enter user ID">
-      {{ userid }}
-      <button @click="login">로그인</button>
-      <br>
-      <br>
-      <input type="text" v-model="receiverUser"  placeholder="Send Chatting"/>
-      <button @click="createRooms">생성</button>
-      <br>
-      <input type="text" v-model="receiver"  placeholder="이벤트 전송 대상">
-      <input type="text" v-model="notiContent" placeholder="이벤트 내용">
-      <button @click="sendNoti">이벤트 전송</button>
-
-    </div>
     <transition name="fade">
-    <div v-if="showAlert" class="alert">
+    <!-- <div v-if="showAlert" class="alert">
       {{ alertMessage }}
-    </div>
+    </div> -->
   </transition>
 </template>
 

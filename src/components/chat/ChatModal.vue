@@ -5,20 +5,23 @@ import { findAllRoomByUserId, findAllMessageByChatroomId } from '@/api/chat';
 import ChattingList from "@/components/chat/ChatList.vue";
 import ChatDetail from "@/components/chat/ChatDetail.vue";
 import ChatNavbar from '@/components/chat/ChatNavbar.vue';
+import { useAuthStore } from '../../stores/authStore';
+import { storeToRefs } from 'pinia';
 
+const authStore = useAuthStore();
+const {userId} = storeToRefs(authStore);
 const props = defineProps({
   showChat: Boolean,
   toggleChat: Function,
-  userid: String
 });
-
+console.log("store to ref UserId = ",userId.value);
 const chatroomList = ref([]);
 const chatMessageList = ref([]);
 const selectedChatObject = ref(null);
 
 const loadChatRooms = () => {
-  findAllRoomByUserId(props.userid, (response) => {
-    console.log(response);
+  findAllRoomByUserId(userId.value, (response) => {
+    console.log("findAllRoomByUserId = ",response);
     console.log("call find all room by user id");
     if (Array.isArray(response.data.data)) {
       chatroomList.value = response.data.data;
@@ -62,7 +65,7 @@ const handleBackToChatList = () => {
       <template v-if="selectedChatObject">
         <ChatDetail :chatObject="selectedChatObject" 
                     :messages="chatMessageList"
-                    :userid="props.userid"
+                    :userid="userId"
                     @back="handleBackToChatList"></ChatDetail>
       </template>
       <template v-else>

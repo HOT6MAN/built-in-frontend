@@ -12,7 +12,7 @@ const api = axios.create({
     baseURL : VITE_VUE_API_URL,
     headers : {
         "Content-Type" : "application/json",
-        //Authorization: localStorage.getItem("access_token")
+       //Authorization: localStorage.getItem("access_token")
     },
     //withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
   });
@@ -25,6 +25,12 @@ api.interceptors.request.use(
       if (token) {
           config.headers.Authorization = token;
       }
+      console.log('Request Headers:', config.headers);
+      console.log('Authorization Token:', config.headers.Authorization);
+      console.log('withCredentials before request:', config.withCredentials);
+      config.withCredentials = false;
+      console.log('withCredentials after setting:', config.withCredentials);
+      console.log("plz = ",config);
       return config;
   },
   error => Promise.reject(error)
