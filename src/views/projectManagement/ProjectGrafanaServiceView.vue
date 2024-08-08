@@ -9,7 +9,7 @@
     name: 'App',
     mounted() {
       const iframe = this.$refs.grafanaDashboard;
-      const dashboardURL = "http://i11a606.p.ssafy.io:3000/d/mU7NJ3242g8Gk/cddba4f5-4e76-59e5-a8e7-6a053ee68c1a?orgId=1&refresh=5s";
+      const dashboardURL = "https://grafana.hot6man.duckdns.org/d/mU7NJ3242g8Gk/cddba4f5-4e76-59e5-a8e7-6a053ee68c1a?orgId=1&refresh=5s";
       const apiToken = 'Bearer glsa_4spgxgWayJiRV79eM28Lss3kUdRTUtEs_5b55abbf';
       
       iframe.src = dashboardURL;
