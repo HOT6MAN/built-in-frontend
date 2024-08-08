@@ -10,18 +10,16 @@
         <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
       </div>
     <div class="rightMenu">
-      <img v-if="userId" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
+      <div v-if="userId">
+        <img v-if="unreadNotificationSize != 0" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
+        <img v-if="unreadNotificationSize == 0" class="alarmicon" alt="알림" src="@/icons/Navbar/state=off.svg">
+      </div>
       <div v-if="userId">
           <div class="login" @click="clickLogout">
           <div class="profile">로그아웃</div>
           </div>
           <div @click="routeToMemberProfile">
             <b-button variant="secondary"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
-          </div>
-      </div>
-      <div v-if="userId">
-          <div class="login" @click="clickLogout">
-              <div class="profile">로그아웃</div>
           </div>
       </div>
       <div v-else>
@@ -45,7 +43,10 @@
   import {createJenkinsJob, updateJenkinsJob, createJenkinsCredential, jenkinsTest, deployTest, find400Log
     ,addDynamicListener} from '@/api/jenkins.js';
   import { storeToRefs } from 'pinia';
+  import {useNotificationStore} from '@/stores/notificationStore.js';
 
+  const notificationStore = useNotificationStore();
+  const {unreadNotificationSize} = storeToRefs(notificationStore);
   
   const authStore = useAuthStore()
   const {authLogout} = authStore

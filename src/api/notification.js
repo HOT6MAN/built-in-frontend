@@ -1,13 +1,13 @@
 import { localAxios } from "@/util/http-commons";
-
+import api from "../util/axios-common";
 const local = localAxios();
 
 async function send(notiObject, success, fail){
-    await local.post("/notify/"+notiObject.receiver, notiObject).then(success).catch(fail);
+    await api.post("/notify/"+notiObject.receiver, notiObject).then(success).catch(fail);
 }
 
 async function findAllUnreadNotificationByUserId(userId, success, fail){
-    await local.get("/notify/"+userId).then(success).catch(fail);
+    await api.get("/notify/"+userId).then(success).catch(fail);
 }
 
 export {send, findAllUnreadNotificationByUserId}; 

@@ -17,15 +17,20 @@ const handleChatClick = (chat) => {
 
 <template>
   <div class="chat-list">
-    <div v-for="chat in chatroomList" :key="chat.id" class="chat-item" @click="handleChatClick(chat)">
-      <div class="chat-details">
-        <div class="chat-header">
-          <span>{{ chat.chatRoom.name }}</span>
-          <span class="chat-date">{{ chat.chatRoom.last_message_date }}</span>
-          <span class="chat-isRead">{{ chat.unreadCount }}</span>
-        </div>
-        <div class="chat-content">
-          {{ chat.chatRoom.last_message }}
+    <div v-if="chatroomList.length === 0" class="no-chat-message">
+      현재 참여하신 채팅이 없습니다.
+    </div>
+    <div v-else>
+      <div v-for="chat in chatroomList" :key="chat.id" class="chat-item" @click="handleChatClick(chat)">
+        <div class="chat-details">
+          <div class="chat-header">
+            <span>{{ chat.chatRoom.name }}</span>
+            <span class="chat-date">{{ chat.chatRoom.last_message_date }}</span>
+            <span class="chat-isRead">{{ chat.unreadCount }}</span>
+          </div>
+          <div class="chat-content">
+            {{ chat.chatRoom.last_message }}
+          </div>
         </div>
       </div>
     </div>
@@ -80,5 +85,14 @@ const handleChatClick = (chat) => {
 .chat-content {
   font-size: 14px;
   color: #333;
+}
+
+.no-chat-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #888;
+  font-size: 18px;
 }
 </style>

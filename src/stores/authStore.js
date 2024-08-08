@@ -7,6 +7,7 @@ export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
 
   let token = ref(localStorage.getItem('access_token') || '')
+  const isLogined = ref(false);
   let userId = ref('');
   let userName = ref('');
   let userEmail = ref('');
@@ -89,8 +90,10 @@ export const useAuthStore = defineStore('auth', () => {
           try {
             await setAuthData(accessToken); // setUser가 완료될 때까지 기다림
             console.log("액세스토큰 로컬스토리지에 저장");
+            isLogined.value = true;
             // '/'로 리디렉트
             router.replace({ path: '/' });
+
           } catch (error) {
             console.error('Error setting user:', error);
           }
@@ -146,6 +149,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return { token,userId,userName,userEmail, 
     //computedToken,
+    isLogined,
     isLogin,
     getUserId,
     getUserName,
