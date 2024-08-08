@@ -51,7 +51,7 @@ onMounted(  async()=> {
         </button>
       </div>
       <!-- 팀이 없을 때 표시되는 메시지 -->
-      <p v-if="isTeamsEmpty" class="no-teams-message">팀이 없습니다.</p>
+      <p v-if="teams.value" class="no-teams-message">팀이 없습니다.</p>
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->
       <div v-else class="teams">
         <div v-for="(item, index) in teams" :key="index">
