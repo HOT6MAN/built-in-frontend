@@ -14,10 +14,6 @@ import SideBarView from '@/views/Bars/SideBarView.vue';
 </script>
 
 <style scoped>
-* {
-    border: 1px solid red;
-}
-
 .container {
     display: grid;
     grid-template-columns: 250px 1fr;
