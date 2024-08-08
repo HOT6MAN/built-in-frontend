@@ -19,9 +19,9 @@ const {getTeams: teams} = storeToRefs(teamStore)
 
 const teamsList = ref([])
 
-onMounted(  ()=> {
+onMounted(  async()=> {
   console.log('올팀');
-  fetchAllTeamsForUser(userId.value)
+  await fetchAllTeamsForUser(userId.value)
   console.log("마이팀 리스트: ",teams.value);
 
 })
