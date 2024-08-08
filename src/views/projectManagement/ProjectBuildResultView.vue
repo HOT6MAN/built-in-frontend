@@ -1,12 +1,10 @@
 <template>
   <!-- <SideBarView /> -->
-	<b-container class="buildResultContainer">
+	<div class="buildResultContainer">
 			<div class="boxContainer">
 			 <div class="menuboxWrapper">
 				 <div class="menuBoxBlank"><p>전체 빌드 횟수 : {{response.totalCount}}</p></div>
-				 <div v-for="menu in menuBuilds" :key="menu">
-				 	<div class="menuBox"><p>{{ menu.name }}</p></div>
-				</div>
+				 	<div v-for="menu in menuBuilds" :key="menu"><div class="menuBox"><p>{{ menu.name }}</p></div></div>
 				</div>
 				<div v-for= "build in pageBuilds.slice().reverse()" :key="build" class="boxWrapper">
 					<div class="buildRow">
@@ -15,7 +13,7 @@
 					</div>
 							<!-- v-if를 이용해 만약 success면 success 버튼으로, fail이라면 fail 버튼을 보여줌 -->
 					<div v-for="(buildStage, index) in build.buildStages" :key="index">
-						<div v-if="`${buildStage.status}`==='SUCCESS'"><b-button @click="toggleModal(build.buildId, index)" class="boxSuccess">{{buildStage.duration}}ms</b-button>
+						<div v-if="`${buildStage.status}`==='SUCCESS'"><b-button @click="toggleModal(build.buildId, index)" class="boxSuccess">{{milToSec(buildStage.duration)}}s</b-button>
 							<b-modal 
 							:id="`modal-${build.buildId}-${index}`"
 							v-model="modalShow[`${build.buildId}-${index}`]"
@@ -29,7 +27,7 @@
 						</div>
 						</b-modal>
 					</div>
-						<div v-else><b-button @click="toggleModal(build.buildId, index)" class="boxFailed">{{buildStage.duration}}ms</b-button>
+						<div v-else><b-button @click="toggleModal(build.buildId, index)" class="boxFailed">{{milToSec(buildStage.duration)}}s</b-button>
 							<b-modal 
 							:id="`modal-${build.buildId}-${index}`"
 							v-model="modalShow[`${build.buildId}-${index}`]"
@@ -47,7 +45,7 @@
 				</div>
 		</div>
 				<!-- 페이지네이션 -->
-				<div class="d-flex justify-content-center mt-1">
+				<div class="d-flex justify-content-center mt-1 pageNation">
 					<b-pagination class="mb-0"
 						v-model="currentPage"
 						:total-rows="pages"
@@ -55,7 +53,7 @@
 						aria-controls="my-table">
 					</b-pagination>
 				</div>
-	</b-container>
+	</div>
 </template>
 
 
@@ -119,6 +117,12 @@ const toggleLog = (index) => {
 	openIndex.value = openIndex.value === index? null: index;
 }
 const isLogOpen = (index) => openIndex.value === index
+
+const milToSec = (milliSecond) => {
+	const second = milliSecond / 100
+	return Math.floor(second) /10
+}
+
 </script>
 
 <style scoped>
@@ -127,16 +131,17 @@ const isLogOpen = (index) => openIndex.value === index
 }
 .boxSuccess {
 	position: relative;
-  width: 110px;
+  width: 7vw;
   height : 90px;
-  color: green;
+  color: black;
   border: 2px solid white;
 	background-color: #c3e7cb;
   margin : 3px;
   background-size: 100%;
 }
 .boxFailed {
-  width: 110px;
+	position: relative;
+  width: 7vw;
   height : 90px;
   color: #EC221F;
   background-size: 100%;
@@ -146,10 +151,6 @@ const isLogOpen = (index) => openIndex.value === index
 }
 
 .buildResultContainer {
-  position: absolute;
-  top : 100px;
-  left: 220px;
-  height: calc(100% - 80px);
   width: 100%;
 	font: var(--font-roboto);
 	z-index: 1;
@@ -157,12 +158,14 @@ const isLogOpen = (index) => openIndex.value === index
 .boxContainer {
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
   height: 100%;
 }
 .menuboxWrapper {
   display: flex;
-  flex-direction: row;
+	align-items:start;
+	width: 100%;
+	flex-direction: row;
   border : 1px solid black;
   border-width: 0 0 3px;
 }
@@ -172,43 +175,47 @@ const isLogOpen = (index) => openIndex.value === index
   align-items: center;
   text-align: center;
   background-color: #F7F9FC;
-  width: 150px;
+	width: 7vw;
   height : 120px;
   margin : 3px;
 	border-radius: 3%;
 	padding: 6px 12px;
-	font-weight: 400;
+	font-weight: 600;
 	font-size: 15px;
 }
 .menuBox p {
-	margin: 0px;
+	padding: 5px;
+	text-align: center;
 }
 /* 메뉴 옆에 빈 공백 영역 */
 .menuBoxBlank {
+	/* position: relative; */
 	display: flex;
 	align-items: center;
-	position: relative;
-	height: 90px;
-	width: 150px;
-	border: solid black;
-	border-width: 0px 0.1px 0px 0px;
+	height: 120px;
+	width: 8vw;
 	color: black;
 	font-weight: 600;
 }
 .menuBoxBlank p {
-	margin: 0px;
+	margin: 0px auto;
 }
 .boxWrapper {
   display: flex;
-  flex-direction: row;
+	width: 100%;
 }
 .buildCount {
   position: relative;
-  height: 90px;
-  width: 150px;
+  height: auto;
+  width: auto;
   border: solid black;
   border-width: 0px 0.1px 0px 0px;
 	color: black;
+}
+.buildRow {
+	width: 8vw;
+	margin : auto;
+	font-weight: 600;
 }
 .buildRow p {
 	margin: 2px;
@@ -228,5 +235,8 @@ img {
 .logCard {
 	margin-top: 0px;
 	border-radius: 0%;
+}
+.pageNation {
+	position: relative;
 }
 </style>
