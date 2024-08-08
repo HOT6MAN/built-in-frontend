@@ -2,7 +2,7 @@
 import axios from "axios"
 const { VITE_VUE_API_URL } = import.meta.env;
 
-//axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;
 
 export default axios.create({
     baseURL : VITE_VUE_API_URL,
@@ -10,5 +10,5 @@ export default axios.create({
         "Content-Type" : "application/json",
         // Authorization: localStorage.getItem("access_token")
     },
-    withCredentials: true, // 초기 요청에서는 쿠키를 포함하지 않음
+    withCredentials: true, 
 })

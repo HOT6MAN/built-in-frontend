@@ -13,7 +13,7 @@ const api = axios.create({
     headers : {
         "Content-Type" : "application/json",
         //Authorization: localStorage.getItem("access_token")
-        Cookie: '' // 명시적으로 빈 쿠키를 설정
+        'X-Remove-Cookie': true,
     },
     //withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
   });
