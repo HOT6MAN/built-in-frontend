@@ -10,22 +10,17 @@
         <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
       </div>
     <div class="rightMenu">
-      <div v-if="userId">
-        <img v-if="unreadNotificationSize != 0" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
-        <img v-if="unreadNotificationSize == 0" class="alarmicon" alt="알림" src="@/icons/Navbar/state=off.svg">
+    <div v-if="userId" class="afterLoginContainer">
+      <!-- 알람 여부에 따른 상태 변화 -->
+      <img v-if="unreadNotificationSize != 0" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
+      <img v-if="unreadNotificationSize == 0" class="alarmicon" alt="알림" src="@/icons/Navbar/state=off.svg" />
+      <b-button class="rightButtons" @click="clickLogout">로그아웃</b-button>
+      <div @click="routeToMemberProfile">
+        <b-button class="rightButtons"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
       </div>
-      <div v-if="userId">
-          <div class="login" @click="clickLogout">
-          <div class="profile">로그아웃</div>
-          </div>
-          <div @click="routeToMemberProfile">
-            <b-button variant="secondary"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
-          </div>
-      </div>
+    </div>
       <div v-else>
-        <b-button class="login" @click="toggleLoginModal()">
-            <div class="profile">로그인</div>
-        </b-button>
+        <b-button class="rightButtons" @click="toggleLoginModal()">로그인</b-button>
       </div>
     </div>
   </div>
@@ -129,25 +124,29 @@ a {
 
 /* 메뉴 우측 */
 .rightMenu {
-  display: flex;
-  flex-direction: row;
-  position: relative;
   margin-left: auto;
   right: 30px;
+}
+.afterLoginContainer {
+  display: flex;
   gap : 40px;
+  width: auto;
+}
+.afterLoginContainer a {
+  color: white;
 }
 .alarmicon {
 	right : 70px;
 	width : 40px;
 	height : 40px;
 }
-.login {
+.rightButtons {
   position: relative;
   display: flex;
   /* right: 37px; */
   border-radius: var(--radius-200);
   box-sizing: border-box;
-  width: 101px;
+  width: 120px;
   height: 40px;
   align-items: center;
   justify-content: center;
