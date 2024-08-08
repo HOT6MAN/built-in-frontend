@@ -13,6 +13,7 @@ export const useTeamStore = defineStore('team', ()=>{
     const getTeam = computed(()=>team.value)
     const getTeams = computed(()=>teams.value)
 
+    const isTeamsEmpty = computed(() => teams.value.length === 0);
 
     const createTeam = async(team) =>{
         await setTeam(
@@ -111,7 +112,8 @@ export const useTeamStore = defineStore('team', ()=>{
         fetchOneTeamsForUser,
         updateJiraUrl,
         updateGitUrl,
-        updateStatus
+        updateStatus,
+        isTeamsEmpty
     }
 })
 

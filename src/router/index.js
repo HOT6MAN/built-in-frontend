@@ -10,15 +10,13 @@ import RegisterView from '@/views/login/RegisterView.vue'
 import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView.vue'
 import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfigView.vue'
 import ProjectBuildResultView from '@/views/projectManagement/ProjectBuildResultView.vue'
-
-import { useTeamStore } from '@/stores/teamStore';
-
-
+import {useTeamStore} from '@/stores/teamStore';
 import ProjectBuildStartView from '@/views/projectManagement/ProjectBuildStartView.vue'
 import ProjectBuildResultAndLogsView from '@/views/projectManagement/ProjectBuildResultAndLogsView.vue';
 import SideBarView from '@/views/Bars/SideBarView.vue';
 import ProjectManagementView from '../views/projectManagement/ProjectManagementView.vue';
 import ProjectGrafanaServiceView from '../views/projectManagement/ProjectGrafanaServiceView.vue'
+
 
 
 const router = createRouter({
@@ -112,13 +110,14 @@ const router = createRouter({
       meta: { showNavbar: true },
     },
     {
-      path: '/teams/:teamId',
-      name: 'myTeamDetail',
-      component: () => import('@/views/team/MyTeamDetailView.vue'),
 
-      beforeEnter: async (to, from, next) => {
+      path : '/teams/:teamId',
+      name : 'myTeamDetail',
+      component : ()=>import('@/views/team/MyTeamDetailView.vue'),
+
+      beforeEnter: async(to, from, next)=>{
         const teamStore = useTeamStore()
-        const { fetchOneTeamsForUser } = teamStore
+        const {fetchOneTeamsForUser} = teamStore
         const teamId = to.params.teamId;
 
         try {
@@ -130,10 +129,7 @@ const router = createRouter({
           //next('/not-found'); // 팀이 존재하지 않거나 오류 발생 시 NotFound 페이지로 리디렉션
         }
       }
-      ,
-
-      meta: { showNavbar: true },
-
+      ,meta: { showNavbar: true },
     },
     {
       path: '/project',
