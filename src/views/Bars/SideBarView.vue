@@ -16,14 +16,11 @@
         <div><RouterLink :to="{name: 'projectbuildconfig'}"><b-button class="collab">빌드 환경 설정</b-button></RouterLink></div>
         <div><RouterLink :to="{name: 'projectBuildStart'}"><b-button class="collab">빌드 시작</b-button></RouterLink></div>
         <div><RouterLink :to="{name: 'projectBuildResultAndLogs'}"><b-button class="collab">배포 보기</b-button></RouterLink></div>
-        <div><RouterLink ><b-button class="collab">Jenkins 환경 설정</b-button></RouterLink></div>
-        <div><RouterLink ><b-button class="collab">배포 환경 설정</b-button></RouterLink></div>
-        <div><RouterLink :to="{name : 'projectbuildresult'}"><b-button class="collab">빌드 결과 확인</b-button></RouterLink></div>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Build.svg" />
-          <p>빌드 기록</p>
+        <div><RouterLink :to="{name : 'projectbuildresult'}">빌드 기록</RouterLink></div>
       </div>
       <!-- 서버 모니터링 영역 -->
       <div class="main-category">
@@ -61,8 +58,7 @@
   width: 220px;
   position: fixed;
   background-color: #102a43;
-  height: 1024px;
-  text-align: left;
+  height: 100%;
   color: white;
   font-size: var(--font-size-base);
   font-family: var(--font-roboto);
@@ -70,13 +66,11 @@
 }
 
 .sidebar-position {
-  position: absolute;
+  position: relative;
   top: 120px; 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: left;
-  gap: var(--gap-xs);
 }
 
 .sidebar-icon {
@@ -101,6 +95,7 @@
   gap: 20px;
   font-weight: 600;
   cursor : pointer;
+  margin-top: 30px;
 }
 a {
   text-decoration: none;
@@ -113,6 +108,7 @@ a {
   justify-content: center;
   border-radius: 0%;
   color: white;
+  background-color: #6c757d;
   padding: 20px;
 }
 
@@ -124,15 +120,17 @@ a {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 12px 0px;
   font-size: 12px;
   color: white;
   font-family: var(--font-roboto);
   z-index: 1;
+  margin-bottom: 30px;
 }
 
-
-.collab.ol:hover {
-  background-color: #292525;
+.main-category:hover {
+  color: #5c636a;
+}
+.collab:hover {
+  background-color: #5c636a;
 }
 </style>

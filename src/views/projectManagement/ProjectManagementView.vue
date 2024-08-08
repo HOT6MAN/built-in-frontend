@@ -15,7 +15,7 @@ import SideBarView from '@/views/Bars/SideBarView.vue';
 
 <style scoped>
 * {
-    border: 2px solid red;
+    border: 1px solid red;
 }
 
 .container {
@@ -28,12 +28,10 @@ import SideBarView from '@/views/Bars/SideBarView.vue';
 
 .sidebar {
     background-color: #f4f4f4;
-    border: 5px solid violet;
 }
 
 .content {
     margin-top: 100px;
-    border: 5px solid blue;
 }
 </style>
     
