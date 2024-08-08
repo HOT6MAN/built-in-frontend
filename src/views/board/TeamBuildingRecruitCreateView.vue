@@ -25,7 +25,7 @@
           :limit="limitCnt"
           tag-variant="primary"
           tag-pills
-          placeholder="Enter domain"
+          placeholder="작성 후 스페이스 바 눌러주세요" 
           v-model="domain" 
           remove-on-delete />
         </b-form-group>
@@ -35,8 +35,8 @@
             input-id="desired-positions"            
             tag-variant="primary"
             tag-pills
-            separator=" "
-            placeholder="Enter desired positions separated by space"
+            separator=" "        
+            placeholder="작성 후 스페이스 바 눌러주세요" 
             v-model="desiredPosList" />          
         </b-form-group>
 
