@@ -20,9 +20,10 @@ console.log("env url = ",url);
 const email = ref('')
 const title = ref('로그인')
 const showJoin = ref(true)
-
+const showMsg = ref(false)
 function sendEmail(){
-  authEmailLink(email.value)  
+  authEmailLink(email.value)
+  showMsg.value = true
 }
 
 function changeTitle(){
@@ -49,6 +50,8 @@ function changeTitle(){
       <input type="email" placeholder="이메일을 입력하세요." v-model="email" required
       @keyup.enter="sendEmail()">
       <button type="button" @click="sendEmail()">{{title}}</button>
+      <p v-if="showMsg" class="showMsg">※ 이메일 확인해주세요!</p>
+      <p v-else></p>
     </form>
     <div class="social-login">
       <h6>소셜 계정으로 {{title}}</h6>
@@ -212,4 +215,12 @@ function changeTitle(){
   color: #0056b3;
 }
 
+.showMsg {
+  margin-left: 15px;
+  text-align: left;
+  margin-bottom: 0px;
+  font-family: var(--font-roboto);
+  color: red;
+  font-size: 12px;
+}
 </style>
