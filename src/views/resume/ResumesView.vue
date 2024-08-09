@@ -23,7 +23,7 @@
             </b-col>
             <b-col md="auto">
               <b-button variant="outline-success" class="m-1" :to="{path: '/resume/update/' + resume.id}">update</b-button>
-              <b-button variant="outline-danger" class="m-1" @click.prevent="onDelete(resume.id)">delete</b-button>
+              <b-button variant="outline-danger" class="m-1" @click.prevent.stop="onDelete(resume.id)">delete</b-button>
             </b-col>
           </b-row>
         </b-list-group-item>
