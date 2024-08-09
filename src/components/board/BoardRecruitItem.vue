@@ -11,7 +11,7 @@
         {{ item.author }}
       </b-card-sub-title>
 
-      <b-card-text>
+      <b-card-text class="left-aligned">
         <strong>팀 소개: </strong> {{ item.introduction }} <br/>
         <strong>주요 분야: </strong><b-badge variant="info">{{ item.domain }}</b-badge><br/>                 
         <strong>모집 포지션: </strong>
@@ -48,5 +48,9 @@
 
   .small-text {
     font-size: 17px;
+  }
+
+  .left-aligned {
+    text-align: left;
   }
 </style>

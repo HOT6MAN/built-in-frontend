@@ -10,7 +10,6 @@
     </div>
     
     <b-card class="board">
-      <div></div>
       <b-card-header class="d-flex justify-content-between align-items-center py-3">
         <b-card-title class="h2">
           {{ board.teamName }}
@@ -26,29 +25,40 @@
         </b-card-title>          
         <b-card-sub-header><b-badge class="mx-2" variant="info">{{ board.authorName }}</b-badge> {{ board.createdDate }} </b-card-sub-header>
       </b-card-header>
-      <b-card-body>          
+      <b-card-body class="left-aligned">          
         <b-card-title class="h4 my-1">{{ board.introduction }} </b-card-title>          
         <b-card-text class="mt-3"> {{ board.content }} </b-card-text>
       </b-card-body>
+      <b-card-body class="d-flex justify-content-end">          
+        <b-button variant="primary" @click.prevent="onApplyClick">Apply</b-button>
+      </b-card-body>
     </b-card>    
+
+    <ResumeListModal v-model="showModal" @apply="onApply"/>
   </div>
 </template>
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { findRecruit, deleteRecruit } from '@/api/teambuilding.js'
+import { applyTeamByResumeId } from '@/api/resume.js'
+import ResumeListModal from '@/modals/resume/ResumeListModal.vue'
 
 const board = ref({})
 const headerStyle = computed(() => ({
   '--background-image': `url(${board.value.thumbnailUrl})`
 }));
 const isAuth = ref(true)
+const showModal = ref(false);
+const teamId = ref('')
+
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 
 findRecruit(id, (resp) => {
   board.value = resp.data.data
+  teamId.value = board.value.teamId;
 }, (err) => console.error(err))
 
 const upd = () => {
@@ -68,6 +78,20 @@ const del = () => {
     if (resp.status === 204) {
       router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Delete'}})        
       .then(() => router.replace({path: '/teambuilding'}))
+    }
+  }, (err) => console.error(err))
+}
+
+const onApplyClick = () => {
+  showModal.value = true;
+}
+
+const onApply = (resumeId) => {
+  applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
+    if (resp.status === 201) {
+      showModal.value = false
+      alert("지원 완료")
+      router.push("/teambuilding")
     }
   }, (err) => console.error(err))
 }
@@ -108,5 +132,9 @@ const del = () => {
 
   .desired-pos-list {
     display: inline;
+  }
+
+  .left-aligned {
+    text-align: left;
   }
 </style>
