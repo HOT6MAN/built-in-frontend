@@ -6,7 +6,9 @@ function localAxios() {
   const instance = axios.create({
     baseURL: VITE_VUE_API_URL,
     headers: {
-      'Content-Type': 'application/json',
+
+      'Content-Type': 'application/json'
+
     },
   });
   instance.defaults.headers.post['Content-Type'] = 'application/json';
