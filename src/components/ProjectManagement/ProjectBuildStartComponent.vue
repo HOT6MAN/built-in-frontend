@@ -2,19 +2,29 @@
 import { ref, onMounted, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProjectStore } from '@/stores/projectStore.js';
+import { useAuthStore } from '../../stores/authStore';
+import {getAllMyTeamByUserId} from '@/api/team.js';
 
-
+const authStore = useAuthStore();
+const {userId} = storeToRefs(authStore);
 const store = useProjectStore();
 const { storeFindAllProjectInfosByTeamId, storeBuildStart } = store;
 const { projectInfos } = storeToRefs(store);
 
 const allConfigs = ref([]);
 const selectedConfigId = ref(null);
+const selectedIndex = ref(0);
+const teamOptions = ref([]);
+const selectedTeam = ref({});
+const dataLoaded = ref(false);
 
 onMounted(async () => {
-  await storeFindAllProjectInfosByTeamId(1);
-  allConfigs.value = projectInfos.value;
-  console.log(allConfigs.value);
+  await getAllMyTeamByUserId(userId.value, (response)=>{
+    console.log(response);
+    teamOptions.value = response.data.data;
+  }, (error)=>{
+    console.log("get All My Team By User Id Error", error);
+  });
 });
 
 const emits = defineEmits(["configSelect"]);
@@ -26,7 +36,20 @@ const handleSelectChange = () => {
   emits("configSelect", selectedConfig);
 };
 
-// Watch for changes in selectedConfigId to ensure handleSelectChange is called
+const handleTeamSelection = async (event) => {
+  const teamId = parseInt(event.target.value, 10);
+  selectedTeam.value = teamOptions.value.find(team => team.id === teamId);
+  console.log("선택 이후 selectedTeam = ", selectedTeam.value);
+  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
+  allConfigs.value = projectInfos.value;
+  if (allConfigs.value.length > 0) {
+    selectedConfigId.value = allConfigs.value[0].id;
+    selectedIndex.value = 0;
+  }
+  dataLoaded.value = true;
+};
+
+
 watch(selectedConfigId, (newId) => {
   handleSelectChange();
 });
@@ -35,7 +58,7 @@ const startBuild = () => {
   if(confirm("이 설정으로 빌드를 실시하시겠습니까?")){
     const projectInfoId = selectedConfigId.value;
     console.log("projectInfoId = ",projectInfoId);
-    storeBuildStart(1, projectInfoId);
+    storeBuildStart(selectedTeam.value.id, projectInfoId);
   }
   else{
 
@@ -45,6 +68,15 @@ const startBuild = () => {
 
 <template>
   <div class="config-selector">
+    <div class="team-select" v-if="teamOptions.length > 0">
+      <label for="teamSelect">팀 선택:</label>
+      <select id="teamSelect" @change="handleTeamSelection">
+        <option disabled selected>설정 선택</option>
+        <option v-for="team in teamOptions" :key="team.id" :value="team.id">
+          {{ team.name }}
+        </option>
+      </select>
+    </div>
     <h3>빌드를 진행할 설정을 골라주세요.</h3>
     <b-form-select v-model="selectedConfigId">
       <option :value="null">Select a config</option>

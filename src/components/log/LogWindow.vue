@@ -1,44 +1,62 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick  } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProjectStore } from '@/stores/projectStore.js';
 import { findNPrevLogs, addDynamicListener } from '@/api/project.js';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
 const store = useProjectStore();
 
 const logs = ref([]);
 const dataObject = ref({});
 let stompClient = null;
 onMounted(async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  dataObject.value = JSON.parse(urlParams.get('data'));
+  dataObject.value = JSON.parse(route.query.data);
   console.log("dataObject = ",dataObject.value);
   await findNPrevLogs(dataObject.value, (response) => {
     logs.value = response.data.data;
+    nextTick(() => scrollToBottom());
   }, (error) => {
     console.log(error);
   });
+  console.log("find N PrevLogs After logs.value = ",logs.value);
   await connect();
 });
 
 async function connect(){
-    const socket = new SockJS(`http://localhost:8080/ws/log`);
-    stompClient = Stomp.over(socket);
+    console.log("connect Call");
+    console.log("Before Add Dynamic Listener Kafka Call");
     await addDynamicListener(dataObject.value, (response)=>{
-
     },(error)=>{
         console.log("error");
     })
+    console.log("동적 리스너 생성 완료");
+    const url = "http://i11a606.p.ssafy.io:10002/hot6man";
+    console.log("요청 연결 url = ", `${url}/ws/log`);
+    const socket = new SockJS(`${url}/ws/log`, null, {
+       transports: ['websocket'],
+       timeout: 5000
+    });
+    stompClient = Stomp.over(socket);
     console.log("/sub/log/"+dataObject.value.projectInfoId+"/"+dataObject.value.configId);
     stompClient.connect({'destination':'/ws/log'}, async function (frame){
         stompClient.subscribe("/sub/log/"+dataObject.value.projectInfoId+"/"+dataObject.value.configId, function(message){
             const convertMessage = JSON.parse(message.body); 
             console.log("message = ",convertMessage);
             logs.value.push(convertMessage);
+            nextTick(() => scrollToBottom());
         })
     })
 }
 
+
+function scrollToBottom() {
+  const container = document.querySelector('.log-window-wrapper');
+  if (container) {
+    container.scrollTop = container.scrollHeight;
+  }
+}
 
 
 
@@ -80,13 +98,13 @@ function ansiToHtml(ansiString) {
 .log-window-wrapper {
   width: 100%;
   height: 100vh;
-  overflow: auto; /* Enable both horizontal and vertical scrolling */
+  overflow: auto;
   background-color: black;
 }
 
 .log-window {
   padding: 20px;
-  width: max-content; /* Ensure content determines the width */
+  width: max-content; 
   margin: 0;
   font-family: Arial, sans-serif;
   background-color: black;
@@ -97,7 +115,7 @@ function ansiToHtml(ansiString) {
 .logs-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Add gap between log entries */
+  gap: 10px; 
 }
 
 .log-entry {
@@ -106,13 +124,15 @@ function ansiToHtml(ansiString) {
   border-radius: 5px;
   background-color: #333;
   overflow: hidden;
-  white-space: nowrap; /* Prevent wrapping of text */
+  white-space: nowrap; 
 }
 
 .log-line {
   display: flex;
-  align-items: center;
+  align-items: flex-start; 
+  text-align: left; 
 }
+
 
 .timestamp {
   font-size: 0.9em;
@@ -125,5 +145,6 @@ function ansiToHtml(ansiString) {
   font-size: 1em;
   color: inherit;
   flex-grow: 1;
+  text-align: left; 
 }
 </style>

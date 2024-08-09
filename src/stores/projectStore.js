@@ -16,6 +16,7 @@ export const useProjectStore = defineStore('project', () => {
     const storeFindAllProjectInfosByTeamId = async(teamId)=>{
         await findAllProjectInfosByTeamId(teamId, (response)=>{
             projectInfos.value = response.data.data;
+            console.log("(Store)After Find All Project Infos By Team Id = ",projectInfos.value);
         },(error)=>{
             console.log("error = ",error);
         })
@@ -24,15 +25,15 @@ export const useProjectStore = defineStore('project', () => {
     const storeFindUsedProjectInfosByTeamId = async (teamId)=>{
         await findUsedProjectInfosByTeamId(teamId, (response)=>{
             alert("불러오기");
-            console.log("response = ",response);
+            console.log("Used response = ",response);
             usedProjectInfos.value = response.data.data;
         }, (error)=>{
             console.log(error);
         })
     }
 
-    const storeInsertNewProjectInfo = (teamId)=>{
-        insertNewProjectInfo(teamId, (response)=>{
+    const storeInsertNewProjectInfo = async (teamId)=>{
+        await insertNewProjectInfo(teamId, (response)=>{
             alert("생성 완료");
         }, (error)=>{
             console.log(error);
@@ -63,8 +64,8 @@ export const useProjectStore = defineStore('project', () => {
         })
     }
 
-    const storeBuildStart = (teamId, teamProjectInfoId) =>{
-        buildStart(teamId, teamProjectInfoId, (response)=>{
+    const storeBuildStart = async (teamId, teamProjectInfoId) =>{
+        await buildStart(teamId, teamProjectInfoId, (response)=>{
         
         }, (error)=>{
             console.log(error);

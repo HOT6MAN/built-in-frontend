@@ -11,7 +11,9 @@
             :options="teamList"
             v-model="selectedTeam"
             required
-          ></b-form-select>
+          >
+
+        </b-form-select>
         </b-form-group>
 
         <b-form-group label="Thumbnail">
@@ -70,16 +72,20 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { findTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
+import { useAuthStore } from '../../stores/authStore';
+import { storeToRefs } from 'pinia';
+const authStore = useAuthStore();
+const {userId} = storeToRefs(authStore);
 
 const route = useRoute()
 const router = useRouter()
 
 const teamList = ref([])
 const params = {
-  'memberId': 1
+  'memberId': userId.value
 }
 
-const limitCnt = 1
+const limitCnt = 5
 
 const title = ref('생성')
 const selectedTeam = ref('')
@@ -191,7 +197,12 @@ onMounted(() => {
     content.value = boardData.content;
   } else {
     findTeamList(params, (resp) => {
-      teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
+      console.log("findTeamList Response = ",resp);
+      teamList.value = resp.data.data.map(item => {
+        const [key, value] = Object.entries(item)[0];
+        return { text: value, value: key };
+      });
+      console.log("team List = ",teamList.value);
     }, (err) => console.error(err))
   }  
 })

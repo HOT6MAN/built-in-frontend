@@ -2,17 +2,17 @@
 import { ref, defineProps, defineEmits ,onMounted } from 'vue';
 
 const props = defineProps({
-    allConfig: Array,
+    allConfigs: Array,
 });
 const emits = defineEmits(["viewLogs"]);
 const allConfigByComponent = ref([]);
 
 onMounted(() => {
-    allConfigByComponent.value = props.allConfig;
+    console.log("props allConfigs = ", props.allConfigs);
+    allConfigByComponent.value = props.allConfigs;
     console.log("all Component = ", allConfigByComponent.value);
 });
 
-// Method to handle the log viewing action
 const viewLogs = (projectInfoId, serviceScheduleId, configId, type) => {
   const dataObject = {
     projectInfoId : projectInfoId,

@@ -6,6 +6,11 @@ import ProjectBuildFrontendConfig from '@/components/ProjectManagement/ProjectBu
 import ProjectBuildDBConfig from '@/components/ProjectManagement/ProjectBuildDBConfig.vue';
 import { useProjectStore } from '@/stores/projectStore.js';
 import { storeToRefs } from 'pinia';
+import {useAuthStore} from '@/stores/authStore.js';
+import {getAllMyTeamByUserId} from '@/api/team.js';
+
+const authStore = useAuthStore();
+const {userId} = storeToRefs(authStore);
 
 const store = useProjectStore();
 const { storeFindAllProjectInfosByTeamId,
@@ -20,15 +25,28 @@ const allConfigs = ref([]);
 const selectedConfigId = ref(0);
 const selectedIndex = ref(0);
 
-onMounted(async () => {
-  await storeFindAllProjectInfosByTeamId(1);
-  allConfigs.value = projectInfos.value;
+const teamOptions = ref([]);
+const selectedTeam = ref({});
 
+const handleTeamSelection = async (event) => {
+  const teamId = parseInt(event.target.value, 10);
+  selectedTeam.value = teamOptions.value.find(team => team.id === teamId);
+  console.log("선택 이후 selectedTeam = ", selectedTeam.value);
+  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
+  allConfigs.value = projectInfos.value;
   if (allConfigs.value.length > 0) {
     selectedConfigId.value = allConfigs.value[0].id;
     selectedIndex.value = 0;
   }
   dataLoaded.value = true;
+};
+onMounted(async () => {
+  await getAllMyTeamByUserId(userId.value, (response)=>{
+    console.log(response);
+    teamOptions.value = response.data.data;
+  }, (error)=>{
+    console.log("get All My Team By User Id Error", error);
+  })
 });
 
 const onTabChange = () => {
@@ -47,40 +65,47 @@ const onTabChange = () => {
 watch(activeTab, onTabChange);
 
 const saveBackendData = async (backendConfigArray) => {
+  if(!selectedConfigId){
+    alert("설정을 먼저 선택해주세요.");
+    return;
+  }
   console.log("emits array = ", backendConfigArray);
   const projectInfoId = selectedConfigId.value;
   console.log(selectedConfigId.value);
   await storeSaveBackendConfigs(projectInfoId, backendConfigArray);
   await alert("변경 이후 불러오기");
-  await storeFindAllProjectInfosByTeamId(1);
+  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
 };
 const saveFrontendData = async (frontendConfigArray) => {
+  if(!selectedConfigId){
+    alert("설정을 먼저 선택해주세요.");
+    return;
+  }
   console.log("Emit frontend data = ", frontendConfigArray);
   const projectInfoId = selectedConfigId.value;
   console.log("before save front id = ", projectInfoId, " frontend config Array = ", frontendConfigArray);
   await storeSaveFrontendConfigs(projectInfoId, frontendConfigArray);
   await alert("변경 이후 불러오기");
-  await storeFindAllProjectInfosByTeamId(1);
+  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
 };
 const saveDBData = async (DBConfigArray) => {
+  if(!selectedConfigId){
+    alert("설정을 먼저 선택해주세요.");
+    return;
+  }
   const projectInfoId = selectedConfigId.value;
   console.log("emits db config = ", DBConfigArray);
   await storeSaveDatabaseConfigs(projectInfoId, DBConfigArray);
 };
 
 const addNewConfig = async () => {
-  await storeInsertNewProjectInfo(1);
-  await storeFindAllProjectInfosByTeamId(1);
-  const newConfigId = allConfigs.value.length + 1;
-  allConfigs.value.push({
-    id: newConfigId,
-    name: `Configuration ${newConfigId}`,
-    backendConfigs: [],
-    frontendConfigs: [],
-    databaseConfigs: []
-  });
-  selectedConfigId.value = newConfigId;
-  selectedIndex.value = allConfigs.value.length - 1;
+  await storeInsertNewProjectInfo(selectedTeam.value.id);
+  console.log("Insert 이후 Find 차례 selectedTeam id = ",selectedTeam.value.id);
+  console.log("selectedTeam만 = ",selectedTeam.value);
+  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
+  allConfigs.value = projectInfos.value;
+  console.log("After Insert All Configs = ", allConfigs.value);
+  
 };
 
 watch(selectedConfigId, (newId) => {
@@ -90,6 +115,15 @@ watch(selectedConfigId, (newId) => {
 
 <template>
   <div class="main-content">
+    <div class="team-select" v-if="teamOptions.length > 0">
+      <label for="teamSelect">팀 선택:</label>
+      <select id="teamSelect" @change="handleTeamSelection">
+        <option disabled selected>설정 선택</option>
+        <option v-for="team in teamOptions" :key="team.id" :value="team.id">
+          {{ team.name }}
+        </option>
+      </select>
+    </div>
     <b-tabs v-model="activeTab" @input="onTabChange">
       <b-tab title="Backend">
         <template #title>
@@ -112,6 +146,7 @@ watch(selectedConfigId, (newId) => {
       @saveDBData="saveDBData"></component>
     <div v-if="dataLoaded" style="margin-top: 20px;">
       <select v-model="selectedConfigId">
+        <option disabled selected>설정 선택</option>
         <option v-for="(config, index) in allConfigs" :key="config.id" :value="config.id">
           {{ config.title }}
         </option>
@@ -128,5 +163,8 @@ watch(selectedConfigId, (newId) => {
 
 .main-content {
   padding-top: 20px;
+}
+.team-select {
+  margin-top: 20px;
 }
 </style>

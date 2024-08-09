@@ -1,35 +1,36 @@
 import { localAxios } from '@/util/http-commons'
-
+import api from '@/util/axios-common.js';
 const local = localAxios()
 
 export function findRecruitList(params, successCB, failCB) {
-  local.get('/teambuilding/recruits', { params }).then(successCB).catch(failCB)
+  api.get('/teambuilding/recruits', { params }).then(successCB).catch(failCB)
 }
 
 export async function findTeamList(params, successCB, failCB) {
-  await local.get('/team', { params }).then(successCB).catch(failCB)
+  console.log(" findTeamList before Send params = ", params);
+  await api.get('/team', { params }).then(successCB).catch(failCB)
 }
 
 export function registerRecruit(formData, successCB, failCB) {
-  local.post('/teambuilding/recruit', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+  api.post('/teambuilding/recruit', formData, {headers: {'Content-Type': 'multipart/form-data'}})
     .then(successCB)
     .catch(failCB);
 }
 
 export async function findRecruit(id, successCB, failCB) {
-  await local.get('/teambuilding/recruit/' + id).then(successCB).catch(failCB)
+  await api.get('/teambuilding/recruit/' + id).then(successCB).catch(failCB)
 }
 
 export function deleteRecruit(id, successCB, failCB) {
-  local.delete('/teambuilding/recruit/'+ id).then(successCB).catch(failCB)
+  api.delete('/teambuilding/recruit/'+ id).then(successCB).catch(failCB)
 }
 
 export function getImageFromUrl(url, successCB, failCB) {
-  local.get(url, {responseType: 'blob'}).then(successCB).catch(failCB)
+  api.get(url, {responseType: 'blob'}).then(successCB).catch(failCB)
 }
 
 export function updateRecruit(id, formData, successCB, failCB) {
-  local.patch('/teambuilding/recruit/'+id, formData, {headers: {'Content-Type': 'multipart/form-data'}})
+  api.patch('/teambuilding/recruit/'+id, formData, {headers: {'Content-Type': 'multipart/form-data'}})
     .then(successCB)
     .catch(failCB);
 }
