@@ -26,7 +26,7 @@ api.interceptors.request.use(
       if (token) {
           config.headers.Authorization = token;
       }
-      config.withCredentials = false;
+      
       return config;
   },
   error => Promise.reject(error)
