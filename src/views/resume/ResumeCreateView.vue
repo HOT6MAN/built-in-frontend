@@ -38,7 +38,7 @@
             tag-variant="primary"
             tag-pills          
             separator=" "
-            is-duplicate="false"
+            @input="onTagsDuplicate"
             remove-on-delete
             class="mb-3"
           />
@@ -157,6 +157,12 @@ const onUpdate = () => {
     }, 
     (err) => console.error(err)
   );  
+}
+
+const onTagsDuplicate = (newTags) => {
+  techStack.value = newTags.filter((tag, index, self) => {
+    return self.indexOf(tag) === index;
+  });
 }
 
 onMounted(async () => {
