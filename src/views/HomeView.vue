@@ -2,8 +2,8 @@
   <div class="home">
       <div class="intro">
       <div class="introContainer">
-        <div class="textBoxP"><p>팀빌딩부터 빌드까지, 이 모든 것을 한번에</p></div>
-        <div class="textBoxH1"><p>Built-In</p></div>
+        <div class="introContent"><p>팀빌딩부터 빌드까지, 이 모든 것을 한번에</p></div>
+        <div class="introTitle"><p>Built-In</p></div>
       </div>
       <img class="githubIcon" alt="" src="@/icons/Home/github-icon.svg" />
       <img class="jiraIcon" alt="" src="@/icons/Home/jira-image.png" />
@@ -45,11 +45,11 @@ section {
   color : white;
   font-weight : 600;
 }
-.textBoxP {
+.introContent {
   font : var(--font-roboto);
   font-size : 30px;
 }
-.textBoxH1 {
+.introTitle {
   font : var(--font-roboto);
   font-size : 50px;
 }

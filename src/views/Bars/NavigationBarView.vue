@@ -94,6 +94,10 @@
 	align-items: center;
 	gap: 15px;
 	font-size: 22px;
+  color: white;
+}
+.logo:hover {
+  color: #6c757d;
 }
 .logoIcon {
 	width: 58px;
@@ -117,11 +121,13 @@ a {
   text-decoration: none;
 }
 .menuButton {
-	color : #EDF0F7;
+	color : white;
 	font-size: var(--font-size-menu);
 	font-family: var(--font-roboto);
 }
-
+.menuButton:hover {
+  color: #6c757d;
+}
 /* 메뉴 우측 */
 .rightMenu {
   margin-left: auto;

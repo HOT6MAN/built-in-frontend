@@ -126,9 +126,6 @@ const milToSec = (milliSecond) => {
 </script>
 
 <style scoped>
-* {
-	border: 1px solid red;
-}
 .boxSuccess {
 	position: relative;
   width: 7vw;
@@ -138,6 +135,10 @@ const milToSec = (milliSecond) => {
 	background-color: #c3e7cb;
   margin : 3px;
   background-size: 100%;
+}
+.boxSuccess:hover {
+	background-color: green;
+	border: none;
 }
 .boxFailed {
 	position: relative;
@@ -149,7 +150,10 @@ const milToSec = (milliSecond) => {
   border: 2px solid white;
   margin : 3px;
 }
-
+.boxFailed:hover {
+	background-color: red;
+	border: none;
+}
 .buildResultContainer {
   width: 100%;
 	font: var(--font-roboto);
