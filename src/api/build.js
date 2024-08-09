@@ -3,11 +3,11 @@
 // VITE_VUE_API_URL=http://i11a606.p.ssafy.io:8080/hot6man
 
 import { localAxios } from '@/util/http-commons'
-
+import api from '@/util/axios-common'
 const local = localAxios()
 
 export function sendBuildConfigForm(formData, success, fail) {
-  local.post('/project/config', formData, {headers: {'Content-Type': 'application/json'}})
+    api.post('/project/config', formData, {headers: {'Content-Type': 'application/json'}})
     .then(success)
     .catch(fail);
 }

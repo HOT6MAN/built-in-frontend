@@ -16,7 +16,7 @@ import ProjectBuildResultAndLogsView from '@/views/projectManagement/ProjectBuil
 import SideBarView from '@/views/Bars/SideBarView.vue';
 import ProjectManagementView from '../views/projectManagement/ProjectManagementView.vue';
 import ProjectGrafanaServiceView from '../views/projectManagement/ProjectGrafanaServiceView.vue'
-
+import LogWindow from '../components/log/LogWindow.vue'
 
 
 const router = createRouter({
@@ -169,7 +169,12 @@ const router = createRouter({
         }
       ],
       meta: { showNavbar: true },
-    }
+    },
+    {
+      path: '/log-window',
+      name: 'LogWindow',
+      component: LogWindow
+    },
   ]
 })
 export default router
