@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-    <div class="sidebar">
+    <div>
     <SideBarView></SideBarView>
     </div>
     <div class="content">
@@ -20,10 +20,6 @@ import SideBarView from '@/views/Bars/SideBarView.vue';
     height: 100vh;
     margin: 0;
     padding: 0;
-}
-
-.sidebar {
-    background-color: #f4f4f4;
 }
 
 .content {
