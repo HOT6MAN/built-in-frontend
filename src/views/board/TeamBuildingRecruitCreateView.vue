@@ -38,6 +38,7 @@
             tag-variant="primary"
             tag-pills
             separator=" "        
+            @input="onTagsDuplicate"
             placeholder="작성 후 스페이스 바 눌러주세요" 
             v-model="desiredPosList" />          
         </b-form-group>
@@ -155,6 +156,12 @@ const onReset = () => {
   desiredPosList.value = []
   introduction.value = ''
   content.value = ''
+}
+
+const onTagsDuplicate = (newTags) => {
+  desiredPosList.value = newTags.filter((tag, index, self) => {
+    return self.indexOf(tag) === index;
+  });
 }
 
 const handleFileChange = (event) => {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { defineProps } from 'vue';
 import { findAllRoomByUserId, findAllMessageByChatroomId } from '@/api/chat';
 import ChattingList from "@/components/chat/ChatList.vue";
@@ -19,6 +19,9 @@ const chatroomList = ref([]);
 const chatMessageList = ref([]);
 const selectedChatObject = ref(null);
 
+onMounted(async()=>{
+  loadChatRooms();
+})
 const loadChatRooms = () => {
   findAllRoomByUserId(userId.value, (response) => {
     console.log("findAllRoomByUserId = ",response);
@@ -41,10 +44,10 @@ watch(() => props.showChat, (newVal, oldVal) => {
   }
 });
 
-const handleChatSelected = (chat) => {
+const handleChatSelected = async (chat) => {
   console.log("chat object = ",chat);
   selectedChatObject.value = chat
-  findAllMessageByChatroomId(chat.chatRoom.id, (response)=>{
+  await findAllMessageByChatroomId(chat.chatRoom.id, (response)=>{
       console.log(response);
       chatMessageList.value = response.data.data;
   }, (error)=>{

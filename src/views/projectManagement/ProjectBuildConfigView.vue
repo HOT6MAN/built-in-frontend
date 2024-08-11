@@ -1,170 +1,409 @@
+<template>
+  <div class="main-content">
+    <div class="config-container">
+      <div class="config-header">
+        <h2>프로젝트 빌드 환경 설정</h2>
+      </div>
+      <div v-if="dataLoaded" class="config-selection">
+        <div class="input-group">
+          <select v-model="selectedConfigId" class="form-select config-select">
+            <option value="" disabled selected>설정 선택</option>
+            <option v-for="(config, index) in allConfigs" :key="config.id" :value="config.id">
+              {{ config.title }}
+            </option>
+          </select>
+          <button class="btn btn-primary" @click="addNewConfig">+ 추가</button>
+        </div>
+      </div>
+      
+      <div v-if="selectedConfigId" class="config-content">
+        <div class="input-group-container">
+        <label for="config-input" class="config-label">선택된 프로젝트 환경설정 이름</label>
+        <div class="input-group">
+          <input 
+            id="config-input"
+            v-model="updateConfigName" 
+            @focus="onFocusInput"
+            @blur="onBlurInput"
+            type="text" 
+            class="form-control config-input" 
+            placeholder="설정 제목" 
+          />
+        </div>
+      </div>
+
+        <b-tabs v-model="activeTab" @input="onTabChange" class="mt-4">
+          <b-tab title="Backend">
+            <template #title>
+              <b>{{ activeTab === 0 ? '▶' : '' }} Backend 설정</b>
+            </template>
+          </b-tab>
+          <b-tab title="Frontend">
+            <template #title>
+              <b>{{ activeTab === 1 ? '▶' : '' }} Frontend 설정</b>
+            </template>
+          </b-tab>
+          <b-tab title="DB">
+            <template #title>
+              <b>{{ activeTab === 2 ? '▶' : '' }} DB 설정</b>
+            </template>
+          </b-tab>
+        </b-tabs>
+
+        <component 
+          v-if="dataLoaded" 
+          :is="currentComponent" 
+          :allConfigs="allConfigs" 
+          :selectedConfigId="selectedConfigId"
+          :selectedIndex="selectedIndex" 
+          @saveBackendData="saveBackendData" 
+          @saveFrontendData="saveFrontendData"
+          @saveDBData="saveDBData"
+        ></component>
+      </div>
+
+      <div v-else class="no-selection-message">
+        <div class="no-selection-content">
+          <i class="fas fa-project-diagram"></i>
+          <div class="no-selection-title">프로젝트를 선택해주세요</div>
+          <p class="no-selection-description">
+            프로젝트를 선택하여 설정을 시작하세요. 새 프로젝트를 추가하려면 상단의 '+ 추가' 버튼을 클릭하세요.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</template>
+
 <script setup>
-import { ref, watch, onMounted } from 'vue';
-import SideBarView from '../Bars/SideBarView.vue';
+import { ref, watch, onMounted, computed, shallowRef, markRaw } from 'vue';
 import ProjectBuildBackendConfig from '@/components/ProjectManagement/ProjectBuildBackendConfig.vue';
 import ProjectBuildFrontendConfig from '@/components/ProjectManagement/ProjectBuildFrontendConfig.vue';
 import ProjectBuildDBConfig from '@/components/ProjectManagement/ProjectBuildDBConfig.vue';
 import { useProjectStore } from '@/stores/projectStore.js';
 import { storeToRefs } from 'pinia';
-import {useAuthStore} from '@/stores/authStore.js';
-import {getAllMyTeamByUserId} from '@/api/team.js';
+import { useAuthStore } from '@/stores/authStore.js';
+import { useRoute } from 'vue-router';
+import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
+
+const route = useRoute();
+const teamId = route.params.teamId; 
 
 const authStore = useAuthStore();
-const {userId} = storeToRefs(authStore);
+const { userId } = storeToRefs(authStore);
 
 const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId,
-  storeInsertNewProjectInfo, storeSaveBackendConfigs, storeSaveFrontendConfigs, storeSaveDatabaseConfigs } = store;
+const { storeFindAllProjectInfosByTeamId, storeInsertNewProjectInfo } = store;
 
 const { projectInfos } = storeToRefs(store);
 const dataLoaded = ref(false);
 const activeTab = ref(0);
-const currentComponent = ref(ProjectBuildBackendConfig);
+const currentComponent = shallowRef(markRaw(ProjectBuildBackendConfig)); // markRaw와 shallowRef 사용
 
 const allConfigs = ref([]);
 const selectedConfigId = ref(0);
 const selectedIndex = ref(0);
 
-const teamOptions = ref([]);
-const selectedTeam = ref({});
+const updateConfigName = ref("");
 
-const handleTeamSelection = async (event) => {
-  const teamId = parseInt(event.target.value, 10);
-  selectedTeam.value = teamOptions.value.find(team => team.id === teamId);
-  console.log("선택 이후 selectedTeam = ", selectedTeam.value);
-  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
-  allConfigs.value = projectInfos.value;
-  if (allConfigs.value.length > 0) {
-    selectedConfigId.value = allConfigs.value[0].id;
-    selectedIndex.value = 0;
+// 탭에 따른 설정 필터링
+const filteredConfigs = computed(() => {
+  console.log("Filterling call active value = ",activeTab.value);
+  if (activeTab.value === 0) {
+    return allConfigs.value.map(config => ({
+      ...config,
+      backendConfigs: config.backendConfigs
+    }));
+  } else if (activeTab.value === 1) {
+    return allConfigs.value.map(config => ({
+      ...config,
+      frontendConfigs: config.frontendConfigs
+    }));
+  } else if (activeTab.value === 2) {
+    return allConfigs.value.map(config => ({
+      ...config,
+      databaseConfigs: config.databaseConfigs
+    }));
   }
-  dataLoaded.value = true;
-};
-onMounted(async () => {
-  await getAllMyTeamByUserId(userId.value, (response)=>{
-    console.log(response);
-    teamOptions.value = response.data.data;
-  }, (error)=>{
-    console.log("get All My Team By User Id Error", error);
-  })
 });
 
-const onTabChange = () => {
-  switch (activeTab.value) {
-    case 0:
-      currentComponent.value = ProjectBuildBackendConfig;
-      break;
-    case 1:
-      currentComponent.value = ProjectBuildFrontendConfig;
-      break;
-    case 2:
-      currentComponent.value = ProjectBuildDBConfig;
-      break;
-  }
-};
-watch(activeTab, onTabChange);
-
-const saveBackendData = async (backendConfigArray) => {
-  if(!selectedConfigId){
-    alert("설정을 먼저 선택해주세요.");
-    return;
-  }
-  console.log("emits array = ", backendConfigArray);
-  const projectInfoId = selectedConfigId.value;
-  console.log(selectedConfigId.value);
-  await storeSaveBackendConfigs(projectInfoId, backendConfigArray);
-  await alert("변경 이후 불러오기");
-  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
-};
-const saveFrontendData = async (frontendConfigArray) => {
-  if(!selectedConfigId){
-    alert("설정을 먼저 선택해주세요.");
-    return;
-  }
-  console.log("Emit frontend data = ", frontendConfigArray);
-  const projectInfoId = selectedConfigId.value;
-  console.log("before save front id = ", projectInfoId, " frontend config Array = ", frontendConfigArray);
-  await storeSaveFrontendConfigs(projectInfoId, frontendConfigArray);
-  await alert("변경 이후 불러오기");
-  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
-};
-const saveDBData = async (DBConfigArray) => {
-  if(!selectedConfigId){
-    alert("설정을 먼저 선택해주세요.");
-    return;
-  }
-  const projectInfoId = selectedConfigId.value;
-  console.log("emits db config = ", DBConfigArray);
-  await storeSaveDatabaseConfigs(projectInfoId, DBConfigArray);
-};
-
-const addNewConfig = async () => {
-  await storeInsertNewProjectInfo(selectedTeam.value.id);
-  console.log("Insert 이후 Find 차례 selectedTeam id = ",selectedTeam.value.id);
-  console.log("selectedTeam만 = ",selectedTeam.value);
-  await storeFindAllProjectInfosByTeamId(selectedTeam.value.id);
-  allConfigs.value = projectInfos.value;
-  console.log("After Insert All Configs = ", allConfigs.value);
+const saveBackendData = async (backendConfigs) => {
+  console.log("전달받은 backend = ",backendConfigs);
+  await saveBackendConfigs(selectedConfigId.value, backendConfigs, async (response)=>{
+    alert("백엔드 설정 저장 성공");
+    await storeFindAllProjectInfosByTeamId(teamId);
+    allConfigs.value = projectInfos.value;
+    dataLoaded.value = true;
+  }, (error)=>{
+    console.log(error);
+  })
   
 };
 
+const saveFrontendData = async (frontendConfigs) => {
+  console.log("전발받은 frontend config = ",frontendConfigs);
+  await saveFrontendConfigs(selectedConfigId.value, frontendConfigs, async(response)=>{
+    alert("프론트엔드 설정 저장 성공");
+    await storeFindAllProjectInfosByTeamId(teamId);
+    allConfigs.value = projectInfos.value;
+    dataLoaded.value = true;
+  }, (error)=>{
+    console.log(error);
+  });
+  // 프론트엔드 데이터 저장 로직
+};
+
+const saveDBData = async (databaseConfigs) => {
+  await saveDatabaseConfigs(selectedConfigId.value, databaseConfigs, async (response)=>{
+    alert("DB 설정 저장 성공");
+    await storeFindAllProjectInfosByTeamId(teamId);
+    allConfigs.value = projectInfos.value;
+    dataLoaded.value = true;
+  }, (error)=>{
+    console.log(error);
+  });
+  // 데이터베이스 데이터 저장 로직
+};
+
+onMounted(async () => {
+  await storeFindAllProjectInfosByTeamId(teamId);
+  allConfigs.value = projectInfos.value;
+  dataLoaded.value = true;
+});
+
 watch(selectedConfigId, (newId) => {
   selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
+  updateConfigName.value = allConfigs.value[selectedIndex.value]?.title || "";
 });
+
+watch(activeTab, (newValue) => {
+  onTabChange(newValue);
+});
+
+const addNewConfig = async ()=>{
+  await storeInsertNewProjectInfo(teamId);
+  console.log("Insert 이후 Find 차례 selectedTeam id = ",teamId);
+  console.log("selectedTeam만 = ",teamId);
+  await storeFindAllProjectInfosByTeamId(teamId);
+  allConfigs.value = projectInfos.value;
+  console.log("After Insert All Configs = ", allConfigs.value);
+  
+}
+
+const onTabChange = (newTabIndex) => {
+  console.log("탭 체인지", newTabIndex);
+  activeTab.value = newTabIndex;
+  switch (newTabIndex) {
+    case 0:
+      currentComponent.value = markRaw(ProjectBuildBackendConfig);
+      break;
+    case 1:
+      currentComponent.value = markRaw(ProjectBuildFrontendConfig);
+      break;
+    case 2:
+      currentComponent.value = markRaw(ProjectBuildDBConfig);
+      break;
+  }
+};
+
+const onFocusInput = () => {
+  document.querySelector('.config-input').style.backgroundColor = '#e9f7ef';
+};
+
+const onBlurInput = async () => {
+  document.querySelector('.config-input').style.backgroundColor = '#fff';
+  await updateProjectInfoNameByProjectInfoId(selectedConfigId.value, updateConfigName.value, () => {
+    alert("업데이트 완료");
+  }, (error) => {
+    console.error(error);
+  });
+  await storeFindAllProjectInfosByTeamId(teamId);
+  allConfigs.value = projectInfos.value;
+  dataLoaded.value = true;
+};
 </script>
 
-<template>
-  <div class="main-content">
-    <div class="team-select" v-if="teamOptions.length > 0">
-      <label for="teamSelect">팀 선택:</label>
-      <select id="teamSelect" @change="handleTeamSelection">
-        <option disabled selected>설정 선택</option>
-        <option v-for="team in teamOptions" :key="team.id" :value="team.id">
-          {{ team.name }}
-        </option>
-      </select>
-    </div>
-    <b-tabs v-model="activeTab" @input="onTabChange">
-      <b-tab title="Backend">
-        <template #title>
-          <b>{{ activeTab === 0 ? '▶' : '' }} Backend 설정</b>
-        </template>
-      </b-tab>
-      <b-tab title="Frontend">
-        <template #title>
-          <b>{{ activeTab === 1 ? '▶' : '' }} Frontend 설정</b>
-        </template>
-      </b-tab>
-      <b-tab title="DB">
-        <template #title>
-          <b>{{ activeTab === 2 ? '▶' : '' }} DB 설정</b>
-        </template>
-      </b-tab>
-    </b-tabs>
-    <component v-if="dataLoaded" :is="currentComponent" :allConfigs="allConfigs" :selectedConfigId="selectedConfigId"
-      :selectedIndex="selectedIndex" @saveBackendData="saveBackendData" @saveFrontendData="saveFrontendData"
-      @saveDBData="saveDBData"></component>
-    <div v-if="dataLoaded" style="margin-top: 20px;">
-      <select v-model="selectedConfigId">
-        <option disabled selected>설정 선택</option>
-        <option v-for="(config, index) in allConfigs" :key="config.id" :value="config.id">
-          {{ config.title }}
-        </option>
-      </select>
-      <button @click="addNewConfig">+ 추가</button>
-    </div>
-    <div v-else>
-      <p>Loading...</p>
-    </div>
-  </div>
-</template>
-
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
 .main-content {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  background-color: #f0f4f8;
+  min-height: 100vh;
+}
+
+.config-container {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+
+.config-header {
+  background-color: #102a43;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+}
+
+.config-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.config-selection {
+  padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.input-group-container {
+  margin-bottom: 20px;
+}
+
+.config-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  color: #4a5568;
+  font-weight: 500;
+  text-align: left;  /* 레이블을 왼쪽으로 정렬 */
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.config-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e0;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.config-input:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  outline: none;
+}
+
+.config-select {
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+}
+
+.btn-primary {
+  background-color: #4299e1;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #3182ce;
+}
+
+.config-content {
+  padding: 20px;
+}
+
+.config-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+  transition: border-color 0.3s;
+}
+
+.config-input:focus {
+  border-color: #4299e1;
+  outline: none;
+}
+
+.no-selection-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #4a5568;
+}
+
+.no-selection-message i {
+  font-size: 24px;
+  margin-right: 10px;
+}
+
+.nav-tabs {
+  justify-content: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.nav-tabs .nav-link {
+  color: #4a5568;
+  border: none;
+  padding: 10px 20px;
+  margin-bottom: -1px;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.nav-tabs .nav-link.active {
+  color: #4299e1;
+  border-bottom: 2px solid #4299e1;
+}
+
+.tab-content {
   padding-top: 20px;
 }
-.team-select {
-  margin-top: 20px;
+
+.no-selection-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-selection-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.no-selection-description {
+  font-size: 16px;
+  color: #718096;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.no-selection-message i {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #4299e1;
+}
+
+.no-selection-message {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #4a5568;
+  background-color: #edf2f7;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 </style>

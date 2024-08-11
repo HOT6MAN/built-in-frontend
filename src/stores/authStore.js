@@ -7,7 +7,9 @@ export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
 
   let token = ref(localStorage.getItem('access_token') || '')
+
   const isLogined = ref(false);
+  
   let userId = ref('');
   let userName = ref('');
   let userEmail = ref('');

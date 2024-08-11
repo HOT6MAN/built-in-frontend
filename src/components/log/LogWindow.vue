@@ -32,7 +32,7 @@ async function connect(){
         console.log("error");
     })
     console.log("동적 리스너 생성 완료");
-    const url = "http://i11a606.p.ssafy.io:10002/hot6man";
+    const url = import.meta.env.VITE_VUE_API_URL;
     console.log("요청 연결 url = ", `${url}/ws/log`);
     const socket = new SockJS(`${url}/ws/log`, null, {
        transports: ['websocket'],

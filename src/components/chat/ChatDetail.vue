@@ -4,7 +4,10 @@ import {findAllMessageByChatroomId, findReceiver} from '@/api/chat.js';
 const props = defineProps({
   chatObject: Object,
   messages: Array,
-  userid : String
+  userid: {
+      type: [String, Number],
+      required: true
+    }
 });
 
 const emit = defineEmits(['back']);
@@ -13,7 +16,7 @@ const messageArray = ref([]);
 const chatroomObject = ref({});
 const newMessage = ref('');
 const receiverId = ref('');
-const receiverStatus = ref('');
+const receiverStatus = ref(false);
 let stompClient = null;
 
 const handleBack = () => {
@@ -58,10 +61,8 @@ const sendMessage = () => {
 async function connect() {
   // http://i11a606.p.ssafy.io:8080/
   // const socket = new SockJS(`http://localhost:8080/ws/chat`);
-  const socket = new SockJS(`http://3.34.252.184:8080/ws/chat`);
   console.log("props object = ",props.chatObject);
-  stompClient = Stomp.over(socket);
-  findAllMessageByChatroomId(props.chatObject.chatRoom.id, (response) => {
+  await findAllMessageByChatroomId(props.chatObject.chatRoom.id, (response) => {
     messageArray.value = response.data.data;
   }, (error) => {
     console.error('API 호출 오류:', error);
@@ -71,18 +72,25 @@ async function connect() {
   },(error)=>{
     console.log("error = ",error);
   });
+  const url = import.meta.env.VITE_VUE_API_URL;
+  const socket = new SockJS(`${url}/ws/chat`);
   const headers = {
-    userId: props.chatObject.userId,
-    chatroomId : props.chatObject.chatRoom.id,
-    receiverId : receiverId.value
+    'userId': props.chatObject.userId,
+    'chatroomId' : props.chatObject.chatRoom.id,
+    'receiverId' : receiverId.value,
+    'destination': '/ws/chat'
   };
+  stompClient = Stomp.over(socket);
   stompClient.connect(headers, async function (frame) {
+    console.log("connect Success");
     stompClient.subscribe('/sub/' + props.chatObject.chatRoom.id, function (message) {
       console.log("receive message = ",message.body);
       const receivedMessage = JSON.parse(message.body);
       messageArray.value.push(receivedMessage);
-      console.log(messageArray.value);
+      console.log(messageArray.value);  
       scrollToBottom(); 
+    }, function (error){
+      console.log("stomp connect error = ",error);
     });
 
     stompClient.subscribe('/sub/status/' + props.chatObject.chatRoom.id, function (message) {

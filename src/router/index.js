@@ -138,12 +138,12 @@ const router = createRouter({
       component: ProjectManagementView,
       children: [
         {
-          path: 'dashboard',
+          path: 'dashboard/:teamId',
           name: 'dashboard',
           component: ProjectDashboardView
         },
         {
-          path: 'config',
+          path: 'config/:teamId',
           name: 'projectbuildconfig',
           component: ProjectBuildConfigView
         },
@@ -153,12 +153,12 @@ const router = createRouter({
           component: ProjectBuildResultView
         },
         {
-          path: 'build',
+          path: 'build/:teamId',
           name: 'projectBuildStart',
           component: ProjectBuildStartView
         },
         {
-          path: 'log',
+          path: 'log/:teamId',
           name: 'projectBuildResultAndLogs',
           component: ProjectBuildResultAndLogsView
         },

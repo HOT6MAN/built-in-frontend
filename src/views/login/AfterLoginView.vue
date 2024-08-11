@@ -1,9 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
-import { useNotificationStore } from "@/stores/notificationStore.js";
-import { storeToRefs } from 'pinia';
-import EventSourcePolyfill from 'event-source-polyfill';
 const authStore = useAuthStore()
 const {authSaveAccessLocalStorage} = authStore
 

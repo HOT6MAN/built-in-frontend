@@ -10,8 +10,13 @@ async function findUsedProjectInfosByTeamId(teamId, success, fail){
     await api.get("/build/project/use/"+teamId).then(success).catch(fail);
 }
 
-async function insertNewProjectInfo(teamId, success, fail){
-    await api.post("/build/project/"+teamId).then(success).catch(fail);
+async function insertNewProjectInfo(teamId, title, success, fail){
+    await api.post(`/build/project/team/${teamId}/title/${title}`).then(success).catch(fail);
+}
+
+async function updateProjectInfoNameByProjectInfoId(projectInfoId, updateConfigName, success, fail){
+    console.log("put call");
+    await api.put("/build/project/"+projectInfoId, { 'updateProjectInfoName' : updateConfigName}).then(success).catch(fail);
 }
 
 async function saveBackendConfigs(projectInfoId, backendConfigs, success, fail){
@@ -40,13 +45,19 @@ async function addDynamicListener(dataObject, success, fail){
     .then(success).catch(fail);
 }
 
+async function buildStop(serviceScheduleId, success, fail){
+    await api.post("/build/deploy/"+serviceScheduleId).then(success).catch(fail);
+}
+
 export {findAllProjectInfosByTeamId,
     findUsedProjectInfosByTeamId,
     insertNewProjectInfo, 
+    updateProjectInfoNameByProjectInfoId,
     saveBackendConfigs, 
     saveFrontendConfigs, 
     saveDatabaseConfigs, 
     buildStart,
+    buildStop,
     findNPrevLogs,
     addDynamicListener
 };
