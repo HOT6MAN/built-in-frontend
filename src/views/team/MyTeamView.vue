@@ -50,13 +50,16 @@ onMounted(  async()=> {
           <router-link :to="{ name: 'myTeamRegister' }" style="text-decoration: none; color: white">팀 생성</router-link>
         </button>
       </div>
-      <!-- 팀이 없을 때 표시되는 메시지 -->
-      <p v-if="teams.value" class="no-teams-message">팀이 없습니다.</p>
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->
-      <div v-else class="teams">
+      <div v-if="teams.value" class="teams">
         <div v-for="(item, index) in teams" :key="index">
           <TeamCard :team="item" />
         </div>
+      </div>
+      <!-- 팀이 없을 때 표시되는 메시지 -->
+      <div v-else>
+        <p class="no-teams-message">아직 가입한 팀이 없습니다.
+          팀을 새로 만들어보세요!</p>
       </div>
     </div>
   </div>
