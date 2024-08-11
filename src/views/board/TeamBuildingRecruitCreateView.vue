@@ -23,18 +23,19 @@
 
         <b-form-group label="Domain" for="domain">
           <b-form-tags 
-          input-id="domain"           
-          :limit="limitCnt"
-          tag-variant="primary"
-          tag-pills
-          placeholder="작성 후 스페이스 바 눌러주세요" 
-          v-model="domain" 
-          remove-on-delete />
+            input-id="domain"           
+            :limit="1"
+            tag-variant="primary"
+            tag-pills
+            placeholder="작성 후 스페이스 바 눌러주세요" 
+            v-model="domain" 
+            remove-on-delete />
         </b-form-group>
 
         <b-form-group label="Desired positions" for="desired-positions">
           <b-form-tags
             input-id="desired-positions"            
+            :limit="limitCnt"
             tag-variant="primary"
             tag-pills
             separator=" "        
@@ -204,12 +205,7 @@ onMounted(() => {
     content.value = boardData.content;
   } else {
     findTeamList(params, (resp) => {
-      console.log("findTeamList Response = ",resp);
-      teamList.value = resp.data.data.map(item => {
-        const [key, value] = Object.entries(item)[0];
-        return { text: value, value: key };
-      });
-      console.log("team List = ",teamList.value);
+      teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
     }, (err) => console.error(err))
   }  
 })
