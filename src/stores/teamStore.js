@@ -1,4 +1,4 @@
-import {setTeam, getAllMyTeamByUserId, getMyTeamById, setJiraUrl, setGitUrl,setStatus
+import {setTeam,deleteTeamById, getAllMyTeamByUserId, getMyTeamById, setJiraUrl, setGitUrl,setStatus
 } from '@/api/team'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router';
@@ -22,6 +22,19 @@ export const useTeamStore = defineStore('team', ()=>{
                 console.log(response.data);
                 team.name = response.data
 
+                router.replace({ path: '/teams' });
+            },
+            (error)=>{
+                console.log(error);
+            }
+        )
+    }
+
+    const deleteTeam = async(teamId) =>{
+        await deleteTeamById(
+            teamId,
+            (response)=>{
+                console.log(response.data);
                 router.replace({ path: '/teams' });
             },
             (error)=>{
@@ -109,6 +122,7 @@ export const useTeamStore = defineStore('team', ()=>{
     return{
         teams,members, team,getTeam,getTeams,
         createTeam,
+        deleteTeam,
         fetchAllTeamsForUser,
         fetchOneTeamsForUser,
         updateJiraUrl,

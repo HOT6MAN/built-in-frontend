@@ -2,6 +2,7 @@
 import { onMounted,ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTeamStore } from '@/stores/teamStore';
+import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import TeamMemberCard from '@/components/team/TeamMemberCard.vue'
 import WebRtc from '@/components/team/WebRtc.vue';
@@ -10,9 +11,12 @@ import MemberSidebar from '@/components/member/MemberSidebar.vue';
 const cuurentRoute = useRoute()
 const teamId = ref(cuurentRoute.params.teamId)
 
+const authStore = useAuthStore()
+const {userId} = storeToRefs(authStore)
+
 const teamStore = useTeamStore()
 const {getTeam: team} = storeToRefs(teamStore)
-const { fetchOneTeamsForUser, updateJiraUrl, updateGitUrl, updateStatus } = teamStore
+const { fetchOneTeamsForUser, updateJiraUrl, updateGitUrl, updateStatus, deleteTeam } = teamStore
 
 const editingJiraUrl = ref(false);
 const editingGitUrl = ref(false);
@@ -20,7 +24,7 @@ const editingGitUrl = ref(false);
 const newJiraUrl = ref('');
 const newGitUrl = ref('');
 
-//const team = ref({})
+const showDelete = ref(false)
 
 onMounted( async ()=> {
     if (teamId.value) { // teamId가 존재할 경우에만 호출
@@ -30,6 +34,17 @@ onMounted( async ()=> {
     }
     console.log(team.value);
     initializeUrls()
+
+    for (let i = 0; i < team.value.memberTeams.length; i++) {
+        const element =  team.value.memberTeams[i];
+
+        if(element.leader && element.member.id==userId.value ){
+            console.log('리더');
+            showDelete.value = true
+        }
+        
+    }
+
 })
 
 const fetchTeamInfo = async(teamId) =>{
@@ -68,6 +83,10 @@ const toggleEditGitUrl = () => {
 const changeStatus = async () =>{
     await updateStatus({id:teamId.value})
 
+}
+
+const clickDelete = () =>{
+    deleteTeam(team.value.id)
 }
 
 </script>
@@ -139,6 +158,9 @@ const changeStatus = async () =>{
                 </div>
                 <div class="web-rtc">
                     <WebRtc/>
+                </div>
+                <div v-if="showDelete">
+                    <button @click="clickDelete">삭제</button>
                 </div>
             </div>
         </div>

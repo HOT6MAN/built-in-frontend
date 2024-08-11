@@ -4,6 +4,10 @@ async function setTeam(param, success, fail){
     await api.post('/teams', param).then(success).catch(fail);
 }
 
+async function deleteTeamById(teamId,success, fail){
+    await api.delete(`/teams/${teamId}`).then(success).catch(fail);
+}
+
 
 async function getAllMyTeamByUserId(memberId,success, fail){
     await api.get(`/teams/${memberId}`).then(success).catch(fail);
@@ -29,6 +33,7 @@ async function setStatus(param, success, fail){
 
 export{
     setTeam,
+    deleteTeamById,
     getAllMyTeamByUserId,
     getMyTeamById,
     setJiraUrl,
