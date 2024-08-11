@@ -77,37 +77,42 @@ const changeStatus = async () =>{
         <MemberSidebar class="sidebar" />
         <div class="team-info">
             <div class="team-header">
-                <h1 class="team-name">{{ team.name }}</h1>
-                <p class="team-description">{{ team.content }}</p>
-
-                
+                <div class="sc-crHmcD fLCeMm">
+                    <label class="link-label">팀 이름 :</label>
+                    <h2 class="fw-bold ">{{ team.name }}</h2>
+                </div>
+                <div class="sc-crHmcD fLCeMm ">
+                    <label class="link-label">팀 소개 :</label>
+                    <p >{{ team.content }}</p>
+                </div>
+               
                     
-                <div class="team-links">
+                <div class="team-links ">
                     <div class="link-row">
                         <div class="link-group">
-                            <label class="link-label">Jira URL:</label>
+                            <label class="link-label">Jira URL :</label>
                             <input
                                 type="text"
                                 v-model="newJiraUrl"
                                 :disabled="!editingJiraUrl"
                                 class="link-input"
-                                placeholder="Enter Jira URL"
+                                placeholder="Jira URL을 등록해주세요"
                             />
                             <button @click="toggleEditJiraUrl" class="link-button">
-                                {{ editingJiraUrl ? 'Save' : 'Edit' }}
+                                {{ editingJiraUrl ? '저장' : '수정' }}
                             </button>
                         </div>
                         <div class="link-group">
-                            <label class="link-label">Git URL:</label>
+                            <label class="link-label">Git URL :</label>
                             <input
                                 type="text"
                                 v-model="newGitUrl"
                                 :disabled="!editingGitUrl"
                                 class="link-input"
-                                placeholder="Enter Git URL"
+                                placeholder="Git URL을 등록해주세요"
                             />
                             <button @click="toggleEditGitUrl" class="link-button">
-                                {{ editingGitUrl ? 'Save' : 'Edit' }}
+                                {{ editingGitUrl ? '저장' : '수정' }}
                             </button>
                         </div>
                     </div>
@@ -141,6 +146,24 @@ const changeStatus = async () =>{
 </template>
 
 <style scoped>
+
+.fLCeMm {
+    display: flex; /* Flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 30px; /* label과 input 간의 간격 설정 */
+    width: 100%; /* 전체 너비 사용 */
+    
+}
+
+.fLCeMm label {
+    font-weight: bold;
+    font-size: 1.050rem;
+    color: var(--text1);
+    white-space: nowrap; /* label의 텍스트가 줄 바꿈되지 않도록 설정 */
+    width: 120px; /* label의 고정 너비 설정 */
+    
+}
+
 .badge-recruit {
     background-color: green; /* Leader 배경 색상 */
     color: #fff; /* Leader 텍스트 색상 */
@@ -167,25 +190,24 @@ const changeStatus = async () =>{
     background-color: #960606;
 }
 
-    .container {
-        display: flex;
-        padding-top: 120px;
-        padding-left: 20px;
-        border: 1px solid #ddd;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .sidebar {
-    width: 200px;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    margin-right: 20px;
-    background-color: #f9f9f9; /* 사이드바 배경색을 설정했습니다 */
-    border-radius: 8px; /* 사이드바에 둥근 모서리를 추가했습니다 */
-}
+.container {
+    display: flex;
+    padding-top: 75px;
+    padding-left: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* 컨테이너의 높이를 100%로 설정 */
+    margin-left: 220px;
+    width: 80%;
+  }
+
 
 .team-header {
-    border-bottom: 2px solid #007BFF; /* 팀 이름 아래에 파란색 경계선 추가 */
+    border-bottom: 2px solid #DEE2E6; /* 팀 이름 아래에 파란색 경계선 추가 */
     padding-bottom: 10px;
+    display: flex; /* jlNcEk 요소들을 flexbox로 설정 */
+    flex-direction: column;
+    gap: 15px; /* jlNcEk 내 요소 간의 간격 설정 */
 }
 
 .team-name {
@@ -210,6 +232,7 @@ const changeStatus = async () =>{
     display: flex;
     flex-direction: column;
     gap: 20px; /* 팀 이름과 소개, 상세 정보 사이에 여백을 추가했습니다 */
+    margin-top: 15px;
 }
 
 h1 {
@@ -223,6 +246,10 @@ p {
     color: #666; /* 소개 글 색상을 설정했습니다 */
     margin: 0;
     line-height: 1.6; /* 소개 글의 줄 간격을 설정했습니다 */
+}
+
+button{
+    margin:-3px
 }
 
 .team-links {
@@ -254,6 +281,7 @@ p {
     border: 1px solid #ccc;
     border-radius: 4px;
     flex: 1;
+    margin-left: 25px;
 }
 
 .link-input:disabled {
@@ -265,14 +293,15 @@ p {
     padding: 8px 12px;
     border: none;
     border-radius: 4px;
-    background-color: #007BFF;
+    background-color: #12B886;
     color: #fff;
     cursor: pointer;
     font-size: 0.9rem;
+    
 }
 
 .link-button:hover {
-    background-color: #0056b3;
+    background-color: #0f926b;;
 }
 
 .status-group {
@@ -304,13 +333,13 @@ p {
     gap: 10px; /* 팀 구성원 사이에 여백을 추가했습니다 */
 }
 
-.team-members > div {
+/* .team-members > div {
     border: 1px solid #ddd;
     border-radius: 8px;
-    padding: 10px;
+    padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .web-rtc {
     width: 35%;
@@ -319,6 +348,7 @@ p {
     padding: 10px;
     background-color: #fff;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    height: 500px;
 }
 
 

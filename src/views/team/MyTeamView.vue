@@ -42,8 +42,8 @@ onMounted(  async()=> {
 
 </script>
 <template>
+  <MemberSidebar />
   <div class="container">
-    <MemberSidebar class="sidebar" />
     <div class="content">
       <div class="header">
         <button class="create-button">
@@ -65,18 +65,15 @@ onMounted(  async()=> {
 <style scoped>
   .container {
     display: flex;
-    padding-top: 120px;
+    padding-top: 75px;
     padding-left: 20px;
     border: 1px solid #ddd;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* 컨테이너의 높이를 100%로 설정 */
+    margin-left: 220px;
+    width: 80%;
   }
-  
-  .sidebar {
-    width: 200px;
-    padding: 20px;
-    border-right: 1px solid #ddd;
-    margin-right: 20px;
-  }
+
   
   .content {
   flex-grow: 1;
@@ -84,6 +81,7 @@ onMounted(  async()=> {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
 }
 
 .header {
@@ -92,18 +90,17 @@ onMounted(  async()=> {
 }
 
 .create-button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  background-color: #007BFF;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #12B886;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
 }
 
 .create-button:hover {
-  background-color: #0056b3;
+  background-color: #0f926b;;
 }
 
 .no-teams-message {
@@ -116,7 +113,8 @@ onMounted(  async()=> {
 .teams {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 0px;
+  width: 100%;
 }
 
 .teams > div {

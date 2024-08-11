@@ -126,6 +126,7 @@ export const useAuthStore = defineStore('auth', () => {
       email,
       (response) =>{
         console.log(response.data);
+        return response.data;
       },
       (error)=>{
         console.error('Error:', error);

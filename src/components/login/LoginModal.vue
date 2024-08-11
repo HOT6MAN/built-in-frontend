@@ -21,10 +21,18 @@ const email = ref('')
 const title = ref('로그인')
 const showJoin = ref(true)
 const showMsg = ref(false)
-function sendEmail(){
-  authEmailLink(email.value)
+const emailResponse= ref('')
+
+async function sendEmail(){
+  emailResponse.value = await authEmailLink(email.value)  
+  console.log(emailResponse.value);
   showMsg.value = true
 }
+
+function resetEmailRes(){
+  emailResponse.value=''
+}
+
 
 function changeTitle(){
   if(title.value=='로그인'){
@@ -45,16 +53,33 @@ function changeTitle(){
   <div class="modal-content">
     <span class="close" @click="toggleLoginModal">&times;</span>
     <h3>{{title}}</h3>
+  
     
-    <form v-on:submit.prevent class="auth-email-form">
-      <input type="email" placeholder="이메일을 입력하세요." v-model="email" required
-      @keyup.enter="sendEmail()">
-      <button type="button" @click="sendEmail()">{{title}}</button>
-      <p v-if="showMsg" class="showMsg">※ 이메일 확인해주세요!</p>
-      <p v-else></p>
-    </form>
+    <div class="email-login">
+      <h5>이메일로 {{title}}</h5>
+
+      <div class="email-sueccess" v-if="emailResponse!=''">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" 
+      class="AuthEmailSuccess_icon__W395M" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <path fill="none" d="M0 0h24v24H0z"></path>
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+      </svg>
+      <!-- {{emailResponse}} 링크가 이메일로 전송되었습니다. -->
+      <div class="AuthEmailSuccess_description__ek0gb">회원가입 링크가 이메일로 전송되었습니다.</div>  
+    </div>
+
+      <form v-on:submit.prevent class="auth-email-form"  v-else>
+        <input type="email" placeholder="이메일을 입력하세요." v-model="email" required
+        @keyup.enter="sendEmail()">
+        <button type="button" @click="sendEmail()">{{title}}</button>
+        <p v-if="showMsg" class="showMsg">※ 이메일 확인해주세요!</p>
+        <p v-else></p>
+      </form>
+    </div>
+    
+
     <div class="social-login">
-      <h6>소셜 계정으로 {{title}}</h6>
+      <h5>소셜 계정으로 {{title}}</h5>
       <a :href="`${url}/oauth2/authorization/naver`">
         <img class="img-oauth" src="@/icons/Navbar/btn_naver.png" alt="Naver 로그인">
       </a>
@@ -71,12 +96,12 @@ function changeTitle(){
           </g>
         </svg>
       </a>
-      <div class="toggle-links">
-        <div v-show="showJoin">
+      <div class="toggle-links " >
+        <div v-show="showJoin"  class="AuthForm_link">
           <h6>아직 회원이 아니신가요? <span @click="changeTitle">회원가입</span></h6>
         </div>
-        <div v-show="!showJoin">
-          <h6>계정이 이미 있으신가요? <span @click="changeTitle">로그인</span></h6>
+        <div v-show="!showJoin" class="AuthForm_link">
+          <h6>계정이 이미 있으신가요? <span @click="changeTitle" >로그인</span></h6>
         </div>
       </div>
     </div>
@@ -86,6 +111,34 @@ function changeTitle(){
 
 <!-- 스타일 -->
 <style scoped>
+.AuthEmailSuccess_icon__W395M {
+    font-size: 1.5rem;
+}
+
+svg:not(:root) {
+    overflow-clip-margin: content-box;
+    overflow: hidden;
+}
+
+.email-sueccess{
+    display: flex;
+    align-items: center;
+    background: #c3fae8;
+    border: 1px solid #96f2d7;
+    padding-left: .75rem;
+    padding-right: .75rem;
+    height: 3rem;
+    color: #087f5b;
+    white-space: pre;
+}
+
+.AuthForm_link{
+  display: inline-block;
+  font-weight: 700;
+  cursor: pointer;
+
+  color: #12b886
+}
 .modal {
   display: flex;
   justify-content: center;
@@ -115,6 +168,21 @@ function changeTitle(){
 
 }
 
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    unicode-bidi: isolate;
+}
+.modal-content h2{
+  font-size: 1.3em;
+    color: #212529;
+}
+
 .close {
   position: absolute; /* 절대 위치로 설정 */
   top: 10px; /* 모달 상단에서 10px */
@@ -132,6 +200,12 @@ function changeTitle(){
   cursor: pointer;
 }
 
+.auth-email-form{
+  width: 100%;
+    display: flex;
+
+}
+
 .auth-email-form input {
   width: calc(100% - 20px);
   padding: 10px;
@@ -141,7 +215,7 @@ function changeTitle(){
 }
 
 .auth-email-form button {
-  width: calc(100% - 20px);
+  width: 6rem;
   padding: 10px;
   background-color: #4CAF50;
   color: white;
@@ -213,6 +287,12 @@ function changeTitle(){
 
 .toggle-links span:hover {
   color: #0056b3;
+}
+
+h5 {
+  margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: #868e96;
 }
 
 .showMsg {

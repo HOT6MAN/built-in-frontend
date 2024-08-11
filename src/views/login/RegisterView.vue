@@ -100,7 +100,10 @@ function signUp(){
          
 
             <button class="fLtQtN" color="teal" @click="signUp">가입</button>
-            <button class="cOBVPj">취소</button>
+            <button class="cOBVPj">
+                <router-link :to="{name:'home'}"
+                        style="text-decoration: none; color: black">취소</router-link>
+            </button>
 
         </div>
 

@@ -11,14 +11,14 @@ defineProps({
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
             <div class="col-md-4">
-                <img src="" class="img-fluid rounded-start" alt="Team Member">
+                <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="Team Member">
             </div>
             <div class="col-md-8">
                 <div class="card-body">
                     <div class="name-container">
                         <h3 class="card-title">{{ member.member.name }}</h3>
                         <p class="card-text" v-if="member.leader">
-                            <span class="badge badge-leader">Leader</span>
+                            <span class="badge badge-leader">팀장</span>
                         </p>
                     </div>
                     <div class="info-container">
