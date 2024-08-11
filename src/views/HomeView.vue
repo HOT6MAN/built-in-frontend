@@ -15,7 +15,7 @@
     </section>
     <section>
     <div class="intro2">
-      <img class="imageIcon1" alt="" src="@/icons/Home/teambuilding-image.png" />
+      <!-- <img class="imageIcon1" alt="" src="@/icons/Home/teambuilding-image.png" /> -->
       <div class="intro2Box">
         <h5>프로젝트 빌드부터 테스트까지</h5>
         <h1>모두 Built-in에서</h1>
@@ -25,7 +25,7 @@
     </section>
     <section>
     <div class="intro3">
-      <img class="imageIcon2" alt="" src="@/icons/Home/pipeline-image.png" />
+      <!-- <img class="imageIcon2" alt="" src="@/icons/Home/pipeline-image.png" /> -->
       <div class="intro3Box">
       <h5>팀 빌딩부터 빌드까지, 이 모든 것을 한번에</h5>
       <h1>Built-in</h1>
