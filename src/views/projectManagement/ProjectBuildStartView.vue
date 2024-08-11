@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue';
-import SideBarView from '../Bars/SideBarView.vue';
 import ProjectBuildStartComponent from '@/components/ProjectManagement/ProjectBuildStartComponent.vue';
 import ProjectBuildStartDataCheck from '@/components/ProjectManagement/ProjectBuildStartDataCheck.vue';
 
@@ -15,17 +14,30 @@ const handleConfigSelect = (config) => {
 </script>
 
 <template>
-  <div class="container">
-    <div class="content">
-      <ProjectBuildStartComponent @configSelect="handleConfigSelect" />
+  <div class="row asdf">
+    <div class="col-5 content">
+      <div class="row">
+        <ProjectBuildStartComponent @configSelect="handleConfigSelect" />
+      </div>
+      <div class="row">
+        
+      </div>
     </div>
-    <div class="content" v-if="dataLoaded">
+    <div class="col-7 content" v-if="dataLoaded">
       <ProjectBuildStartDataCheck :config="selectedConfig" />
     </div>
   </div>
 </template>
 
 <style scoped>
+* {
+  border: 1px solid red;
+}
+
+.asdf {
+  border: 1px solid green;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -33,23 +45,9 @@ html, body {
   width: 100%;
 }
 
-.container {
-  display: flex;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  width: 100vw;
-}
-
-.sidebar {
-  width: 250px;
-  background-color: #2d3648;
-  height: 100%;
-}
-
-.content {
+/* .content {
   flex: 1;
   padding: 20px;
   overflow: auto;
-}
+} */
 </style>
