@@ -12,25 +12,40 @@
               {{ config.title }}
             </option>
           </select>
-          <button class="btn btn-primary" @click="addNewConfig">+ 추가</button>
+          <button class="btn btn-primary" @click="showModal">+ 추가</button>
         </div>
       </div>
-      
+
+      <!-- 모달 -->
+      <div class="modal fade" id="newBuildModal" tabindex="-1" aria-labelledby="newBuildModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="newBuildModalLabel">새로운 빌드 환경 생성</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="buildName" class="form-label">빌드 이름</label>
+                <input type="text" class="form-control" id="buildName" v-model="updateConfigName">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="button" class="btn btn-primary" @click="addNewConfig">생성</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div v-if="selectedConfigId" class="config-content">
         <div class="input-group-container">
-        <label for="config-input" class="config-label">선택된 프로젝트 환경설정 이름</label>
-        <div class="input-group">
-          <input 
-            id="config-input"
-            v-model="updateConfigName" 
-            @focus="onFocusInput"
-            @blur="onBlurInput"
-            type="text" 
-            class="form-control config-input" 
-            placeholder="설정 제목" 
-          />
+          <label for="config-input" class="config-label">선택된 프로젝트 환경설정 이름</label>
+          <div class="input-group">
+            <input id="config-input" v-model="updateConfigName" @focus="onFocusInput" @blur="onBlurInput" type="text"
+              class="form-control config-input" placeholder="설정 제목" />
+          </div>
         </div>
-      </div>
 
         <b-tabs v-model="activeTab" @input="onTabChange" class="mt-4">
           <b-tab title="Backend">
@@ -50,16 +65,9 @@
           </b-tab>
         </b-tabs>
 
-        <component 
-          v-if="dataLoaded" 
-          :is="currentComponent" 
-          :allConfigs="allConfigs" 
-          :selectedConfigId="selectedConfigId"
-          :selectedIndex="selectedIndex" 
-          @saveBackendData="saveBackendData" 
-          @saveFrontendData="saveFrontendData"
-          @saveDBData="saveDBData"
-        ></component>
+        <component v-if="dataLoaded" :is="currentComponent" :allConfigs="allConfigs"
+          :selectedConfigId="selectedConfigId" :selectedIndex="selectedIndex" @saveBackendData="saveBackendData"
+          @saveFrontendData="saveFrontendData" @saveDBData="saveDBData"></component>
       </div>
 
       <div v-else class="no-selection-message">
@@ -86,9 +94,10 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore.js';
 import { useRoute } from 'vue-router';
 import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
+import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.min';
 
 const route = useRoute();
-const teamId = route.params.teamId; 
+const teamId = route.params.teamId;
 
 const authStore = useAuthStore();
 const { userId } = storeToRefs(authStore);
@@ -109,7 +118,7 @@ const updateConfigName = ref("");
 
 // 탭에 따른 설정 필터링
 const filteredConfigs = computed(() => {
-  console.log("Filterling call active value = ",activeTab.value);
+  console.log("Filterling call active value = ", activeTab.value);
   if (activeTab.value === 0) {
     return allConfigs.value.map(config => ({
       ...config,
@@ -129,38 +138,38 @@ const filteredConfigs = computed(() => {
 });
 
 const saveBackendData = async (backendConfigs) => {
-  console.log("전달받은 backend = ",backendConfigs);
-  await saveBackendConfigs(selectedConfigId.value, backendConfigs, async (response)=>{
+  console.log("전달받은 backend = ", backendConfigs);
+  await saveBackendConfigs(selectedConfigId.value, backendConfigs, async (response) => {
     alert("백엔드 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
     dataLoaded.value = true;
-  }, (error)=>{
+  }, (error) => {
     console.log(error);
   })
-  
+
 };
 
 const saveFrontendData = async (frontendConfigs) => {
-  console.log("전발받은 frontend config = ",frontendConfigs);
-  await saveFrontendConfigs(selectedConfigId.value, frontendConfigs, async(response)=>{
+  console.log("전발받은 frontend config = ", frontendConfigs);
+  await saveFrontendConfigs(selectedConfigId.value, frontendConfigs, async (response) => {
     alert("프론트엔드 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
     dataLoaded.value = true;
-  }, (error)=>{
+  }, (error) => {
     console.log(error);
   });
   // 프론트엔드 데이터 저장 로직
 };
 
 const saveDBData = async (databaseConfigs) => {
-  await saveDatabaseConfigs(selectedConfigId.value, databaseConfigs, async (response)=>{
+  await saveDatabaseConfigs(selectedConfigId.value, databaseConfigs, async (response) => {
     alert("DB 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
     dataLoaded.value = true;
-  }, (error)=>{
+  }, (error) => {
     console.log(error);
   });
   // 데이터베이스 데이터 저장 로직
@@ -181,14 +190,33 @@ watch(activeTab, (newValue) => {
   onTabChange(newValue);
 });
 
-const addNewConfig = async ()=>{
-  await storeInsertNewProjectInfo(teamId);
-  console.log("Insert 이후 Find 차례 selectedTeam id = ",teamId);
-  console.log("selectedTeam만 = ",teamId);
-  await storeFindAllProjectInfosByTeamId(teamId);
-  allConfigs.value = projectInfos.value;
-  console.log("After Insert All Configs = ", allConfigs.value);
-  
+// '+ 추가' 버튼을 눌렀을 때, 모달 띄우기
+const showModal = () => {
+  const modal = new Modal(document.getElementById('newBuildModal'));
+  modal.show();
+};
+
+
+const addNewConfig = async () => {
+
+  // 1. projectInfo 테이블에 데이터 넣기
+  // projectInfos도 이 시점에서 업데이트됨
+  await storeInsertNewProjectInfo(teamId, updateConfigName.value);
+
+
+  // 2. 모달 닫기
+  const modalElement = document.getElementById('newBuildModal');
+  const modalInstance = Modal.getInstance(modalElement);
+  if (modalInstance) {
+    modalInstance.hide();
+  }
+
+  // console.log("Insert 이후 Find 차례 selectedTeam id = ", teamId);
+  // console.log("selectedTeam만 = ", teamId);
+  // // await storeFindAllProjectInfosByTeamId(teamId);
+  // allConfigs.value = projectInfos.value;
+  // console.log("After Insert All Configs = ", allConfigs.value);
+
 }
 
 const onTabChange = (newTabIndex) => {
@@ -273,7 +301,8 @@ const onBlurInput = async () => {
   font-size: 16px;
   color: #4a5568;
   font-weight: 500;
-  text-align: left;  /* 레이블을 왼쪽으로 정렬 */
+  text-align: left;
+  /* 레이블을 왼쪽으로 정렬 */
 }
 
 .input-group {
