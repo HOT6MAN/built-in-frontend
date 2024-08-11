@@ -50,7 +50,7 @@ const onFileSelected = (event)=>{
       <div class="form-row">
         <div class="form-group">
           <label for="name">이름</label>
-          <input type="text" id="name" v-model="updateMemberObject.name" readonly>
+          <input type="text" id="name" v-model="updateMemberObject.name" readonly />
         </div>
         <div class="form-group">
           <label for="gender">닉네임</label>
@@ -59,27 +59,27 @@ const onFileSelected = (event)=>{
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="nickname">핸드폰</label>
-          <input type="text" id="nickname" v-model="updateMemberObject.phone" />
-        </div>
-        <div class="form-group">
           <label for="email">이메일</label>
           <input type="email" id="email" v-model="updateMemberObject.email" readonly />
+        </div>
+        <div class="form-group">
+          <label for="nickname">핸드폰</label>
+          <input type="text" id="nickname" v-model="updateMemberObject.phone" />
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="country">주소</label>
-          <input type="text" id="region" v-model="updateMemberObject.address" />
+          <label for="region">가입일</label>
+          <input type="text" id="region" v-model="updateMemberObject.lgnMtd" readonly />
         </div>
         <div class="form-group">
-          <label for="region">가입일</label>
-          <input type="text" id="region" v-model="updateMemberObject.lgnMtd" readonly>
+          <label for="country">주소</label>
+          <input type="text" id="region" v-model="updateMemberObject.address" />
         </div>
       </div>
       <button type="button" class="save-button" @click="updateMember">저장</button>
     </form>
-    <hr>
+    <hr />
     <div class="account-deletion">
       <h3>계정 삭제</h3>
       <p>이메일 주소 입력</p>
@@ -90,9 +90,6 @@ const onFileSelected = (event)=>{
         <ul>
           <li>이 계정을 더 이상 사용할 수 없게 됩니다.</li>
           <li>계정과 관계된 모든 정보가 삭제됩니다.</li>
-          <li>보유중인 캐시는 소멸되며, 정산 및 환불이 불가합니다.</li>
-          <li>신청한 유료 이벤트는 자동으로 신청취소 처리되며, 캐시는 환불되지 않습니다.</li>
-          <li>플랫폼에 등록한 모든 이벤트가 종료되지 않으면 탈퇴할 수 없습니다.</li>
           <li>정말로 계정을 삭제하고 싶다면, 이메일 주소를 입력해주세요.</li>
         </ul>
       </div>
@@ -134,11 +131,10 @@ label {
   width: 150px;
   height: 150px;
   border: 1px solid #ccc;
-  border-radius: 50%;
   margin-right: 10px;
 }
 
-input[type="file"] {
+input[type='file'] {
   width: calc(100% - 160px);
 }
 
@@ -166,7 +162,7 @@ input[readonly] {
 
 .save-button {
   padding: 10px 20px;
-  background-color: #ffa500;
+  background-color: #2d3648;
   border: none;
   color: white;
   border-radius: 4px;
@@ -178,7 +174,7 @@ input[readonly] {
 }
 
 .save-button:hover {
-  background-color: #ff8c00;
+  background-color: #2d3648;
 }
 
 .account-deletion {
@@ -223,5 +219,4 @@ input[readonly] {
 .delete-button:hover {
   background-color: #ff1c1c;
 }
-
 </style>
