@@ -8,9 +8,9 @@
           <p>회원</p>
       </div>
             <div class="dropdownContainer">
-        <div><RouterLink :to="{name: 'projectbuildconfig'}"><b-button class="dropdownItem">계정</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildStart'}"><b-button class="dropdownItem">관심</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildResultAndLogs'}"><b-button class="dropdownItem">메신저</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">계정</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">관심</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">메신저</b-button></RouterLink></div>
       </div>
 
       <!-- 환경설정 영역 -->
@@ -19,9 +19,9 @@
           <p>팀</p>
       </div>
       <div class="dropdownContainer">
-        <div><RouterLink :to="{name: 'projectbuildconfig'}"><b-button class="dropdownItem">나의 팀</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildStart'}"><b-button class="dropdownItem">모집공고</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildResultAndLogs'}"><b-button class="dropdownItem">팀원관리</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'myteam'}"><b-button class="dropdownItem">나의 팀</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">모집공고</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">팀원관리</b-button></RouterLink></div>
       </div>
       <div class="main-category">
           <img class="sidebar-icon" alt="" src="@/icons/MemberSidebar/resume.svg" />
