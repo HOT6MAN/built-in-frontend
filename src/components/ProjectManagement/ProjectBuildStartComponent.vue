@@ -1,9 +1,13 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, defineProps } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProjectStore } from '@/stores/projectStore.js';
 import { useAuthStore } from '../../stores/authStore';
 import {getAllMyTeamByUserId} from '@/api/team.js';
+
+const props = defineProps({
+  teamId: String,
+})
 
 const authStore = useAuthStore();
 const {userId} = storeToRefs(authStore);
@@ -67,6 +71,8 @@ const startBuild = () => {
 </script>
 
 <template>
+  
+
   <div class="config-selector">
     <div class="team-select" v-if="teamOptions.length > 0">
       <label for="teamSelect">팀 선택:</label>

@@ -29,6 +29,12 @@
 
 <script setup>
 import SideBarView from '../Bars/SideBarView.vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const teamId = route.params.teamId; 
+
+console.log("DashBoard View Team Id = ",teamId);
 </script>
 
 <style scoped>

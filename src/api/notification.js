@@ -10,4 +10,8 @@ async function findAllUnreadNotificationByUserId(userId, success, fail){
     await api.get("/notify/"+userId).then(success).catch(fail);
 }
 
-export {send, findAllUnreadNotificationByUserId}; 
+async function findAllNotificationByUserId(userId, success, fail){
+    await api.get("/notify/list/"+userId).then(success).catch(fail);
+}
+
+export {send, findAllUnreadNotificationByUserId, findAllNotificationByUserId}; 

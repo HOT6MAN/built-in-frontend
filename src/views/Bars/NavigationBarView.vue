@@ -6,14 +6,14 @@
       </RouterLink>
       <div class="menu">
         <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
-        <RouterLink :to="{name: 'dashboard'}" class="menuButton">프로젝트 관리</RouterLink>
+        <RouterLink :to="{name: 'projectManagementView'}" class="menuButton">프로젝트 관리</RouterLink>
         <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
       </div>
     <div class="rightMenu">
     <div v-if="userId" class="afterLoginContainer">
       <!-- 알람 여부에 따른 상태 변화 -->
-      <img v-if="unreadNotificationSize != 0" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" />
-      <img v-if="unreadNotificationSize == 0" class="alarmicon" alt="알림" src="@/icons/Navbar/state=off.svg" />
+      <img v-if="unreadNotificationSize != 0" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" @click="toggleNotificationModal" />
+      <img v-if="unreadNotificationSize == 0" class="alarmicon" alt="알림" src="@/icons/Navbar/state=off.svg" @click="toggleNotificationModal" />
       <b-button class="rightButtons" @click="clickLogout">로그아웃</b-button>
       <div @click="routeToMemberProfile">
         <b-button class="rightButtons"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
@@ -25,6 +25,7 @@
     </div>
   </div>
   <LoginModal :showLoginModal="showLoginModal" :toggleLoginModal="toggleLoginModal"/>
+  <NotificationModal :showNotificationModal="showNotificationModal" :toggleNotificationModal="toggleNotificationModal"></NotificationModal>
 </template>
 
 
@@ -32,11 +33,8 @@
   import { defineComponent, ref } from 'vue'
   import { RouterLink, RouterView } from 'vue-router'
   import { useAuthStore } from '@/stores/authStore.js';
-  import refreshAxios from "@/util/axios-refresh"
   import LoginModal from '@/components/login/LoginModal.vue';
-  import ProjectBuildConfigView from '../projectManagement/ProjectBuildConfigView.vue';
-  import {createJenkinsJob, updateJenkinsJob, createJenkinsCredential, jenkinsTest, deployTest, find400Log
-    ,addDynamicListener} from '@/api/jenkins.js';
+  import NotificationModal from '../../components/notification/NotificationModal.vue';
   import { storeToRefs } from 'pinia';
   import {useNotificationStore} from '@/stores/notificationStore.js';
 
@@ -48,7 +46,6 @@
   const showLoginModal = ref(false);
   const {userId, userName, userEmail} = storeToRefs(authStore);
   
-  console.log("userId = ",userId.value, " // userName = ", userName.value + " // userEmail = ",userEmail.value);
   const toggleLoginModal = () => {
     showLoginModal.value = !showLoginModal.value;
     };
@@ -66,6 +63,12 @@
     defineComponent({
     name: "NavigationBarBeforeLogged"
     })
+
+
+    const showNotificationModal = ref(false);
+    const toggleNotificationModal = ()=>{
+      showNotificationModal.value = !showNotificationModal.value;
+    }
 </script>
 
 <style scoped>

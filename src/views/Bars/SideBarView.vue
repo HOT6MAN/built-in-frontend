@@ -12,10 +12,10 @@
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Config.svg" />
           <p>환경설정</p>
       </div>
-      <div class="dropdownContainer">
-        <div><RouterLink :to="{name: 'projectbuildconfig'}"><b-button class="dropdownItem">빌드 환경 설정</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildStart'}"><b-button class="dropdownItem">빌드 시작</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildResultAndLogs'}"><b-button class="dropdownItem">배포 보기</b-button></RouterLink></div>
+      <div class="dropdownBuild">
+        <div><RouterLink :to="{name: 'projectbuildconfig' , params:{teamId : teamId}}"><b-button class="collab">빌드 환경 설정</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildStart', params:{teamId : teamId}}"><b-button class="collab">빌드 시작</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildResultAndLogs', params:{teamId:teamId}}"><b-button class="collab">배포 보기</b-button></RouterLink></div>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
@@ -34,7 +34,18 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, defineProps } from 'vue';
+
+const props = defineProps({
+  teamId : Number,
+});
+const teamId = props.teamId;
+const isOpen = ref(false);
+console.log("Side bar props Team Id = ",props.teamId);
+const toggleDropdown = () => {
+  isOpen.value = !isOpen.value;
+};
 
 </script>
 

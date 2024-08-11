@@ -8,11 +8,14 @@ import {useRoute} from 'vue-router';
 import { storeToRefs } from 'pinia';
 import {useAuthStore} from '@/stores/authStore.js';
 import { useNotificationStore } from "@/stores/notificationStore.js";
+import { useChatStore } from './stores/chatStore';
 
 const notificationStore = useNotificationStore();
 const { storeFindAllUnreadNotificationByUserId } = notificationStore;
 const authStore = useAuthStore();
 const {userId, isLogined} = storeToRefs(authStore);
+const chatStore = useChatStore();
+const {chatOpen} = storeToRefs(chatStore);
 
 
 const route = useRoute();
@@ -42,7 +45,7 @@ const connectToSSE = async(userId)=>{
   const eventSourceUrl = `${url}/notify/subscribe/${userId.value}`;
   console.log("event source url = ",eventSourceUrl);
 
-  eventSource.value = new EventSource('http://i11a606.p.ssafy.io:10002/hot6man/notify/subscribe/' + userId.value);
+  eventSource.value = new EventSource(`${eventSourceUrl}`);
   console.log("source = ",eventSource.value);
 
   eventSource.value.addEventListener('open', () => {

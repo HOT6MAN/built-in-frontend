@@ -24,7 +24,6 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeFindUsedProjectInfosByTeamId = async (teamId)=>{
         await findUsedProjectInfosByTeamId(teamId, (response)=>{
-            alert("불러오기");
             console.log("Used response = ",response);
             usedProjectInfos.value = response.data.data;
         }, (error)=>{

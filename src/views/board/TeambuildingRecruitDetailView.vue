@@ -5,6 +5,7 @@
     </div>
 
     <div v-if="isAuth" class="auth-buttons d-flex justify-content-end mb-2 w-100">
+      <b-button class="mx-1" @click="startChat">채팅걸기</b-button>
       <b-button variant="success" class="mx-1" @click.prevent="upd">Update</b-button>
       <b-button variant="danger" class="delete-btn" @click.prevent="del">Delete</b-button>
     </div>
@@ -38,11 +39,16 @@
   </div>
 </template>
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, defineEmits } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { findRecruit, deleteRecruit } from '@/api/teambuilding.js'
 import { applyTeamByResumeId } from '@/api/resume.js'
 import ResumeListModal from '@/modals/resume/ResumeListModal.vue'
+import {useChatStore} from '@/stores/chatStore.js';
+import { useAuthStore } from '../../stores/authStore';
+import { storeToRefs } from 'pinia';
+
+import { createRoomByTeamId } from '@/api/chat.js';
 
 const board = ref({})
 const headerStyle = computed(() => ({
@@ -94,6 +100,20 @@ const onApply = (resumeId) => {
       router.push("/teambuilding")
     }
   }, (err) => console.error(err))
+}
+
+const chatStore = useChatStore();
+const authStore = useAuthStore();
+const {chatOpen} = storeToRefs(chatStore);
+const {userId} = storeToRefs(authStore);
+const startChat = async ()=>{
+  console.log("chat start");
+  await createRoomByTeamId(id, userId.value, (response)=>{
+    
+  },(error)=>{
+    console.log(error);
+  })
+  chatOpen.value = true;
 }
 </script>
 <style scoped>
