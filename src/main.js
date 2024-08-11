@@ -7,6 +7,8 @@ import '@/assets/css/global.css'
 
 import BootstrapVue3 from "bootstrap-vue-3"
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS 불러오기
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // Bootstrap JS 불러오기
 
 import piniaPluginPersitedstate from 'pinia-plugin-persistedstate'
 

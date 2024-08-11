@@ -10,8 +10,8 @@ async function findUsedProjectInfosByTeamId(teamId, success, fail){
     await api.get("/build/project/use/"+teamId).then(success).catch(fail);
 }
 
-async function insertNewProjectInfo(teamId, success, fail){
-    await api.post("/build/project/"+teamId).then(success).catch(fail);
+async function insertNewProjectInfo(teamId, title, success, fail){
+    await api.post(`/build/project/team/${teamId}/title/${title}`).then(success).catch(fail);
 }
 
 async function updateProjectInfoNameByProjectInfoId(projectInfoId, updateConfigName, success, fail){

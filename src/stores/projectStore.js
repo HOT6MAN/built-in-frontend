@@ -15,6 +15,7 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeFindAllProjectInfosByTeamId = async(teamId)=>{
         await findAllProjectInfosByTeamId(teamId, (response)=>{
+            
             projectInfos.value = response.data.data;
             console.log("(Store)After Find All Project Infos By Team Id = ",projectInfos.value);
         },(error)=>{
@@ -31,12 +32,14 @@ export const useProjectStore = defineStore('project', () => {
         })
     }
 
-    const storeInsertNewProjectInfo = async (teamId)=>{
-        await insertNewProjectInfo(teamId, (response)=>{
-            alert("생성 완료");
-        }, (error)=>{
+    const storeInsertNewProjectInfo = async (teamId, title)=>{
+
+        await insertNewProjectInfo(teamId, title, (response) => {
+            alert("projectInfo 생성 완료");
+            projectInfos.value.push(response.data.data);
+        }, (error)=> {
             console.log(error);
-        })
+        });
     };
 
     const storeSaveBackendConfigs = async (projectInfoId, backendConfigs)=>{
