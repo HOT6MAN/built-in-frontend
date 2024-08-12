@@ -73,6 +73,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { findResumeById, registerResume, updateResume, getImageFromUrl } from '@/api/resume.js'
+import { sweetAlert } from '../../api/sweetAlert';
 
 const route = useRoute()
 const router = useRouter()
@@ -150,7 +151,7 @@ const onUpdate = () => {
     (resp) => {
       if (resp.status === 204) {
         router.push({path: '/resumes'}).then(() => {
-          alert('Success Update')
+          sweetAlert('','Success Update')
           router.replace({path: '/resumes'})
         })
       }

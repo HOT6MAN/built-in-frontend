@@ -13,6 +13,7 @@
   import { useRoute } from 'vue-router'
   import { findRecruitList } from '@/api/teambuilding.js'
   import RecruitView from './TeamBuildingRecruitView.vue'
+  import { sweetAlert } from '../../api/sweetAlert';
 
   const router = useRoute()
 
@@ -48,7 +49,7 @@
 
   onMounted(() => {
     const redirectYN = router.query.redirectYN
-    if (redirectYN) alert(router.query.msg)
+    if (redirectYN) sweetAlert('',router.query.msg)
   })
 </script>
 <style scoped>

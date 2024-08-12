@@ -47,6 +47,7 @@ import ResumeListModal from '@/modals/resume/ResumeListModal.vue'
 import {useChatStore} from '@/stores/chatStore.js';
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
+import { sweetAlert } from '../../api/sweetAlert'
 
 import { createRoomByTeamId } from '@/api/chat.js';
 
@@ -96,7 +97,7 @@ const onApply = (resumeId) => {
   applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
     if (resp.status === 201) {
       showModal.value = false
-      alert("지원 완료")
+      sweetAlert('',"지원 완료")
       router.push("/teambuilding")
     }
   }, (err) => console.error(err))

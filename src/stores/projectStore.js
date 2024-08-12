@@ -7,6 +7,7 @@ import {findAllProjectInfosByTeamId,
     saveFrontendConfigs, 
     saveDatabaseConfigs,
     buildStart} from '@/api/project.js';
+import { sweetAlert } from '../api/sweetAlert';
 
 export const useProjectStore = defineStore('project', () => {
    
@@ -35,7 +36,7 @@ export const useProjectStore = defineStore('project', () => {
     const storeInsertNewProjectInfo = async (teamId, title)=>{
 
         await insertNewProjectInfo(teamId, title, (response) => {
-            alert("projectInfo 생성 완료");
+            sweetAlert('','projectInfo 생성 완료');
             projectInfos.value.push(response.data.data);
         }, (error)=> {
             console.log(error);
@@ -44,7 +45,7 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeSaveBackendConfigs = async (projectInfoId, backendConfigs)=>{
         await saveBackendConfigs(projectInfoId, backendConfigs, (response)=>{
-            alert("Bakcend 설정 저장 완료");
+            sweetAlert('',"Bakcend 설정 저장 완료");
         }, (error)=>{
             console.log(error);
         })
@@ -52,7 +53,7 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeSaveFrontendConfigs = async (projectInfoId, frontendConfigs)=>{
         await saveFrontendConfigs(projectInfoId, frontendConfigs, (response)=>{
-            alert("Frontend 설정 저장 완료");
+            sweetAlert('',"Frontend 설정 저장 완료");
         }, (error)=>{
             console.log(error);
         })
@@ -60,7 +61,7 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeSaveDatabaseConfigs = async(projectInfos, databaseConfigs) =>{
         await saveDatabaseConfigs(projectInfos, databaseConfigs, (response)=>{
-            alert("DB 설정 저장 완료");
+            sweetAlert('',"DB 설정 저장 완료");
         },(error)=>{
             console.log(error);
         })

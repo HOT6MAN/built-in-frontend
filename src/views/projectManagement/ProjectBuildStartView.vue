@@ -83,6 +83,7 @@ import { useRoute } from 'vue-router';
 import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
 import { addBuildResult, buildCheck, startBackendJenkinsJob, startSetupJenkinsJob } from '../../api/project';
 import { errorMessages } from 'vue/compiler-sfc';
+import { sweetAlert } from '../../api/sweetAlert';
 
 const route = useRoute();
 const teamId = route.params.teamId;
@@ -118,7 +119,7 @@ const curConfig = computed(() => {
 const deployConfig = ref("");
 
 const componentBuildStart = () => {
-  alert("빌드, 배포 시작");
+  sweetAlert('',"빌드, 배포 시작");
   
 
   // 1. {projectInfoId}에 해당하는 서비스를, 배포할 수 있는지 여부를 판단한다
@@ -129,7 +130,7 @@ const componentBuildStart = () => {
 
     // 배포할 수 없는 경우(모든 포트가 사용 중인 경우)
     if (data === null) {
-      alert("현재 서비스의 모든 포트가 사용 중입니다");
+      sweetAlert('',"현재 서비스의 모든 포트가 사용 중입니다");
     }
     else {
       addBuildResult(selectedConfigId.value, data.deployNum, (response) => {

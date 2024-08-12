@@ -5,6 +5,7 @@ import { findMemberProfileByMemberId,
     updateMemberProfileByMemberId,
     updateMemberProfileImageByMemberId,
     findMemberProfileImageByMemberId } from '@/api/member.js';
+import { sweetAlert } from '../api/sweetAlert';
 
 export const useMemberStore = defineStore('member', () => {
   
@@ -32,7 +33,7 @@ export const useMemberStore = defineStore('member', () => {
   }
   const storeDeleteMemberByMemberId = (userId)=>{
     deleteMemberByMemberId(userId, (response)=>{
-        alert("계정 삭제가 완료되었습니다.");
+      sweetAlert('',"계정 삭제가 완료되었습니다.");
     }, (error)=>{
         console.log(error);
     })
@@ -40,7 +41,7 @@ export const useMemberStore = defineStore('member', () => {
 
   const storeUpdateMemberProfileByMemberId = (memberObject) =>{
     updateMemberProfileByMemberId(memberObject, (response)=>{
-        alert("업데이트가 완료되었습니다.");
+      sweetAlert('',"업데이트가 완료되었습니다.");
     }, (error)=>{
         console.log(error);
     })
@@ -49,7 +50,7 @@ export const useMemberStore = defineStore('member', () => {
   const storeUpdateMemberProfileImageByMemberId = async (formData) =>{
     console.log("update image call");
     await updateMemberProfileImageByMemberId(formData, async(response)=>{
-        alert("이미지 변경 성공");
+      sweetAlert('',"이미지 변경 성공");
     }, (error)=>{
         console.log(error);
     })

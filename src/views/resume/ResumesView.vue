@@ -40,6 +40,7 @@
 <script setup>
 import {ref} from 'vue'
 import {findMyResumeList, deleteResumeById } from '@/api/resume.js'
+import { sweetAlert } from '../../api/sweetAlert';
 import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
 
 const list = ref([]);
@@ -62,7 +63,7 @@ const onPreview = (id) => {
 const onDelete = (id) => {
   deleteResumeById(id, (resp) => {
     if (resp.status === 204) {
-      alert("Delete Success")
+      sweetAlert('','Delete Success')
       window.location.reload(); 
     }
   }, (err) => console.error(err))

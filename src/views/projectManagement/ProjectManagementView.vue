@@ -30,7 +30,8 @@
   import { storeToRefs } from 'pinia';
   import { getAllMyTeamByUserId } from '@/api/team.js';
   import { useRoute, useRouter } from 'vue-router';
-  
+  import { sweetAlert } from '../../api/sweetAlert';
+
   const router = useRouter();
   
   const authStore = useAuthStore();
@@ -59,7 +60,7 @@
         });
       });
     } else {
-      alert("팀을 선택해주세요.");
+      sweetAlert('','팀을 선택해주세요.')
     }
   };
   </script>

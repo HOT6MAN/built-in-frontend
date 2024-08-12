@@ -95,6 +95,7 @@ import { useAuthStore } from '@/stores/authStore.js';
 import { useRoute } from 'vue-router';
 import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
 import { Modal } from 'bootstrap/dist/js/bootstrap.bundle.min';
+import { sweetAlert } from '../../api/sweetAlert';
 
 const route = useRoute();
 const teamId = route.params.teamId;
@@ -140,7 +141,7 @@ const filteredConfigs = computed(() => {
 const saveBackendData = async (backendConfigs) => {
   console.log("전달받은 backend = ", backendConfigs);
   await saveBackendConfigs(selectedConfigId.value, backendConfigs, async (response) => {
-    alert("백엔드 설정 저장 성공");
+    sweetAlert('',"백엔드 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
     dataLoaded.value = true;
@@ -153,7 +154,7 @@ const saveBackendData = async (backendConfigs) => {
 const saveFrontendData = async (frontendConfigs) => {
   console.log("전발받은 frontend config = ", frontendConfigs);
   await saveFrontendConfigs(selectedConfigId.value, frontendConfigs, async (response) => {
-    alert("프론트엔드 설정 저장 성공");
+    sweetAlert('',"프론트엔드 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
     dataLoaded.value = true;
@@ -165,7 +166,7 @@ const saveFrontendData = async (frontendConfigs) => {
 
 const saveDBData = async (databaseConfigs) => {
   await saveDatabaseConfigs(selectedConfigId.value, databaseConfigs, async (response) => {
-    alert("DB 설정 저장 성공");
+    sweetAlert('',"DB 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
     dataLoaded.value = true;
@@ -242,7 +243,7 @@ const onFocusInput = () => {
 const onBlurInput = async () => {
   document.querySelector('.config-input').style.backgroundColor = '#fff';
   await updateProjectInfoNameByProjectInfoId(selectedConfigId.value, updateConfigName.value, () => {
-    alert("업데이트 완료");
+    sweetAlert('',"업데이트 완료");
   }, (error) => {
     console.error(error);
   });

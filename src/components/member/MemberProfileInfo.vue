@@ -1,5 +1,6 @@
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue';
+import { sweetAlert } from '../../api/sweetAlert';
 
 const props = defineProps({
   memberObject: Object,
@@ -14,7 +15,7 @@ const deleteMember = () => {
   if (emailForDeletion.value === updateMemberObject.value.email) {
     emit("deleteMember");
   } else {
-    alert('이메일 주소가 일치하지 않습니다.');
+    sweetAlert('','이메일 주소가 일치하지 않습니다.')
   }
 };
 
@@ -24,7 +25,7 @@ const updateMember = () => {
 
 const updateMemberProfileImage = () => {
     if(!selectedImage.value){
-        alert("이미지를 먼저 선택해주세요.");
+        sweetAlert('','이미지를 먼저 선택해주세요.')
         return;
     }
     emit("updateMemberProfileImage", selectedImage.value);

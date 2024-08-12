@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router';
 import { useTeamStore } from '@/stores/teamStore';
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
+import { sweetAlert } from '../../api/sweetAlert';
 
 const teamStore = useTeamStore()
 const {createTeam} = teamStore
@@ -25,9 +26,9 @@ function create(){
     if(team.value.name!='' && team.value.content!=''&& team.value.memberId!=''){
         createTeam(team.value)
     }else if(team.value.name==''){
-        alert("팀 이름을 입력해주세요")
+        sweetAlert('','팀 이름을 입력해주세요')
     }else if(team.value.content==''){
-        alert("팀 소개를 입력해주세요")
+        sweetAlert('','팀 소개를 입력해주세요')
     }
 }
 
