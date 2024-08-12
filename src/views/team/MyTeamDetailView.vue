@@ -183,9 +183,7 @@ const clickDelete = () =>{
                 <div class="web-rtc">
                     <WebRtc/>
                 </div>
-                <div v-if="showDelete">
-                    <button @click="clickDelete">삭제</button>
-                </div>
+      
             </div>
         </div>
     </div>
