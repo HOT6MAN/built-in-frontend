@@ -34,3 +34,20 @@ export function deleteResumeById(id, successCB, failCB) {
 export function applyTeamByResumeId(json, successCB, failCB) {
   local.post('/apply', json).then(successCB).catch(failCB);
 }
+
+export async function findApplyList(teamId) {
+  const res = await local.get(`/team/${teamId}/applications`);
+  return res.data;
+}
+
+export function acceptApplication(json, successCB, failCB) {
+  local.patch('/approve', json).then(successCB).catch(failCB);
+}
+
+export function rejectApplication(json, successCB, failCB) {
+  local.patch('/reject', json).then(successCB).catch(failCB);
+}
+
+export function deleteApplication(teamId, resumeId, successCB, failCB) {
+  local.delete(`/team/${teamId}/application/${resumeId}`).then(successCB).catch(failCB);
+}
