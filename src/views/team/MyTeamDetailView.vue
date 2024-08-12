@@ -32,14 +32,13 @@ onMounted( async ()=> {
     } else {
         console.error("팀 ID가 존재하지 않습니다.");
     }
-    console.log(team.value);
+  
     initializeUrls()
 
     for (let i = 0; i < team.value.memberTeams.length; i++) {
         const element =  team.value.memberTeams[i];
 
         if(element.leader && element.member.id==userId.value ){
-            console.log('리더');
             showDelete.value = true
         }
         
@@ -86,7 +85,12 @@ const changeStatus = async () =>{
 }
 
 const clickDelete = () =>{
-    deleteTeam(team.value.id)
+
+    const result = confirm("정말 팀을 삭제하시겠습니까?")
+    if(result){
+        deleteTeam(team.value.id)
+    }
+
 }
 
 </script>
@@ -156,6 +160,10 @@ const clickDelete = () =>{
                         <TeamMemberCard :member="item"/>
                     </div>
                 </div>
+                <div v-if="showDelete" class="delete-button">
+                    <button class="link-button" @click="clickDelete">팀 삭제</button>
+                </div>
+                
                 <div class="web-rtc">
                     <WebRtc/>
                 </div>
@@ -168,6 +176,13 @@ const clickDelete = () =>{
 </template>
 
 <style scoped>
+
+.delete-button {
+    position: absolute; /* 절대 위치로 설정 */
+    bottom: 10px; /* 아래쪽에서 10px 떨어진 위치 */
+    left: 10px; /* 왼쪽에서 10px 떨어진 위치 */
+    
+}
 
 .fLCeMm {
     display: flex; /* Flexbox 사용 */
@@ -346,6 +361,7 @@ button{
     display: flex;
     justify-content: space-between;
     gap: 20px; /* 팀 구성원과 WebRTC 사이에 여백을 추가했습니다 */
+    position: relative; /* 버튼의 절대 위치를 기준으로 설정 */
 }
 
 .team-members {

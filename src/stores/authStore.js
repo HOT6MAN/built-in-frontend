@@ -122,16 +122,26 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   const authEmailLink = async (email) =>{
-    await getEmailLink(
-      email,
-      (response) =>{
-        console.log(response.data);
-        return response.data;
-      },
-      (error)=>{
-        console.error('Error:', error);
-      }
-    )
+    try {
+      // 프로미스를 반환하도록 getEmailLink 호출을 수정합니다.
+      const response = await new Promise((resolve, reject) => {
+        getEmailLink(
+          email,
+          (response) => {
+            console.log(response.data.data);
+            resolve(response.data.data); // 응답 데이터를 프로미스 해결값으로 설정
+          },
+          (error) => {
+            console.error('Error:', error);
+            reject(error); // 오류를 프로미스 거부값으로 설정
+          }
+        );
+      });
+      return response; // 프로미스 해결값을 반환
+    } catch (error) {
+      console.error('Error in authEmailLink:', error);
+      throw error; // 오류를 호출자에게 전파
+    }
   }
 
   const authSignUp = async (param) =>{

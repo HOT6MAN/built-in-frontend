@@ -21,11 +21,8 @@ const teamsList = ref([])
 const isTeamsEmpty = ref(true)
 
 onMounted(  async()=> {
-  console.log('올팀');
   await fetchAllTeamsForUser(userId.value)
-  console.log("마이팀 리스트: ",teams.value);
-  console.log(teams.value.length);
-  console.log(isTeamsEmpty);
+
   if(teams.value.length>0){
     isTeamsEmpty.value=false
   }
@@ -53,7 +50,7 @@ onMounted(  async()=> {
     <div class="content">
       <div class="header">
         <button class="create-button">
-          <router-link :to="{ name: 'myTeamRegister' }" style="text-decoration: none; color: white">팀 생성</router-link>
+          <router-link :to="{ name: 'myTeamRegister' }" style="text-decoration: none; color: white">새 팀 등록</router-link>
         </button>
       </div>
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->

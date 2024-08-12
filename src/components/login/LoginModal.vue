@@ -24,13 +24,15 @@ const showMsg = ref(false)
 const emailResponse= ref('')
 
 async function sendEmail(){
-  emailResponse.value = await authEmailLink(email.value)  
-  console.log(emailResponse.value);
-  showMsg.value = true
-}
-
-function resetEmailRes(){
-  emailResponse.value=''
+  try {
+    const result= await authEmailLink(email.value);
+    console.log(result.link);
+    emailResponse.value= result.type
+    showMsg.value = false;
+  } catch (error) {
+    showMsg.value = true;
+    console.error('Error in sendEmail:', error);
+  }
 }
 
 
@@ -44,6 +46,11 @@ function changeTitle(){
   }
 }
 
+function close(){
+  emailResponse.value=''
+  showMsg.value = false;
+}
+
 
 </script>
 
@@ -51,7 +58,7 @@ function changeTitle(){
     <!-- 모달 창 -->
 <div v-if="showLoginModal" class="modal">
   <div class="modal-content">
-    <span class="close" @click="toggleLoginModal">&times;</span>
+    <span class="close" @click="[toggleLoginModal(), close()]">&times;</span>
     <h3>{{title}}</h3>
   
     
@@ -59,22 +66,23 @@ function changeTitle(){
       <h5>이메일로 {{title}}</h5>
 
       <div class="email-sueccess" v-if="emailResponse!=''">
-      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" 
-      class="AuthEmailSuccess_icon__W395M" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" 
+        class="AuthEmailSuccess_icon__W395M" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
         <path fill="none" d="M0 0h24v24H0z"></path>
         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
       </svg>
       <!-- {{emailResponse}} 링크가 이메일로 전송되었습니다. -->
-      <div class="AuthEmailSuccess_description__ek0gb">회원가입 링크가 이메일로 전송되었습니다.</div>  
+      <div class="AuthEmailSuccess_description__ek0gb" v-if="emailResponse=='register'">회원가입 링크가 이메일로 전송되었습니다.</div>  
+      <div class="AuthEmailSuccess_description__ek0gb" v-else>로그인 링크가 이메일로 전송되었습니다.</div>  
     </div>
 
       <form v-on:submit.prevent class="auth-email-form"  v-else>
         <input type="email" placeholder="이메일을 입력하세요." v-model="email" required
         @keyup.enter="sendEmail()">
         <button type="button" @click="sendEmail()">{{title}}</button>
-        <p v-if="showMsg" class="showMsg">※ 이메일 확인해주세요!</p>
-        <p v-else></p>
       </form>
+      <p v-if="showMsg" class="showMsg">※ 이메일 확인해주세요!</p>
+      <p v-else></p>
     </div>
     
 
