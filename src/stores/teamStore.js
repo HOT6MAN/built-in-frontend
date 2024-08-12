@@ -11,7 +11,9 @@ export const useTeamStore = defineStore('team', ()=>{
     const team = ref({})
 
     const getTeam = computed(()=>team.value)
-    const getTeams = computed(()=>teams.value)
+    const getTeams = computed(()=>{
+         console.log('getTeams',teams.value);
+        return teams.value})
 
     const isTeamsEmpty = computed(() => teams.value.length === 0);
 
@@ -51,6 +53,7 @@ export const useTeamStore = defineStore('team', ()=>{
             (response)=>{
                 teams.value = response.data.data;
                 console.log("팀 스토어 올팀");
+                console.log(response.data.data);
                 return response.data.data
             },
             (error)=>{

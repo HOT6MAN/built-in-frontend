@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted,ref } from 'vue';
+import { onMounted,ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useTeamStore } from '@/stores/teamStore';
 import { useAuthStore } from '@/stores/authStore';
@@ -8,6 +8,7 @@ import TeamMemberCard from '@/components/team/TeamMemberCard.vue'
 import WebRtc from '@/components/team/WebRtc.vue';
 import MemberSidebar from '@/components/member/MemberSidebar.vue';
 import Swal from 'sweetalert2';
+import TeamSelectDropdown from '../../components/team/TeamSelectDropdown.vue';
 
 const cuurentRoute = useRoute()
 const teamId = ref(cuurentRoute.params.teamId)
@@ -16,7 +17,7 @@ const authStore = useAuthStore()
 const {userId} = storeToRefs(authStore)
 
 const teamStore = useTeamStore()
-const {getTeam: team} = storeToRefs(teamStore)
+const {getTeam: team, getTeams: teams} = storeToRefs(teamStore)
 const { fetchOneTeamsForUser, updateJiraUrl, updateGitUrl, updateStatus, deleteTeam } = teamStore
 
 const editingJiraUrl = ref(false);
@@ -102,12 +103,13 @@ const clickDelete = () =>{
                     } 
 
                 })
-    //const result = confirm("정말 팀을 삭제하시겠습니까?")
-    // if(result){
-    //     deleteTeam(team.value.id)
-    // }
-
 }
+
+watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
+  teamId.value = newTeamId;
+  await fetchTeamInfo(newTeamId);
+  initializeUrls();
+});
 
 </script>
 
@@ -117,6 +119,7 @@ const clickDelete = () =>{
         <div class="team-info">
             <div class="team-header">
                 <div class="sc-crHmcD fLCeMm">
+                    <TeamSelectDropdown/>
                     <label class="link-label">팀 이름 :</label>
                     <h2 class="fw-bold ">{{ team.name }}</h2>
                 </div>
