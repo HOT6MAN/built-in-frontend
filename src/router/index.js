@@ -16,6 +16,7 @@ import ProjectBuildResultAndLogsView from '@/views/projectManagement/ProjectBuil
 import SideBarView from '@/views/Bars/SideBarView.vue';
 import ProjectManagementView from '../views/projectManagement/ProjectManagementView.vue';
 import ProjectGrafanaServiceView from '../views/projectManagement/ProjectGrafanaServiceView.vue'
+import ProjectSonarQubeServiceView from '../views/projectManagement/ProjectSonarQubeServiceView.vue'
 import LogWindow from '../components/log/LogWindow.vue'
 
 
@@ -166,6 +167,11 @@ const router = createRouter({
           path: 'service',
           name: 'projectGrafanaServiceView',
           component: ProjectGrafanaServiceView
+        },
+        {
+          path: 'service/sonarQube',
+          name: 'projectSonarQubeServiceView',
+          component: ProjectSonarQubeServiceView
         }
       ],
       meta: { showNavbar: true },

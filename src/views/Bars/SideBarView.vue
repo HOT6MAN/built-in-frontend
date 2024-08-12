@@ -29,6 +29,7 @@
       </div>
       <div class="dropdownContainer">
         <RouterLink :to="{name: 'projectGrafanaServiceView'}"><b-button class="dropdownItem">서비스 메트릭</b-button></RouterLink>
+        <RouterLink :to="{name: 'projectSonarQubeServiceView'}"><b-button class="dropdownItem">SonarQube </b-button></RouterLink>
       </div>
     </div>
   </div>
