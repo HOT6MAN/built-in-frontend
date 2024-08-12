@@ -31,6 +31,22 @@ async function saveDatabaseConfigs(projectInfoId, databaseConfigs, success, fail
     await api.post("/build/project/database/"+projectInfoId, databaseConfigs).then(success).catch(fail);
 }
 
+async function buildCheck(memberId, projectInfoId, success, fail){
+    await api.get(`/build/deploy/member/${memberId}/project-info/${projectInfoId}`).then(success).catch(fail);
+}
+
+async function addBuildResult(teamProjectInfoId, deployNum, success, fail){
+    await api.post(`/build/project/team-project-info/${teamProjectInfoId}/deployNum/${deployNum}`).then(success).catch(fail);
+}
+
+async function startSetupJenkinsJob(config, success, fail) {
+    await api.post(`/build/project/setup`, config).then(success).catch(fail);
+}
+
+async function startBackendJenkinsJob(memberId, projectInfoId, deployNum, serviceNum, backendConfigs, success, fail) {
+    await api.post(`/build/project/backend/member/${memberId}/team-project-info/${projectInfoId}/deployNum/${deployNum}/serviceNum/${serviceNum}`, backendConfigs).then(success).catch(fail);
+}
+
 async function buildStart(teamId, projectInfoId, success, fail){
     await api.post("/build/deploy/"+teamId+"/"+projectInfoId).then(success).catch(fail);
 }
@@ -55,7 +71,11 @@ export {findAllProjectInfosByTeamId,
     updateProjectInfoNameByProjectInfoId,
     saveBackendConfigs, 
     saveFrontendConfigs, 
-    saveDatabaseConfigs, 
+    saveDatabaseConfigs,
+    buildCheck,
+    addBuildResult,
+    startSetupJenkinsJob,
+    startBackendJenkinsJob,
     buildStart,
     buildStop,
     findNPrevLogs,
