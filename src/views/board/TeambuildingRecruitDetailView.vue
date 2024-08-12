@@ -1,13 +1,13 @@
 <template>
   <div class="page">
     <div :style="headerStyle" class="header">
-      <h1 class="page-title">Recruit</h1>
+      <h1 class="page-title">모집</h1>
     </div>
 
     <div v-if="isAuth" class="auth-buttons d-flex justify-content-end mb-2 w-100">
-      <b-button class="mx-1" @click="startChat">채팅걸기</b-button>
-      <b-button variant="success" class="mx-1" @click.prevent="upd">Update</b-button>
-      <b-button variant="danger" class="delete-btn" @click.prevent="del">Delete</b-button>
+      <b-button class="mx-1" @click="startChat">1:1 채팅</b-button>
+      <b-button variant="success" class="mx-1" @click.prevent="upd">수정</b-button>
+      <b-button variant="danger" class="delete-btn" @click.prevent="del">삭제</b-button>
     </div>
     
     <b-card class="board">
@@ -31,7 +31,7 @@
         <b-card-text class="mt-3"> {{ board.content }} </b-card-text>
       </b-card-body>
       <b-card-body class="d-flex justify-content-end">          
-        <b-button variant="primary" @click.prevent="onApplyClick">Apply</b-button>
+        <b-button variant="primary" @click.prevent="onApplyClick">지원하기</b-button>
       </b-card-body>
     </b-card>    
 

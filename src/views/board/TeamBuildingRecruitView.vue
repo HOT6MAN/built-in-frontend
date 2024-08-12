@@ -4,20 +4,24 @@
       <FilterDropdown class="mx-2" @update:key="receiveKey" /> 
       <FilterInput class="mx-2" @update:key="receiveValue" />
     </div>
-    <b-button variant="success" :to="{path: '/teambuilding/recruit/create'}">
-      New
-    </b-button>
   </div>
-
+  
   <div class="itemList">
-    <b-container v-show="!loading">
+    <b-container v-show="!loading" class="itemContainer">
       <b-row>
+        <b-col 
+        class="createItem"
+        md="3">
+          <router-link :to="{path: '/teambuilding/recruit/create'}" class="createItemButton">
+          <img src="@/icons/createItemButton.svg" alt="" class="createItemImage">
+        </router-link>
+        </b-col>
         <b-col 
           v-for="item in list" 
           :key="item.id"
           cols="12"
-          md="4"
-          class="my-3"
+          md="3"
+          class="my-1 mx-2.5"
           >
           <RecruitItem :item="item" />
         </b-col>
@@ -90,9 +94,11 @@
 </script>
 <style scoped>
   .itemList {
-    padding: 20px;
+    /* padding: 20px; */
   }
-
+  .itemContainer {
+    max-width: 963.2px;
+  }
   .full-screen-center {
     position: fixed;
     top: 0;
@@ -102,5 +108,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  .createItem {
+  }
+  .createItem:hover {
+    cursor: pointer;
+  }
+  .creteItemButton {
+    border: 1px solid black;
+  }
+  .createItemImage {
+    width: 90%;
+    height: 90%;
   }
 </style>

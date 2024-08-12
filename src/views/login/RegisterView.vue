@@ -81,7 +81,7 @@ function signUp(){
                         <div class="input-wrapper">
                             <input name="displayName" v-model="user.phone" placeholder="전화번호을 입력하세요" size="20">
                         </div>
-                        <div class="width-maker">전화번호을 입력하세요</div>
+                        <div class="width-maker">전화번호를 입력하세요</div>
                     </div>
                 </div>
             </div>

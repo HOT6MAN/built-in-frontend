@@ -1,19 +1,11 @@
 <template>
   <div>  
-    <b-tabs 
-      class="teambuilding-tabbar"
-      content-class="mt-3" 
-      pills 
-      align="center" 
-      v-model="activeTab"
-      >
-      <b-tab title="Recruit" active>
+    <b-tabs>
+      <b-tab title="Recruit">
         <RecruitView :data :loading @search="requestRecruitList"/>
       </b-tab>
-      <b-tab title="Self-Introduction">
-        
-      </b-tab>
     </b-tabs>
+
   </div>
 </template>
 <script setup>

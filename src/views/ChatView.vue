@@ -73,8 +73,8 @@ const login = async () => {
   console.log("pinia update value = ", unreadNotificationSize.value);
 
   // http://i11a606.p.ssafy.io:8080/
-// eventSource.value = new EventSource('http://localhost:8080/hot6man/notify/subscribe/' + userid.value);
-  eventSource.value = new EventSource('http://i11a606.p.ssafy.io:8080//notify/subscribe/' + userid.value);
+eventSource.value = new EventSource('http://localhost:8080/hot6man/notify/subscribe/' + userid.value);
+  // eventSource.value = new EventSource('http://i11a606.p.ssafy.io:8080//notify/subscribe/' + userid.value);
   console.log("source = ",eventSource.value);
   eventSource.value.addEventListener('open', () => {
     console.log('Connection opened');

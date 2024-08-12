@@ -13,9 +13,9 @@
           <p>환경설정</p>
       </div>
       <div class="dropdownBuild">
-        <div><RouterLink :to="{name: 'projectbuildconfig' , params:{teamId : teamId}}"><b-button class="collab">빌드 환경 설정</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildStart', params:{teamId : teamId}}"><b-button class="collab">빌드 시작</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildResultAndLogs', params:{teamId:teamId}}"><b-button class="collab">배포 보기</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectbuildconfig' , params:{teamId : teamId}}"><b-button class="dropdownItem">빌드 환경 설정</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildStart', params:{teamId : teamId}}"><b-button class="dropdownItem">빌드 시작</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildResultAndLogs', params:{teamId:teamId}}"><b-button class="dropdownItem">배포 보기</b-button></RouterLink></div>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
