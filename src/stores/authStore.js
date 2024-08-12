@@ -153,7 +153,11 @@ export const useAuthStore = defineStore('auth', () => {
       param,
       (response)=>{
         console.log(response.data);
-        alert("가입완료")
+        Swal.fire({
+          title: "가입 완료",
+          //text: "You clicked the button!",
+          icon: "success"
+        });
         router.replace({ path: '/' });
       },
       (error)=>{

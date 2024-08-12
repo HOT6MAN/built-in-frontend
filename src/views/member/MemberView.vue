@@ -76,6 +76,8 @@ const updateMemberProfileImage = async(image)=>{
   padding-left: 20px;
   border: 1px solid #ddd;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-left: 220px;
+  width: 80%;
 }
 .content {
   flex-grow: 1;
