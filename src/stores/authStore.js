@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router';
 import { saveAccessLocalStorage,logout,getEmailLink, setUserProfile} from '@/api/auth'
-
+import Swal from 'sweetalert2';
 export const useAuthStore = defineStore('auth', () => {
   const router = useRouter()
 
@@ -111,8 +111,12 @@ export const useAuthStore = defineStore('auth', () => {
     await logout(
       (response) =>{
         clearAuthData()
-        
-        alert("로그아웃 완료")
+        Swal.fire({
+          title: "로그아웃 완료",
+          //text: "You clicked the button!",
+          icon: "success"
+        });
+        //alert("로그아웃 완료")
         router.replace({ path: '/' });
       },
       (error)=>{

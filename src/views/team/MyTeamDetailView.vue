@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia';
 import TeamMemberCard from '@/components/team/TeamMemberCard.vue'
 import WebRtc from '@/components/team/WebRtc.vue';
 import MemberSidebar from '@/components/member/MemberSidebar.vue';
+import Swal from 'sweetalert2';
 
 const cuurentRoute = useRoute()
 const teamId = ref(cuurentRoute.params.teamId)
@@ -85,11 +86,26 @@ const changeStatus = async () =>{
 }
 
 const clickDelete = () =>{
+    const result =Swal.fire({
+                    icon: 'info',
+                    //title: '로그인 후 이용 가능합니다.',
+                    text: '정말 팀을 삭제하시겠습니까?',
+                    showCancelButton: true,
+                    confirmButtonText: '예', 
+                    cancelButtonText: '아니오',
+                    confirmButtonColor: '#429f50',
+                    cancelButtonColor: '#d33',
 
-    const result = confirm("정말 팀을 삭제하시겠습니까?")
-    if(result){
-        deleteTeam(team.value.id)
-    }
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        deleteTeam(team.value.id)
+                    } 
+
+                })
+    //const result = confirm("정말 팀을 삭제하시겠습니까?")
+    // if(result){
+    //     deleteTeam(team.value.id)
+    // }
 
 }
 
