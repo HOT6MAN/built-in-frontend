@@ -101,7 +101,7 @@
   }
   
   .content {
-    margin-top: 100px;
+    margin-top: 80px;
   }
   
   .team-selection {
