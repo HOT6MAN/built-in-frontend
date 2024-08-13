@@ -1,11 +1,8 @@
 <template>
-  <div >  
-    <b-tabs>
-      <b-tab title="Recruit">
+  <div class="main-content" >
+    <div class="config-container">
         <RecruitView :data :loading @search="requestRecruitList"/>
-      </b-tab>
-    </b-tabs>
-
+      </div>
   </div>
 </template>
 <script setup>
@@ -53,7 +50,21 @@
   })
 </script>
 <style scoped>
-  .teambuilding-tabbar {
-    margin-top: 100px;
+  .main-content {
+    display: flex;
+    margin-top: 80px;
+    padding: 20px;
+    justify-content: center;
+    background-color: #f0f4f8;
+    min-height: 100vh;
   }
+  .config-container {
+    width: 100%;
+    max-width: 1000px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
 </style>

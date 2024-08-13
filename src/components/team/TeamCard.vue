@@ -1,7 +1,7 @@
 
 <template>
     <router-link :to="{ name: 'myTeamDetail', params: { teamId: team.id } }" style="text-decoration: none; color: inherit;" class="team-card-link">
-        <div class="card mb-1" style="max-width: 500px;">
+        <div class="card mb-1">
             <div class="status">
                 <p class="status-text" v-if="team.status==='RECRUIT'">
                             <span class="badge badge-recruit">모집중</span>
@@ -9,11 +9,8 @@
                         <p class="status-text" v-else>
                             <span class="badge badge-finish">모집완료</span>
                         </p>
-            </div> <!-- Status Display -->
+            </div>
             <div class="row g-0">
-                <!-- <div class="col-md-3">
-                    <img src="https://via.placeholder.com/150" class="img-fluid rounded-start" alt="Team Image">
-                </div> -->
                 <div class="col-md-10">
                     <div class="card-body">
                         <div class="sc-crHmcD fLCeMm">
@@ -50,11 +47,18 @@ defineProps({
 </script>
 
 <style scoped>
+    .card {
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s, transform 0.3s;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        max-width: 500px;
+    }
 .fLCeMm {
     display: flex; /* Flexbox 사용 */
     align-items: center; /* 세로 중앙 정렬 */
-    width: 100%; /* 전체 너비 사용 */
-    
 }
 
 .fLCeMm label {
@@ -88,19 +92,6 @@ defineProps({
     top: 10px;
     right: 10px;
 
-}
-.card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s, transform 0.3s;
-    overflow: hidden;
-    
-}
-
-.card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
 }
 
 .img-fluid {

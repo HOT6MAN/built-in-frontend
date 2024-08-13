@@ -46,17 +46,12 @@ onMounted(  async()=> {
 
 </script>
 <template>
-    <div class="container">
-    <div class="content">
-      <div class="header">
-        
-        <b-button class="add-button">
-          <router-link :to="{ name: 'myTeamRegister' }" style="text-decoration: none; color: white">새 팀 등록</router-link>
-        </b-button>
-      </div>
+  <div class="main-content">     
+    <div class="config-container">  
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->
       <div v-if="!isTeamsEmpty" class="teams">
-        <div v-for="(item, index) in teams" :key="index">
+        <div class="card card-margin"><router-link :to="{name: 'myTeamRegister'}" class="add-card"><img src="@/icons/addButton.svg" alt=""></router-link></div>
+        <div class="card-margin" v-for="(item, index) in teams" :key="index">
           <TeamCard :team="item"/>
         </div>
       </div>
@@ -70,67 +65,55 @@ onMounted(  async()=> {
 </template>
   
 <style scoped>
-  .container {
+  .main-content {
     display: flex;
-    padding-top: 75px;
-    padding-left: 20px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 100%; /* 컨테이너의 높이를 100%로 설정 */
-    margin-left: 220px;
-    width: 80%;
+    margin-top: 80px;
+    padding: 20px;
+    justify-content: center;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    font-family: var(--font-roboto);
+  }
+  .config-container {
+    width: 100%;
+    max-width: 1000px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  .no-teams-message {
+    font-size: 1.2rem;
+    color: #999;
+    text-align: center;
+    margin-top: 50px;
   }
 
-  
-  .content {
-  flex-grow: 1;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  
-}
+  .teams {
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-.header {
-  display: flex;
-  justify-content: flex-end;
-}
+  .teams > div {
+    flex: calc(50% - 20px);
+    box-sizing: border-box;
+  }
+  .card {
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s, transform 0.3s;
+      max-width: 500px;
+  }
+  .add-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-margin {
+    max-width: calc(50% - 20px);
+    margin: 10px;
+  }
 
-.add-button {
-  font-family: var(--font-roboto);
-  font-weight: 700;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 16px;
-  border: none;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-
-  background-color: #5e81ac;
-  color: #ffffff;
-}
-
-.add-button:hover {
-  background-color: #81a1c1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.no-teams-message {
-  font-size: 1.2rem;
-  color: #999;
-  text-align: center;
-  margin-top: 50px;
-}
-
-.teams {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0px;
-  width: 100%;
-}
-
-.teams > div {
-  flex: 1 1 calc(50% - 20px);;
-  box-sizing: border-box;
-}
-  
   </style>
