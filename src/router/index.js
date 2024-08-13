@@ -148,7 +148,7 @@ const router = createRouter({
           component: ProjectBuildConfigView
         },
         {
-          path: 'result',
+          path: 'result/:teamId',
           name: 'projectbuildresult',
           component: ProjectBuildResultView
         },

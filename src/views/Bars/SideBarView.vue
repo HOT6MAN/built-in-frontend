@@ -27,8 +27,12 @@
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Build.svg" />
-        <RouterLink :to="{name : 'projectbuildresult', params: { teamId: teamId }}">빌드 기록</RouterLink>
-        <RouterLink :to="{name: 'projectSonarQubeServiceView', params: { teamId: teamId }}"><b-button class="dropdownItem">SonarQube </b-button></RouterLink>
+        <p>기록 및 분석</p>
+      </div>
+        <div class="dropdownContainer">
+        <RouterLink :to="{name : 'projectbuildresult', params: { teamId: teamId }}"><b-button class="dropdownItem">빌드 기록</b-button></RouterLink>
+        <RouterLink :to="{name: 'projectSonarQubeServiceView', params: { teamId: teamId }}"><b-button class="dropdownItem">코드 분석 </b-button></RouterLink>
+        
       </div>
       <!-- 서버 모니터링 영역 -->
       <div class="main-category-upper">
