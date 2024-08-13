@@ -163,12 +163,12 @@ const router = createRouter({
           component: ProjectBuildResultAndLogsView
         },
         {
-          path: 'service',
+          path: 'service/grafana/:teamId',
           name: 'projectGrafanaServiceView',
           component: ProjectGrafanaServiceView
         },
         {
-          path: 'service/sonarQube',
+          path: 'service/sonarQube/:teamId',
           name: 'projectSonarQubeServiceView',
           component: ProjectSonarQubeServiceView
         }

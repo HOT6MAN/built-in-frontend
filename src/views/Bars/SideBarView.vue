@@ -27,7 +27,8 @@
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Build.svg" />
-        <RouterLink :to="{name : 'projectbuildresult'}">빌드 기록</RouterLink>
+        <RouterLink :to="{name : 'projectbuildresult', params: { teamId: teamId }}">빌드 기록</RouterLink>
+        <RouterLink :to="{name: 'projectSonarQubeServiceView', params: { teamId: teamId }}"><b-button class="dropdownItem">SonarQube </b-button></RouterLink>
       </div>
       <!-- 서버 모니터링 영역 -->
       <div class="main-category-upper">
@@ -35,8 +36,8 @@
             <p>서버 모니터링</p>
       </div>
       <div class="dropdownContainer">
-        <RouterLink :to="{name: 'projectGrafanaServiceView'}"><b-button class="dropdownItem">서비스 메트릭</b-button></RouterLink>
-        <RouterLink :to="{name: 'projectSonarQubeServiceView'}"><b-button class="dropdownItem">SonarQube </b-button></RouterLink>
+        <RouterLink :to="{name: 'projectGrafanaServiceView', params: { teamId: teamId }}"><b-button class="dropdownItem">서비스 메트릭</b-button></RouterLink>
+        
       </div>
     </div>
   </div>
