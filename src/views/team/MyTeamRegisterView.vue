@@ -48,7 +48,8 @@ function create(){
                             <label for="teamName">팀 이름</label>
                             <div class="group">
                                 <div class="input-wrapper">
-                                    <input id="teamName" name="displayName" v-model="team.name" placeholder="팀이름을 입력하세요" size="20">
+                                    <input id="teamName" name="displayName" 
+                                    v-model="team.name" placeholder="팀이름을 입력하세요" size="20" maxlength='10'>
                                 </div>
                                 <div class="width-maker">팀 이름을 입력하세요</div>
                             </div>

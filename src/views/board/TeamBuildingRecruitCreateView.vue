@@ -6,7 +6,7 @@
       </div>
       <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset" @keydown.enter.prevent >
         <b-form-group for="team">
-          <h2 class="left-align">팀 이름</h2>
+          <label class="left-align">팀 이름</label>
           <b-form-input v-if="isUpdateMode" v-model="selectedTeam"/>
           <b-form-select
             v-if="!isUpdateMode"
@@ -19,13 +19,13 @@
         </b-form-select>
         </b-form-group>
         <b-form-group class="image-form">
-          <h2 class="left-align">이미지</h2>
+          <label class="left-align">이미지</label>
           <div><b-img class="form-image" v-if="thumbnailPreview" :src="thumbnailPreview" alt="image preview" fluid/></div>
           <div><input type="file" ref="thumbnailInput" accept="image/*" @change="handleFileChange" class="image-input" ></div>
         </b-form-group>
 
         <b-form-group for="domain">
-          <h2 class="left-align">프로젝트 도메인</h2>
+          <label class="left-align">프로젝트 도메인</label>
           <b-form-tags 
             input-id="domain"           
             :limit="1"
@@ -37,7 +37,7 @@
         </b-form-group>
 
         <b-form-group for="desired-positions">
-          <h2 class="left-align">모집 분야</h2>
+          <label class="left-align">모집 분야</label>
           <b-form-tags
             input-id="desired-positions"            
             :limit="limitCnt"
@@ -83,6 +83,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { findMyTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
+import { sweetAlertWarning } from '../../api/sweetAlert';
 const authStore = useAuthStore();
 const {userId} = storeToRefs(authStore);
 
@@ -118,16 +119,21 @@ const onCreate = () => {
   form.append('introduction', introduction.value);
   form.append('authorId', 1); // TODO: logged in user id
 
-  registerRecruit(
-    form,
-    (resp) => {
-      if (resp.status === 201) {
-        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Create'}})
-        .then(() => router.replace({path: '/teambuilding'}))
-      }
-    }, 
-    (err) => console.error(err)
-  );  
+  if(title.value!='' && selectedTeam.value!='' && thumbnail.value!='' && thumbnailPreview.value!=''&&
+  thumbnailInput.value!=null && domain.value.length>0 && desiredPosList.value.length>0 &&content.value!='' &&introduction.value!=''){
+    registerRecruit(
+      form,
+      (resp) => {
+        if (resp.status === 201) {
+          router.push({path: '/teambuilding', query: {redirectYN: true, msg: '작성 완료'}})
+          .then(() => router.replace({path: '/teambuilding'}))
+        }
+      }, 
+      (err) => console.error(err)
+    );  
+  }else{
+    sweetAlertWarning('모두 입력 해주세요','')
+  }
 }
 
 const onUpdate = () => {
@@ -215,6 +221,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+  .b-from-tags{
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #DEE2E6;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+  }
+
   .main-content {
     display: flex;
     margin-top: 80px;
@@ -231,6 +246,16 @@ onMounted(() => {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
   }
+  .config-container label {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--text1);
+    margin-bottom: 1rem;
+    transition: 0.125s ease-in;
+    display: block;
+    line-height: 1.5;
+}
+
   .config-header {
     background-color: #102a43;
     color: #ffffff;

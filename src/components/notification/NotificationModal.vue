@@ -60,7 +60,7 @@ watch(() => props.showNotificationModal, async (newVal) => {
     </div>
     <div class="notificationListContainer">
       <ul v-if="notificationList.length > 0" class="notificationList">
-        <li
+        <li 
           v-for="(notification, index) in notificationList"
           :key="index"
           :class="['notificationItem', { read: notification.read }]"
@@ -123,19 +123,24 @@ watch(() => props.showNotificationModal, async (newVal) => {
 }
 
 .notificationListContainer {
-  height: calc(100% - 56px);
+  /* height: calc(100% - 56px);
   overflow-y: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-  text-align: center;
+  text-align: center; */
+  display: flex; /* Flexbox를 사용하여 자식 요소들을 배치합니다 */
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  height: calc(100% - 56px); /* Header를 제외한 나머지 공간을 차지하도록 설정 */
+  overflow-y: auto; /* 세로 스크롤이 필요할 때만 표시되도록 설정 */
 }
 
 .notificationList {
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 100%;
+  /* width: 100%; */
+  flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
 }
 
 .notificationItem {

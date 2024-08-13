@@ -4,7 +4,7 @@
     <div class="sidebar-position">
       <!-- 대시보드 영역 -->
       <!-- 환경설정 영역 -->
-      <div class="main-category">
+      <div class="main-category-upper">
         <img class="sidebar-icon" alt="" src="@/icons/MemberSidebar/team.svg" />
           <p>팀</p>
       </div>
@@ -97,7 +97,7 @@ a {
   box-sizing: border-box;
   gap: 20px;
   font-weight: 600;
-  cursor : pointer;
+  /* cursor : pointer; */
   margin-top: 10%;
 }
 .main-category a {

@@ -9,6 +9,14 @@ function sweetAlert(title,message){
       });
 }
 
+function sweetAlertWarning(title,message){
+    Swal.fire({
+        title: title,
+        text: message,
+        icon: "warning"
+      });
+}
+
 function sweetConfirm(title,message,success,fail){
     Swal.fire({
         icon: 'info',
@@ -22,4 +30,4 @@ function sweetConfirm(title,message,success,fail){
     }).then(success).catch(fail);
 }
 
-export{ sweetAlert, sweetConfirm}
+export{ sweetAlert, sweetConfirm, sweetAlertWarning}
