@@ -4,10 +4,10 @@
       <h1 class="page-title">모집</h1>
     </div>
 
-    <div v-if="isAuth" class="auth-buttons d-flex justify-content-end mb-2 w-100">
+    <div class="auth-buttons d-flex justify-content-end mb-2 w-100">
       <b-button class="mx-1" @click="startChat">1:1 채팅</b-button>
-      <b-button variant="success" class="mx-1" @click.prevent="upd">수정</b-button>
-      <b-button variant="danger" class="delete-btn" @click.prevent="del">삭제</b-button>
+      <b-button v-if="isMine" variant="success" class="mx-1" @click.prevent="upd">수정</b-button>
+      <b-button v-if="isMine" variant="danger" class="delete-btn" @click.prevent="del">삭제</b-button>
     </div>
     
     <b-card class="board">
@@ -64,13 +64,14 @@ const board = ref({})
 const headerStyle = computed(() => ({
   '--background-image': `url(${board.value.thumbnailUrl})`
 }));
-const isAuth = ref(true)
+const isMine = ref(false)
 const showModal = ref(false);
 const teamId = ref('')
 
 findRecruit(id, (resp) => {
   board.value = resp.data.data
   teamId.value = board.value.teamId;
+  isMine.value = userId.value && userId.value === board.value.authorId
 }, (err) => console.error(err))
 
 const upd = () => {
