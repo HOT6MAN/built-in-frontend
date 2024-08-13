@@ -53,14 +53,9 @@ async function addBuildResult(teamProjectInfoId, deployNum, success, fail){
     await api.post(`/build/project/team-project-info/${teamProjectInfoId}/deployNum/${deployNum}`).then(success).catch(fail);
 }
 
-async function startSetupJenkinsJob(config, success, fail) {
-    await api.post(`/build/project/setup`, config).then(success).catch(fail);
+async function startJenkinsJob(jobType, config, success, fail) {
+    await api.post(`/build/project/${jobType}`, config).then(success).catch(fail);
 }
-
-async function startBackendJenkinsJob(memberId, projectInfoId, deployNum, serviceNum, backendConfigs, success, fail) {
-    await api.post(`/build/project/backend/member/${memberId}/team-project-info/${projectInfoId}/deployNum/${deployNum}/serviceNum/${serviceNum}`, backendConfigs).then(success).catch(fail);
-}
-
 
 async function findNPrevLogs(dataObject, success, fail){
     await api.get("/log/"+dataObject.serviceScheduleId+"/"+dataObject.projectInfoId+"/"+dataObject.configId+"/"+dataObject.teamId+"?type="+dataObject.type)
@@ -85,8 +80,7 @@ export {findAllProjectInfosByTeamId,
     saveDatabaseConfigs,
     buildCheck,
     addBuildResult,
-    startSetupJenkinsJob,
-    startBackendJenkinsJob,
+    startJenkinsJob,
     buildStart,
     buildStop,
     findNPrevLogs,
