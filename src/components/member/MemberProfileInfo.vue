@@ -45,7 +45,7 @@ const onFileSelected = (event)=>{
         <div class="profile-image-wrapper">
           <img :src="props.componenetProfileImage" alt="프로필 이미지" class="profile-image" />
           <input type="file" id="profile-image" @change="onFileSelected" />
-          <button type="button" @click="updateMemberProfileImage">저장</button>
+          <b-button class="save-button" type="button" @click="updateMemberProfileImage">저장</b-button>
         </div>
       </div>
       <div class="form-row">
@@ -71,14 +71,14 @@ const onFileSelected = (event)=>{
       <div class="form-row">
         <div class="form-group">
           <label for="region">가입일</label>
-          <input type="text" id="region" v-model="updateMemberObject.lgnMtd" readonly />
+          <input type="text" id="region" v-model="updateMemberObject.REG_DTTM" readonly />
         </div>
         <div class="form-group">
           <label for="country">주소</label>
           <input type="text" id="region" v-model="updateMemberObject.address" />
         </div>
       </div>
-      <button type="button" class="save-button" @click="updateMember">저장</button>
+      <b-button type="button" class="save-button" @click="updateMember">저장</b-button>
     </form>
     <hr />
     <div class="account-deletion">
@@ -99,6 +99,7 @@ const onFileSelected = (event)=>{
 </template>
 
 <style scoped>
+
 .profile-info {
   width: 100%;
   padding: 20px;
@@ -118,9 +119,10 @@ const onFileSelected = (event)=>{
 }
 
 label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--text1);
+    transition: 0.125s ease-in;
 }
 
 .profile-image-wrapper {
@@ -136,7 +138,7 @@ label {
 }
 
 input[type='file'] {
-  width: calc(100% - 160px);
+  width: calc(100% - 250px);
 }
 
 .form-row {
@@ -162,20 +164,21 @@ input[readonly] {
 }
 
 .save-button {
-  padding: 10px 20px;
-  background-color: #2d3648;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
   font-size: 16px;
-  font-weight: 600;
-  width: 100%;
-  margin-top: 20px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  background-color: #4c566a;
+  color: #ffffff;
 }
 
 .save-button:hover {
-  background-color: #2d3648;
+  background-color: #434c5e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .account-deletion {
@@ -200,9 +203,14 @@ input[readonly] {
 }
 
 .deletion-info ul {
-  list-style: disc;
+  /* list-style: disc;
   margin-left: 20px;
-  font-size: 14px;
+  font-size: 14px; */
+  list-style-type: disc;
+  margin: 0;
+  padding-left: 100px;
+  text-align: left;
+  display: inline-block; /* 가운데 정렬을 위해 inline-block 사용 */
 }
 
 .delete-button {

@@ -38,8 +38,8 @@
                                 class="link-input"
                                 placeholder="Git URL을 등록해주세요"
                             />
-                            <b-button @click="toggleEditJiraUrl" class="save-button">
-                                {{ editingJiraUrl ? '저장' : '수정' }}
+                            <b-button @click="toggleEditGitUrl" class="save-button">
+                                {{ editingGitUrl ? '저장' : '수정' }}
                             </b-button>
                         </div>
                     </div>
