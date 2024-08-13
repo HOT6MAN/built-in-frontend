@@ -40,8 +40,7 @@ const connectToSSE = async(userId)=>{
   await storeFindAllUnreadNotificationByUserId(userId.value);
   const { unreadNotificationSize } = storeToRefs(notificationStore);
   console.log("pinia update value = ", unreadNotificationSize.value);
-  // const url = import.meta.env.VITE_VUE_API_URL;
-  const url = "http://i11a606.p.ssafy.io:10000/hot6man";
+  const url = import.meta.env.VITE_VUE_API_URL;
   const token = localStorage.getItem('access_token');
   const eventSourceUrl = `${url}/notify/subscribe/${userId.value}`;
   console.log("event source url = ",eventSourceUrl);
