@@ -35,13 +35,13 @@
       </b-card-body>
     </b-card>    
 
-    <ResumeListModal v-model="showModal" @apply="onApply"/>
+    <ResumeListModal v-model="showModal" @apply="onApply" @apply:isEligibleToApply="checkEligibleToApply" />
   </div>
 </template>
 <script setup>
-import { ref, computed, defineEmits } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { findRecruit, deleteRecruit } from '@/api/teambuilding.js'
+import { findRecruit, deleteRecruit, checkMyTeam, checkMyResumeExists, checkMyApplicationApplied } from '@/api/teambuilding.js'
 import { applyTeamByResumeId } from '@/api/resume.js'
 import ResumeListModal from '@/modals/resume/ResumeListModal.vue'
 import {useChatStore} from '@/stores/chatStore.js';
@@ -51,6 +51,15 @@ import { sweetAlert } from '../../api/sweetAlert'
 
 import { createRoomByTeamId } from '@/api/chat.js';
 
+const route = useRoute()
+const router = useRouter()
+const id = route.params.id
+
+const chatStore = useChatStore();
+const authStore = useAuthStore();
+const {chatOpen} = storeToRefs(chatStore);
+const {userId} = storeToRefs(authStore);
+
 const board = ref({})
 const headerStyle = computed(() => ({
   '--background-image': `url(${board.value.thumbnailUrl})`
@@ -58,10 +67,6 @@ const headerStyle = computed(() => ({
 const isAuth = ref(true)
 const showModal = ref(false);
 const teamId = ref('')
-
-const route = useRoute()
-const router = useRouter()
-const id = route.params.id
 
 findRecruit(id, (resp) => {
   board.value = resp.data.data
@@ -93,6 +98,26 @@ const onApplyClick = () => {
   showModal.value = true;
 }
 
+const checkEligibleToApply = async (resolve) => {
+  const checks = [
+    {func: () => checkMyResumeExists(), condition: res => !res, errorMsg: "you don't have resume to apply"},
+    {func: () => checkMyTeam(teamId.value), condition: res => res, errorMsg: "you already teammate"},
+    {func: () => checkMyApplicationApplied(teamId.value), condition: res => res, errorMsg: "you already applied (under review)"},
+  ]
+
+  for (const check of checks) {
+    const {func, condition, errorMsg} = check
+    const result = await func();
+
+    if (condition(result)) {
+      resolve(errorMsg)
+      return;
+    }
+  }
+
+  resolve("")
+}
+
 const onApply = (resumeId) => {
   applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
     if (resp.status === 201) {
@@ -103,10 +128,6 @@ const onApply = (resumeId) => {
   }, (err) => console.error(err))
 }
 
-const chatStore = useChatStore();
-const authStore = useAuthStore();
-const {chatOpen} = storeToRefs(chatStore);
-const {userId} = storeToRefs(authStore);
 const startChat = async ()=>{
   console.log("chat start");
   await createRoomByTeamId(id, userId.value, (response)=>{
