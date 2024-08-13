@@ -9,6 +9,7 @@ import { storeToRefs } from 'pinia';
 import {useAuthStore} from '@/stores/authStore.js';
 import { useNotificationStore } from "@/stores/notificationStore.js";
 import { useChatStore } from './stores/chatStore';
+import { useProjectStore } from './stores/projectStore';
 
 const notificationStore = useNotificationStore();
 const { storeFindAllUnreadNotificationByUserId } = notificationStore;
@@ -17,6 +18,7 @@ const {userId, isLogined} = storeToRefs(authStore);
 const chatStore = useChatStore();
 const {chatOpen} = storeToRefs(chatStore);
 
+const { storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDatabaseJenkinsJob } = useProjectStore();
 
 const route = useRoute();
 
@@ -63,6 +65,8 @@ const connectToSSE = async(userId)=>{
   eventSource.value.addEventListener('jenkins', (event) => {
     console.log('jenkins data: ', event.data);
     console.log("jenkins 알림이 도착했습니다");
+
+    storeBuildBackendJenkinsJob();
   });
 
   eventSource.value.addEventListener('sse', async (event) => {

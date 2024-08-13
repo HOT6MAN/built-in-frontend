@@ -1,10 +1,10 @@
 <template>
   <div class="main-content">
     <div class="config-container">
-      <div class="config-header">
+      <div class="row config-header">
         <h2>프로젝트 빌드 시작</h2>
       </div>
-      <div v-if="dataLoaded" class="config-selection">
+      <div v-if="dataLoaded" class="row config-selection">
         <div class="input-group">
           <select v-model="selectedConfigId" class="form-select config-select">
             <option value="" disabled selected>설정 선택</option>
@@ -14,21 +14,15 @@
           </select>
         </div>
       </div>
-      
+
       <div v-if="selectedConfigId" class="config-content">
         <div class="input-group-container">
-        <label for="config-input" class="config-label">빌드할 프로젝트 환경설정 </label>
-        <div class="input-group">
-          <input 
-            id="config-input"
-            v-model="updateConfigName"
-            type="text" 
-            class="form-control config-input" 
-            placeholder="설정 제목" 
-            readonly
-          />
+          <label for="config-input" class="config-label">빌드할 프로젝트 환경설정 </label>
+          <div class="input-group">
+            <input id="config-input" v-model="updateConfigName" type="text" class="form-control config-input"
+              placeholder="설정 제목" readonly />
+          </div>
         </div>
-      </div>
 
         <b-tabs v-model="activeTab" @input="onTabChange" class="mt-4">
           <b-tab title="Backend">
@@ -48,13 +42,8 @@
           </b-tab>
         </b-tabs>
 
-        <component 
-          v-if="dataLoaded" 
-          :is="currentComponent" 
-          :allConfigs="allConfigs" 
-          :selectedConfigId="selectedConfigId"
-          :selectedIndex="selectedIndex" 
-        ></component>
+        <component v-if="dataLoaded" :is="currentComponent" :allConfigs="allConfigs"
+          :selectedConfigId="selectedConfigId" :selectedIndex="selectedIndex"></component>
 
 
       </div>
@@ -72,7 +61,7 @@
         </div>
       </div>
 
-      <div v-if="selectedConfigId  && dataLoaded" class="build-button-container">
+      <div v-if="selectedConfigId && dataLoaded" class="build-button-container">
         <button class="build-button" @click="componentBuildStart">
           빌드/배포 시작
         </button>
@@ -87,18 +76,23 @@ import ProjectBackendDataCheck from '../../components/ProjectManagement/ProjectB
 import ProjectFrontendDataCheck from '../../components/ProjectManagement/ProjectFrontendDataCheck.vue';
 import ProjectDatabaseDataCheck from '../../components/ProjectManagement/ProjectDatabaseDataCheck.vue';
 import { useProjectStore } from '@/stores/projectStore.js';
-import {buildStart} from '@/api/project.js';
+import { buildStart } from '@/api/project.js';
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/authStore.js';
 import { useRoute } from 'vue-router';
 import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
+import { addBuildResult, buildCheck, startJenkinsJob } from '../../api/project';
+import { errorMessages } from 'vue/compiler-sfc';
+import { sweetAlert } from '../../api/sweetAlert';
 
 const route = useRoute();
-const teamId = route.params.teamId; 
+const teamId = route.params.teamId;
 
+const authStore = useAuthStore();
+const { userId } = storeToRefs(authStore);
 
 const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId } = store;
+const { storeFindAllProjectInfosByTeamId, deployConfig } = store;
 
 const { projectInfos } = storeToRefs(store);
 const dataLoaded = ref(false);
@@ -107,19 +101,70 @@ const currentComponent = shallowRef(markRaw(ProjectBackendDataCheck));
 
 const allConfigs = ref([]);
 const selectedConfigId = ref(0);
-const selectedIndex = ref(0);
 
 const updateConfigName = ref("");
 
-const componentBuildStart = ()=>{
-  alert("빌드, 배포 시작");
-  const token = localStorage.getItem("access_token");
-  buildStart(teamId, selectedConfigId.value, (response)=>{
+const selectedIndex = computed(() => {
+  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
+});
 
-  }, (error)=>{
+const curConfig = computed(() => {
+  if (selectedIndex.value !== -1) {
+    return allConfigs.value[selectedIndex.value];
+  } else {
+    return null; // 선택된 config가 없을 때 처리할 값
+  }
+});
 
+const componentBuildStart = async () => {
+  sweetAlert('',"빌드, 배포 시작");
+
+  // 1. {projectInfoId}에 해당하는 서비스를, 배포할 수 있는지 여부를 판단한다
+  buildCheck(userId.value, selectedConfigId.value, (response) => {
+    const data = response.data.data;
+    console.log(data);
+    console.log("asdfasdfdas", curConfig.value);
+
+    // 배포할 수 없는 경우(모든 포트가 사용 중인 경우)
+    if (data === null) {
+      sweetAlert('',"현재 서비스의 모든 포트가 사용 중입니다");
+    }
+    else {
+      addBuildResult(selectedConfigId.value, data.deployNum, (response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+
+      console.log("buildResult 추가 완료");
+
+      deployConfig.value = {
+        ...curConfig.value,
+        deployNum: data.deployNum,
+        memberId: userId.value,
+        teamProjectInfoId: selectedConfigId.value,
+        serviceNum: data.serviceNum,
+        accessToken: localStorage.getItem("access_token")
+      };
+
+      console.log("deployConfig = ", deployConfig.value);
+
+      buildSetupJenkinsJob();
+    }
+  }, (error) => {
+    console.log(error);
   })
 }
+
+const buildSetupJenkinsJob = () => {
+  console.log("setup job 시작");
+
+  startJenkinsJob("setup", config, 
+    (response) => console.log(response),
+    (error) => console.log(error)
+  );
+}
+
 
 onMounted(async () => {
   await storeFindAllProjectInfosByTeamId(teamId);
@@ -159,7 +204,7 @@ const onTabChange = (newTabIndex) => {
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
 .main-content {
-  padding: 20px;
+  margin: 20px;
   display: flex;
   justify-content: center;
   background-color: #f0f4f8;
@@ -204,7 +249,8 @@ const onTabChange = (newTabIndex) => {
   font-size: 16px;
   color: #4a5568;
   font-weight: 500;
-  text-align: left;  /* 레이블을 왼쪽으로 정렬 */
+  text-align: left;
+  /* 레이블을 왼쪽으로 정렬 */
 }
 
 .input-group {
