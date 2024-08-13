@@ -92,7 +92,8 @@ const authStore = useAuthStore();
 const { userId } = storeToRefs(authStore);
 
 const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId, deployConfig } = store;
+const { storeFindAllProjectInfosByTeamId } = store;
+const { deployConfig } = storeToRefs(store);
 
 const { projectInfos } = storeToRefs(store);
 const dataLoaded = ref(false);
@@ -159,7 +160,7 @@ const componentBuildStart = async () => {
 const buildSetupJenkinsJob = () => {
   console.log("setup job 시작");
 
-  startJenkinsJob("setup", config, 
+  startJenkinsJob("setup", deployConfig.value, 
     (response) => console.log(response),
     (error) => console.log(error)
   );
