@@ -69,9 +69,10 @@ function create(){
                  
         
                     <div class="button-group">
-                    <button class="fLtQtN" color="teal" @click="create">생성</button>
-                    <button class="cOBVPj"><router-link :to="{name:'myteam'}"
-                        style="text-decoration: none; color: black">취소</router-link></button>
+                    <b-button class="add-button" color="teal" @click="create">생성</b-button>
+                    <b-button class="remove-button" variant="danger" size="sm">
+                        <router-link :to="{name:'myteam'}"style="text-decoration: none; color: white">취소</router-link>
+                    </b-button>
                 </div>
         
                 </div>
@@ -136,36 +137,42 @@ function create(){
     margin-top : 100px;
 }
 
-.cOBVPj {
-    height: 3rem;
-    font-size: 1.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    border-radius: 1.5rem;
-    border: none;
-    outline: none;
-    font-weight: bold;
-    word-break: keep-all;
-    background: #DEE2E6;
-    color: #212529;
-    transition: 0.125s ease-in;
-    cursor: pointer;
+.remove-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #bf616a;
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 8px;
 }
 
-.fLtQtN {
-    height: 3rem;
-    font-size: 1.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    border-radius: 1.5rem;
-    border: none;
-    outline: none;
-    font-weight: bold;
-    word-break: keep-all;
-    background: #12B886;
-    color: #FFFFFF;
-    transition: 0.125s ease-in;
-    cursor: pointer;
+.remove-button:hover {
+  background-color: #d08770;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  background-color: #5e81ac;
+  color: #ffffff;
+}
+
+.add-button:hover {
+  background-color: #81a1c1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 

@@ -49,9 +49,10 @@ onMounted(  async()=> {
     <div class="container">
     <div class="content">
       <div class="header">
-        <button class="create-button">
+        
+        <b-button class="add-button">
           <router-link :to="{ name: 'myTeamRegister' }" style="text-decoration: none; color: white">새 팀 등록</router-link>
-        </button>
+        </b-button>
       </div>
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->
       <div v-if="!isTeamsEmpty" class="teams">
@@ -95,18 +96,22 @@ onMounted(  async()=> {
   justify-content: flex-end;
 }
 
-.create-button {
-  padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #12B886;
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.9rem;
+.add-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  background-color: #5e81ac;
+  color: #ffffff;
 }
 
-.create-button:hover {
-  background-color: #0f926b;;
+.add-button:hover {
+  background-color: #81a1c1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .no-teams-message {

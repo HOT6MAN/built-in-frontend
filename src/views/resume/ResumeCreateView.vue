@@ -8,18 +8,18 @@
   
           <b-form class="form" @submit.prevent="onSubmit" @keydown.enter.prevent>
             <b-form-group >
-              <h2 class="left-align">제목</h2>
+              <label class="left-align">제목</label>
               <b-form-input v-model="title" size="lg" class="text-center mb-3" />
             </b-form-group>
 
             <b-form-group class="image-form">
-              <h2 class="left-align">프로필</h2>
+              <label class="left-align">프로필</label>
               <div><input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3 image-input"> </div> 
               <div><b-img class="form-image" v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/></div>
             </b-form-group>
 
             <b-form-group>
-              <h2 class="left-align">포지션</h2>
+              <label class="left-align">포지션</label>
               <b-form-tags 
                 v-model="selectedPos" 
                 placeholder=""
@@ -41,7 +41,7 @@
               />
             </b-form-group>
             <b-form-group>
-              <h2 class="left-align">기술 스택</h2>
+              <label class="left-align">기술 스택</label>
               <b-form-tags 
                 v-model="techStack" 
                 placeholder="작성 후 스페이스 바 눌러주세요" 
@@ -54,7 +54,7 @@
               />
             </b-form-group>
             <b-form-group>
-              <h2 class="left-align">경험</h2>
+              <label class="left-align">경험</label>
               <div v-for="(experience, idx) in experiences" :key="idx">
                 <b-card bg-variant="light" class="mb-2">
                   <b-form-group label="제목" :label-for="'nested-title-' + idx">
@@ -217,6 +217,17 @@ onMounted(async () => {
 
 </script>
 <style scoped>
+
+.config-container label {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: var(--text1);
+    margin-bottom: 1rem;
+    transition: 0.125s ease-in;
+    display: block;
+    line-height: 1.5;
+}
+
   .main-content {
     display: flex;
     margin-top: 80px;

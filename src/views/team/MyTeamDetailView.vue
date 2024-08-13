@@ -25,9 +25,9 @@
                                 class="link-input"
                                 placeholder="Jira URL을 등록해주세요"
                             />
-                            <button @click="toggleEditJiraUrl" class="link-button">
+                            <b-button @click="toggleEditJiraUrl" class="save-button">
                                 {{ editingJiraUrl ? '저장' : '수정' }}
-                            </button>
+                            </b-button>
                         </div>
                         <div class="link-group">
                             <label class="link-label">Git URL :</label>
@@ -38,9 +38,9 @@
                                 class="link-input"
                                 placeholder="Git URL을 등록해주세요"
                             />
-                            <button @click="toggleEditGitUrl" class="link-button">
-                                {{ editingGitUrl ? '저장' : '수정' }}
-                            </button>
+                            <b-button @click="toggleEditJiraUrl" class="save-button">
+                                {{ editingJiraUrl ? '저장' : '수정' }}
+                            </b-button>
                         </div>
                     </div>
 
@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div v-if="showDelete" class="delete-button">
-                    <button class="link-button" @click="clickDelete">팀 삭제</button>
+                    <b-button variant="danger" size="sm" class="remove-button" @click="clickDelete">팀 삭제</b-button>
                 </div>
                 
                 <div class="web-rtc">
@@ -336,19 +336,43 @@ button{
     cursor: not-allowed;
 }
 
-.link-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 4px;
-    background-color: #12B886;
-    color: #fff;
-    cursor: pointer;
-    font-size: 0.9rem;
-    
+.save-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  background-color: #4c566a;
+  color: #ffffff;
 }
 
-.link-button:hover {
-    background-color: #0f926b;;
+.save-button:hover {
+  background-color: #434c5e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.remove-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #bf616a;
+  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.remove-button:hover {
+  background-color: #d08770;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .status-group {
