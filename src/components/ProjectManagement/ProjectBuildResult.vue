@@ -106,7 +106,6 @@ const openModal = (config, type) => {
   modalType.value = type;
   showModal.value = true;
 
-  // Focus on modal when opened
   document.body.classList.add('modal-open');
 };
 

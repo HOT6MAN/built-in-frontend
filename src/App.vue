@@ -115,7 +115,7 @@ const showAlertMessage = (message) => {
   <div>
     <NavigationBarView v-if="route.meta.showNavbar"/>
     <router-view></router-view>
-    <!-- <ChatView v-if="userId"></ChatView> -->
+    <ChatView v-if="userId"></ChatView>
     
     
     <transition name="fade">
