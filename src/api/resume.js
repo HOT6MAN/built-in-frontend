@@ -36,7 +36,7 @@ export function applyTeamByResumeId(json, successCB, failCB) {
 }
 
 export async function findApplyList(teamId) {
-  const res = await local.get(`/team/${teamId}/applications`);
+  const res = await local.get(`/applications/team/${teamId}`);
   return res.data;
 }
 
@@ -49,5 +49,5 @@ export function rejectApplication(json, successCB, failCB) {
 }
 
 export function deleteApplication(teamId, resumeId, successCB, failCB) {
-  local.delete(`/team/${teamId}/application/${resumeId}`).then(successCB).catch(failCB);
+  local.delete(`/apply/team/${teamId}/application/${resumeId}`).then(successCB).catch(failCB);
 }
