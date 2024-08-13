@@ -6,8 +6,8 @@ export function findRecruitList(params, successCB, failCB) {
   local.get('/teambuilding/recruits', { params }).then(successCB).catch(failCB)
 }
 
-export async function findTeamList(params, successCB, failCB) {
-  await local.get('/team', { params }).then(successCB).catch(failCB)
+export function findMyTeamList(successCB, failCB) {
+  local.get('/myteam').then(successCB).catch(failCB)
 }
 
 export function registerRecruit(formData, successCB, failCB) {
@@ -16,8 +16,8 @@ export function registerRecruit(formData, successCB, failCB) {
     .catch(failCB);
 }
 
-export async function findRecruit(id, successCB, failCB) {
-  await local.get('/teambuilding/recruit/' + id).then(successCB).catch(failCB)
+export function findRecruit(id, successCB, failCB) {
+  local.get('/teambuilding/recruit/' + id).then(successCB).catch(failCB)
 }
 
 export function deleteRecruit(id, successCB, failCB) {
@@ -32,4 +32,19 @@ export function updateRecruit(id, formData, successCB, failCB) {
   local.patch('/teambuilding/recruit/'+id, formData, {headers: {'Content-Type': 'multipart/form-data'}})
     .then(successCB)
     .catch(failCB);
+}
+
+export async function checkMyResumeExists() {
+  const result = await local.get(`/check/myresume`);
+  return result.data.data;
+}
+
+export async function checkMyTeam(teamId) {
+  const result = await local.get(`/check/myteam/${teamId}`);
+  return result.data.data;
+}
+
+export async function checkMyApplicationApplied(teamId) {
+  const result = await local.get(`/check/application/status/team/${teamId}`);
+  return result.data.data;
 }

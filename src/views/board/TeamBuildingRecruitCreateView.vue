@@ -6,7 +6,7 @@
       </div>
       <b-form class="form" @submit.prevent="onSubmit" @reset.prevent="onReset" @keydown.enter.prevent >
         <b-form-group for="team">
-          <label class="left-align">팀 이름</label>
+          <h2 class="left-align">팀 이름</h2>
           <b-form-input v-if="isUpdateMode" v-model="selectedTeam"/>
           <b-form-select
             v-if="!isUpdateMode"
@@ -19,13 +19,13 @@
         </b-form-select>
         </b-form-group>
         <b-form-group class="image-form">
-          <label class="left-align">이미지</label>
+          <h2 class="left-align">이미지</h2>
           <div><b-img class="form-image" v-if="thumbnailPreview" :src="thumbnailPreview" alt="image preview" fluid/></div>
           <div><input type="file" ref="thumbnailInput" accept="image/*" @change="handleFileChange" class="image-input" ></div>
         </b-form-group>
 
         <b-form-group for="domain">
-          <label class="left-align">프로젝트 도메인</label>
+          <h2 class="left-align">프로젝트 도메인</h2>
           <b-form-tags 
             input-id="domain"           
             :limit="1"
@@ -37,7 +37,7 @@
         </b-form-group>
 
         <b-form-group for="desired-positions">
-          <label class="left-align">모집 분야</label>
+          <h2 class="left-align">모집 분야</h2>
           <b-form-tags
             input-id="desired-positions"            
             :limit="limitCnt"
@@ -80,7 +80,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { findTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
+import { findMyTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
 const authStore = useAuthStore();
@@ -90,10 +90,6 @@ const route = useRoute()
 const router = useRouter()
 
 const teamList = ref([{}])
-const params = {
-  'memberId': userId.value
-}
-
 const limitCnt = 5
 
 const title = ref('생성')
@@ -211,8 +207,7 @@ onMounted(() => {
     introduction.value = boardData.introduction;
     content.value = boardData.content;
   } else {
-    findTeamList(params, (resp) => {
-
+    findMyTeamList((resp) => {
       teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
     }, (err) => console.error(err))
   }  
@@ -220,15 +215,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
-  .b-from-tags{
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #DEE2E6;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-  }
-
   .main-content {
     display: flex;
     margin-top: 80px;
@@ -245,16 +231,6 @@ onMounted(() => {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
   }
-  .config-container label {
-    font-weight: bold;
-    font-size: 1.5rem;
-    color: var(--text1);
-    margin-bottom: 1rem;
-    transition: 0.125s ease-in;
-    display: block;
-    line-height: 1.5;
-}
-
   .config-header {
     background-color: #102a43;
     color: #ffffff;
