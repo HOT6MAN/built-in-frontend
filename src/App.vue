@@ -40,7 +40,8 @@ const connectToSSE = async(userId)=>{
   await storeFindAllUnreadNotificationByUserId(userId.value);
   const { unreadNotificationSize } = storeToRefs(notificationStore);
   console.log("pinia update value = ", unreadNotificationSize.value);
-  const url = import.meta.env.VITE_VUE_API_URL;
+  // const url = import.meta.env.VITE_VUE_API_URL;
+  const url = "http://i11a606.p.ssafy.io:10000/hot6man";
   const token = localStorage.getItem('access_token');
   const eventSourceUrl = `${url}/notify/subscribe/${userId.value}`;
   console.log("event source url = ",eventSourceUrl);
@@ -56,6 +57,11 @@ const connectToSSE = async(userId)=>{
   eventSource.value.addEventListener('chat', (event) => {
     console.log('New message:', event.data);
     showAlertMessage('새로운 채팅 알림이 도착했습니다.');
+  });
+
+  eventSource.value.addEventListener('jenkins', (event) => {
+    console.log('jenkins data: ', event.data);
+    console.log("jenkins 알림이 도착했습니다");
   });
 
   eventSource.value.addEventListener('sse', async (event) => {
