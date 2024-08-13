@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { ref, defineProps, onMounted } from 'vue';
 
 const props = defineProps({
@@ -19,7 +19,6 @@ const props = defineProps({
 const allConfigByComponent = ref([]);
 const isServiceIdValid = ref(false);
 const serviceScheduleId = ref(null);
-
 
 function validateServiceScheduleId() {
   allConfigByComponent.value = props.allConfigs;
