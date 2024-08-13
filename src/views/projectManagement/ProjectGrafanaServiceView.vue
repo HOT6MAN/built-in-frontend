@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <iframe ref="grafanaDashboard" width="100%" height="600" frameborder="0"></iframe>
+      <iframe ref="grafanaDashboard" width="100%" height="800" frameborder="0"></iframe>
     </div>
   </template>
   
