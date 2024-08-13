@@ -1,3 +1,82 @@
+<template>
+    <SideBarView></SideBarView>
+    <div class="container">
+        <div class="team-info">
+            <div class="team-header">
+                <div class="sc-crHmcD fLCeMm">
+                    <TeamSelectDropdown/>
+                    <label class="link-label">팀 이름 :</label>
+                    <h2 class="fw-bold ">{{ team.name }}</h2>
+                </div>
+                <div class="sc-crHmcD fLCeMm ">
+                    <label class="link-label">팀 소개 :</label>
+                    <p >{{ team.content }}</p>
+                </div>
+               
+                    
+                <div class="team-links ">
+                    <div class="link-row">
+                        <div class="link-group">
+                            <label class="link-label">Jira URL :</label>
+                            <input
+                                type="text"
+                                v-model="newJiraUrl"
+                                :disabled="!editingJiraUrl"
+                                class="link-input"
+                                placeholder="Jira URL을 등록해주세요"
+                            />
+                            <button @click="toggleEditJiraUrl" class="link-button">
+                                {{ editingJiraUrl ? '저장' : '수정' }}
+                            </button>
+                        </div>
+                        <div class="link-group">
+                            <label class="link-label">Git URL :</label>
+                            <input
+                                type="text"
+                                v-model="newGitUrl"
+                                :disabled="!editingGitUrl"
+                                class="link-input"
+                                placeholder="Git URL을 등록해주세요"
+                            />
+                            <button @click="toggleEditGitUrl" class="link-button">
+                                {{ editingGitUrl ? '저장' : '수정' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="status-group">
+                        <label class="status-label">Status:</label>
+                        <p class="status-text" v-if="team.status==='RECRUIT'">
+                            <span class="badge badge-recruit" @click="changeStatus">모집중</span>
+                        </p>
+                        <p class="status-text" v-else>
+                            <span class="badge badge-finish" @click="changeStatus">모집완료</span>
+                        </p>
+                    </div>
+                </div>   
+                    
+                
+
+            </div>
+            <div class="team-details">
+                <div class="team-members">
+                    <div v-for="(item, index) in team.memberTeams" :key="index">
+                        <TeamMemberCard :member="item"/>
+                    </div>
+                </div>
+                <div v-if="showDelete" class="delete-button">
+                    <button class="link-button" @click="clickDelete">팀 삭제</button>
+                </div>
+                
+                <div class="web-rtc">
+                    <WebRtc/>
+                </div>
+      
+            </div>
+        </div>
+    </div>
+</template>
+
 <script setup>
 import { onMounted,ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
@@ -7,6 +86,7 @@ import { storeToRefs } from 'pinia';
 import TeamMemberCard from '@/components/team/TeamMemberCard.vue'
 import WebRtc from '@/components/team/WebRtc.vue';
 import MemberSidebar from '@/components/member/MemberSidebar.vue';
+import SideBarView from '../Bars/SideBarView.vue';
 import { sweetConfirm } from '../../api/sweetAlert';
 import TeamSelectDropdown from '../../components/team/TeamSelectDropdown.vue';
 
@@ -104,84 +184,6 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
 
 </script>
 
-<template>
-    <div class="container">
-        <MemberSidebar class="sidebar" />
-        <div class="team-info">
-            <div class="team-header">
-                <div class="sc-crHmcD fLCeMm">
-                    <TeamSelectDropdown/>
-                    <label class="link-label">팀 이름 :</label>
-                    <h2 class="fw-bold ">{{ team.name }}</h2>
-                </div>
-                <div class="sc-crHmcD fLCeMm ">
-                    <label class="link-label">팀 소개 :</label>
-                    <p >{{ team.content }}</p>
-                </div>
-               
-                    
-                <div class="team-links ">
-                    <div class="link-row">
-                        <div class="link-group">
-                            <label class="link-label">Jira URL :</label>
-                            <input
-                                type="text"
-                                v-model="newJiraUrl"
-                                :disabled="!editingJiraUrl"
-                                class="link-input"
-                                placeholder="Jira URL을 등록해주세요"
-                            />
-                            <button @click="toggleEditJiraUrl" class="link-button">
-                                {{ editingJiraUrl ? '저장' : '수정' }}
-                            </button>
-                        </div>
-                        <div class="link-group">
-                            <label class="link-label">Git URL :</label>
-                            <input
-                                type="text"
-                                v-model="newGitUrl"
-                                :disabled="!editingGitUrl"
-                                class="link-input"
-                                placeholder="Git URL을 등록해주세요"
-                            />
-                            <button @click="toggleEditGitUrl" class="link-button">
-                                {{ editingGitUrl ? '저장' : '수정' }}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="status-group">
-                        <label class="status-label">Status:</label>
-                        <p class="status-text" v-if="team.status==='RECRUIT'">
-                            <span class="badge badge-recruit" @click="changeStatus">모집중</span>
-                        </p>
-                        <p class="status-text" v-else>
-                            <span class="badge badge-finish" @click="changeStatus">모집완료</span>
-                        </p>
-                    </div>
-                </div>   
-                    
-                
-
-            </div>
-            <div class="team-details">
-                <div class="team-members">
-                    <div v-for="(item, index) in team.memberTeams" :key="index">
-                        <TeamMemberCard :member="item"/>
-                    </div>
-                </div>
-                <div v-if="showDelete" class="delete-button">
-                    <button class="link-button" @click="clickDelete">팀 삭제</button>
-                </div>
-                
-                <div class="web-rtc">
-                    <WebRtc/>
-                </div>
-      
-            </div>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 

@@ -194,7 +194,7 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
 }
 
 .add-button, .save-button, .remove-button {
-  font-family: 'Noto Sans KR';
+  font-family: var(--font-roboto);
   font-weight: 700;
   border-radius: 8px;
   padding: 8px 16px;

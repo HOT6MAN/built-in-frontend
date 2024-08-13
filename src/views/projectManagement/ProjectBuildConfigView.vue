@@ -12,7 +12,7 @@
               {{ config.title }}
             </option>
           </select>
-          <button class="btn btn-primary" @click="showModal">+ 추가</button>
+          <b-button class="btn btn-primary" @click="showModal">+ 추가</b-button>
         </div>
       </div>
 

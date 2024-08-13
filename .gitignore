@@ -37,3 +37,4 @@ secure/
 *.env
 
 I11A606T.pem
+.env

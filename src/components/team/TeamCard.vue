@@ -1,13 +1,3 @@
-<script setup>
-import { defineProps } from 'vue';
-import { RouterLink } from "vue-router";
-
-defineProps({
-    team: Object
-})
-
-
-</script>
 
 <template>
     <router-link :to="{ name: 'myTeamDetail', params: { teamId: team.id } }" style="text-decoration: none; color: inherit;" class="team-card-link">
@@ -47,6 +37,17 @@ defineProps({
         </div>
     </router-link>
 </template>
+
+<script setup>
+import { defineProps } from 'vue';
+import { RouterLink } from "vue-router";
+
+defineProps({
+    team: Object
+})
+
+
+</script>
 
 <style scoped>
 .fLCeMm {

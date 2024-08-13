@@ -3,19 +3,25 @@
   <div class="sideBar">
     <div class="sidebar-position">
       <!-- 대시보드 영역 -->
-      <div class="main-category" :to="{name: 'dashboard'}">
-        <img class="sidebar-icon" alt="" src="@/icons/Sidebar/DashBoard.svg" />
-          <p>대시보드</p>
-      </div>
       <!-- 환경설정 영역 -->
+      <div class="main-category">
+        <img class="sidebar-icon" alt="" src="@/icons/MemberSidebar/team.svg" />
+          <p>팀</p>
+      </div>
+      <div class="dropdownContainer">
+        <div><RouterLink :to="{name: 'myTeamDetail', params: {teamId: teamId}}"><b-button class="dropdownItem">나의 팀</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">모집공고</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">팀원관리</b-button></RouterLink></div>
+      </div>
+
       <div class="main-category-upper">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Config.svg" />
           <p>환경설정</p>
       </div>
       <div class="dropdownBuild">
-        <div><RouterLink :to="{name: 'projectbuildconfig' , params:{teamId : teamId}}"><b-button class="dropdownItem">빌드 환경 설정</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildStart', params:{teamId : teamId}}"><b-button class="dropdownItem">빌드 시작</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'projectBuildResultAndLogs', params:{teamId:teamId}}"><b-button class="dropdownItem">배포 보기</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectbuildconfig' , params: { teamId: teamId }}"><b-button class="dropdownItem">빌드 환경 설정</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildStart', params: { teamId: teamId }}"><b-button class="dropdownItem">빌드 시작</b-button></RouterLink></div>
+        <div><RouterLink :to="{name: 'projectBuildResultAndLogs', params: { teamId: teamId }}"><b-button class="dropdownItem">배포 보기</b-button></RouterLink></div>
       </div>
       <!-- 빌드 기록 영역 -->
       <div class="main-category">
@@ -42,12 +48,6 @@ const props = defineProps({
   teamId : Number,
 });
 const teamId = props.teamId;
-const isOpen = ref(false);
-console.log("Side bar props Team Id = ",props.teamId);
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
-};
-
 </script>
 
 <style scoped>
@@ -63,7 +63,7 @@ const toggleDropdown = () => {
 }
 .sidebar-position {
   position: relative;
-  top: 120px; 
+  top: 80px; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,9 +85,8 @@ a {
   gap: 20px;
   font-weight: 600;
   cursor : pointer;
-  margin-top: 30px;
+  margin-top: 10%;
 }
-/* 드롭다운을 포함한 메인 카테고리 ex : 환경설정, 서버 모니터링 */
 .main-category-upper {
   width: 160px;
   display: flex;
@@ -98,7 +97,7 @@ a {
   gap: 20px;
   font-weight: 600;
   cursor : pointer;
-  margin-top: 30px;
+  margin-top: 10%;
 }
 .main-category a {
   text-decoration: none;

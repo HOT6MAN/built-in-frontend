@@ -6,7 +6,7 @@
       </RouterLink>
       <div class="menu">
         <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
-        <RouterLink :to="{name: 'projectManagementView'}" class="menuButton">프로젝트 관리</RouterLink>
+        <RouterLink :to="{name: 'myteam'}" class="menuButton">팀 / 프로젝트 관리</RouterLink>
         <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
       </div>
     <div class="rightMenu">
@@ -31,6 +31,7 @@
 
 <script setup>
   import { defineComponent, ref } from 'vue'
+  import { useRoute } from 'vue-router';
   import { RouterLink, RouterView } from 'vue-router'
   import { useAuthStore } from '@/stores/authStore.js';
   import LoginModal from '@/components/login/LoginModal.vue';

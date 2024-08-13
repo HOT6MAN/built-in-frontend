@@ -7,6 +7,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { storeToRefs } from 'pinia';
 import {setTeam, getAllMyTeamByUserId} from '@/api/team';
 import TeamCard from '@/components/team/TeamCard.vue';
+import SidebarView from '@/views/Bars/SideBarView.vue'
 
 const authStore = useAuthStore()
 const {token,userId} = storeToRefs(authStore)
@@ -45,8 +46,7 @@ onMounted(  async()=> {
 
 </script>
 <template>
-  <MemberSidebar />
-  <div class="container">
+    <div class="container">
     <div class="content">
       <div class="header">
         <button class="create-button">

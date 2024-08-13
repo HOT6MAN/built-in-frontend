@@ -79,17 +79,4 @@ section {
   left: 80%;
 }
 
-/* 2,3 페이지의 들어가기 버튼 */
-.enterButton  {
-  position: relative;
-  border-radius: var(--radius-200);
-  color: black;
-  font-weight: 600;
-  background-color: #A0ABC0;
-  border: 1px solid #ffedad;
-  box-sizing: border-box;
-  width: 201px;
-  height: 40px;
-  align-items: center;
-}
 </style>

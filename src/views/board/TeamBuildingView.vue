@@ -1,5 +1,5 @@
 <template>
-  <div>  
+  <div >  
     <b-tabs>
       <b-tab title="Recruit">
         <RecruitView :data :loading @search="requestRecruitList"/>

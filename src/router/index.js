@@ -7,7 +7,6 @@ import teambuildingRecruitCreateView from '@/views/board/TeamBuildingRecruitCrea
 import teambuildingRecruitDetailView from '@/views/board/TeambuildingRecruitDetailView.vue'
 import AfterLoginView from '@/views/login/AfterLoginView.vue'
 import RegisterView from '@/views/login/RegisterView.vue'
-import ProjectDashboardView from '@/views/projectManagement/ProjectDashboardView.vue'
 import ProjectBuildConfigView from '@/views/projectManagement/ProjectBuildConfigView.vue'
 import ProjectBuildResultView from '@/views/projectManagement/ProjectBuildResultView.vue'
 import {useTeamStore} from '@/stores/teamStore';
@@ -138,11 +137,6 @@ const router = createRouter({
       name: 'projectManagementView',
       component: ProjectManagementView,
       children: [
-        {
-          path: 'dashboard/:teamId',
-          name: 'dashboard',
-          component: ProjectDashboardView
-        },
         {
           path: 'config/:teamId',
           name: 'projectbuildconfig',
