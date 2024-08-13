@@ -1,16 +1,6 @@
 <template>
   <div class="page">
     <h1 class="page-title">지원 현황</h1>
-    <div class="d-flex justify-content-end filters">
-      <b-form-group
-        label-cols="3"
-        label="team"
-        label-for="select-horizontal"
-        class="mx-4"
-      >
-        <b-form-select id="select-horizontal" class="custom-select" v-model="selectedTeamId" :options="teamList" />
-      </b-form-group>
-    </div>
     
     <b-table head-variant="light" hover :items="applicationList" :fields="fields" @row-clicked="onPreview" sticky-header class="table table-text-center" ref="table">    
       <template #cell(actions)="data">
@@ -21,30 +11,26 @@
     </b-table>    
   </div>
 
-  <div v-show="!applicationList.length">
+  <div v-show="!applicationList.length" class="no-result-content">
     <h3>No Result</h3>
   </div>
 
   <PreviewModal v-model="showModal" :resumeId="resumeId"/>
 </template>
 <script setup>
-import { ref, nextTick, watch } from 'vue'
-import { findTeamList } from '@/api/teambuilding.js'
+import { ref, nextTick, watch, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { findApplyList, acceptApplication, rejectApplication, deleteApplication } from '@/api/resume.js'
 import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
+
+const route = useRoute()
 
 const table = ref(null);
 const applicationList = ref([])
 const showModal = ref(false)
 const resumeId = ref('')
-const selectedTeamId = ref('')
-const teamList = ref([])
 const fields = ref([]) 
-
-findTeamList((resp) => {
-  teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
-  selectedTeamId.value = teamList.value[0].value
-}, (err) => console.error(err))
+const teamId = route.params.teamId
 
 const showButton = (status) => {
   return status === 'applied';
@@ -114,8 +100,7 @@ const applyRowStyles = () => {
   });
 };
 
-watch(selectedTeamId, async (newTeamId) => {
-  const teamId = newTeamId;
+onMounted(async () => {
   const result = await findApplyList(teamId)
 
   for (let application of result.data) {
@@ -130,7 +115,7 @@ watch(selectedTeamId, async (newTeamId) => {
 
   applicationList.value = result.data;
 
-  if (applicationList.value.length > 0) fields.value.push({key: 'actions', label: 'Actions'})
+  if (applicationList.value.length) fields.value.push({key: 'actions', label: 'Actions'})
 })
 
 watch(applicationList, () => {
@@ -165,4 +150,9 @@ watch(applicationList, () => {
 .table-text-center {
   vertical-align: middle;
 }
+
+.no-result-content {
+  margin-top: 80px;
+}
+
 </style>

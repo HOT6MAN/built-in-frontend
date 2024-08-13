@@ -133,6 +133,11 @@ const router = createRouter({
       ,meta: { showNavbar: true },
     },
     {
+      path : '/teams/:teamId/applications',
+      name : 'myTeamApplications',
+      component : ()=>import('@/views/team/MyTeamApplications.vue'),
+    },
+    {
       path: '/project',
       name: 'projectManagementView',
       component: ProjectManagementView,
