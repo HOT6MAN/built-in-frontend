@@ -1,73 +1,88 @@
 <template>
-  <div class="page">
-    <h1 class="title">이력서 {{ pageTitle }}</h1>
-    <div>
-      <b-form @submit.prevent="onSubmit" @keydown.enter.prevent>
-        <b-form-group label="Title">
-          <b-form-input v-model="title" size="lg" class="text-center mb-3" />
-        </b-form-group>
-        <b-form-group label="Profile">
-          <input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3"> 
-          <b-img v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/>
-        </b-form-group>
-        <b-form-group label="Position">
-          <b-form-tags 
-            v-model="selectedPos" 
-            placeholder=""
-            :limit="1" 
-            tag-variant="primary"
-            tag-pills
-            disabled  
-            class="mb-2"
-          />
-          <b-form-tag
-            v-for="(tag, idx) in positions"
-            :key="idx"
-            :title="tag"
-            variant="primary"              
-            no-remove
-            pill          
-            @click="selectTag(tag)"
-            class="tag-btn mx-1 mb-3"
-          />
-        </b-form-group>
-        <b-form-group label="Tech Stack">
-          <b-form-tags 
-            v-model="techStack" 
-            placeholder="작성 후 스페이스 바 눌러주세요" 
-            tag-variant="primary"
-            tag-pills          
-            separator=" "
-            @input="onTagsDuplicate"
-            remove-on-delete
-            class="mb-3"
-          />
-        </b-form-group>
-        <b-form-group label="Experience">
-          <div v-for="(experience, idx) in experiences" :key="idx">
-            <b-card bg-variant="light" class="mb-2">
-              <b-form-group label="Title" :label-for="'nested-title-' + idx">
-                <b-form-input v-model="experience.title" :id="'nested-title-' + idx" />
-              </b-form-group>
-              <b-form-group label="Description" :label-for="'nested-description-' + idx">
-                <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize />
-              </b-form-group>
-              <div class="d-flex justify-content-end">
-                <b-button v-if="idx != 0" variant="outline-danger" @click="removeExperience(idx)"  >Delete</b-button>
+  <div class="main-content">     
+    <div class="config-container">  
+      <!-- <div class="page"> -->
+        <div class="config-header">
+          <h2 class="title">이력서 {{ pageTitle }}</h2>
+        </div>
+  
+          <b-form class="form" @submit.prevent="onSubmit" @keydown.enter.prevent>
+            <b-form-group >
+              <h2 class="left-align">제목</h2>
+              <b-form-input v-model="title" size="lg" class="text-center mb-3" />
+            </b-form-group>
+
+            <b-form-group class="image-form">
+              <h2 class="left-align">프로필</h2>
+              <div><input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3 image-input"> </div> 
+              <div><b-img class="form-image" v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/></div>
+            </b-form-group>
+
+            <b-form-group>
+              <h2 class="left-align">포지션</h2>
+              <b-form-tags 
+                v-model="selectedPos" 
+                placeholder=""
+                :limit="1" 
+                tag-variant="primary"
+                tag-pills
+                disabled  
+                class="mb-2"
+              />
+              <b-form-tag
+                v-for="(tag, idx) in positions"
+                :key="idx"
+                :title="tag"
+                variant="primary"              
+                no-remove
+                pill          
+                @click="selectTag(tag)"
+                class="tag-btn mx-1 mb-3"
+              />
+            </b-form-group>
+            <b-form-group>
+              <h2 class="left-align">기술 스택</h2>
+              <b-form-tags 
+                v-model="techStack" 
+                placeholder="작성 후 스페이스 바 눌러주세요" 
+                tag-variant="primary"
+                tag-pills          
+                separator=" "
+                @input="onTagsDuplicate"
+                remove-on-delete
+                class="mb-3"
+              />
+            </b-form-group>
+            <b-form-group>
+              <h2 class="left-align">경험</h2>
+              <div v-for="(experience, idx) in experiences" :key="idx">
+                <b-card bg-variant="light" class="mb-2">
+                  <b-form-group label="제목" :label-for="'nested-title-' + idx">
+                    <b-form-input v-model="experience.title" :id="'nested-title-' + idx" />
+                  </b-form-group>
+                  <b-form-group label="내용" :label-for="'nested-description-' + idx">
+                    <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize />
+                  </b-form-group>
+                  <div class="d-flex justify-content-end">
+                    <b-button v-if="idx != 0" variant="outline-danger" @click="removeExperience(idx)"  >삭제</b-button>
+                  </div>
+                </b-card>
               </div>
-            </b-card>
-          </div>
-          <b-button class="b-button-block mb-4 mx-auto" pill variant="primary" @click="addExperience">Add</b-button>
-        </b-form-group>
-        <b-form-group label="Comment">
-          <b-form-input v-model="comment" class="mb-3" />
-        </b-form-group>
-        <b-form-group class="d-flex justify-content-center mt-3">
-          <b-button type="submit" variant="primary" class="mx-1">Submit</b-button>
-        </b-form-group>
-      </b-form>
+              <b-button class=" add-button" pill variant="primary" @click="addExperience">추가</b-button>
+            </b-form-group>
+            <b-form-group label="Comment">
+              <b-form-input v-model="comment" class="mb-3" />
+            </b-form-group>
+            <b-form-group class="d-flex justify-content-center mt-3">
+
+              <b-button type="submit" variant="primary" class="mx-1 save-button">제출</b-button>
+            </b-form-group>
+          </b-form>
+ 
+      <!-- </div> -->
     </div>
   </div>
+
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -202,11 +217,96 @@ onMounted(async () => {
 
 </script>
 <style scoped>
-  .page {
-    padding-left: 300px;
-    padding-right: 300px;
-    margin-top: 130px;
-  }  
+  .main-content {
+    display: flex;
+    margin-top: 80px;
+    padding: 20px;
+    justify-content: center;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    font-family: var(--font-roboto)
+  }
+  .config-container {
+    width: 100%;
+    max-width: 1000px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  .config-header {
+    background-color: #102a43;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+  }
+  .config-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-family: var(--font-roboto)
+  }
+  .form {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: left;  
+  }
+
+  .left-align {
+    text-align: left; /* 상단 여백 추가 */
+  }
+
+  .image-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+  }
+  .form-image {
+    width: 227.2px;
+    height: 126.9px;
+  }
+  .image-input {
+    border: 1px solid black;
+  }
+
+
+  .add-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  background-color: #5e81ac;
+  color: #ffffff;
+}
+
+.add-button:hover {
+  background-color: #81a1c1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.save-button {
+  font-family: var(--font-roboto);
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+  background-color: #4c566a;
+  color: #ffffff;
+}
+
+.save-button:hover {
+  background-color: #434c5e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
 
   .title {
     text-align: center;
@@ -224,8 +324,8 @@ onMounted(async () => {
     transform: scale(1.05);
   }
   
-  .b-button-block {    
+  /* .b-button-block {    
     width: 95%;
     display: block;
-  }
+  } */
 </style>

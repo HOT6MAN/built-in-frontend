@@ -15,7 +15,7 @@ const api = axios.create({
         //Authorization: localStorage.getItem("access_token")
         'X-Remove-Cookie': true,
     },
-    //withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
+    withCredentials: false, // 초기 요청에서는 쿠키를 포함하지 않음
   });
 
 // 요청 인터셉터
