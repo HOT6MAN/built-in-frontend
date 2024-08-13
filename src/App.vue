@@ -58,6 +58,11 @@ const connectToSSE = async(userId)=>{
     showAlertMessage('새로운 채팅 알림이 도착했습니다.');
   });
 
+  eventSource.value.addEventListener('jenkins', (event) => {
+    console.log('jenkins data: ', event.data);
+    console.log("jenkins 알림이 도착했습니다");
+  });
+
   eventSource.value.addEventListener('sse', async (event) => {
     let data;
     try {
