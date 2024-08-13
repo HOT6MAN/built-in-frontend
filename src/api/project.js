@@ -30,6 +30,20 @@ async function saveFrontendConfigs(projectInfoId, frontendConfigs, success, fail
 async function saveDatabaseConfigs(projectInfoId, databaseConfigs, success, fail){
     await api.post("/build/project/database/"+projectInfoId, databaseConfigs).then(success).catch(fail);
 }
+async function buildStart(teamId, projectInfoId, success, fail) {
+    const data = {
+      records: [{
+        value: {
+          teamId: teamId,
+          projectInfoId: projectInfoId
+        }
+      }]
+    };
+  
+    await api.post("/build/deploy", data)
+      .then(success)
+      .catch(fail);
+  }
 
 async function buildCheck(memberId, projectInfoId, success, fail){
     await api.get(`/build/deploy/member/${memberId}/project-info/${projectInfoId}`).then(success).catch(fail);
@@ -47,9 +61,6 @@ async function startBackendJenkinsJob(memberId, projectInfoId, deployNum, servic
     await api.post(`/build/project/backend/member/${memberId}/team-project-info/${projectInfoId}/deployNum/${deployNum}/serviceNum/${serviceNum}`, backendConfigs).then(success).catch(fail);
 }
 
-async function buildStart(teamId, projectInfoId, success, fail){
-    await api.post("/build/deploy/"+teamId+"/"+projectInfoId).then(success).catch(fail);
-}
 
 async function findNPrevLogs(dataObject, success, fail){
     await api.get("/log/"+dataObject.serviceScheduleId+"/"+dataObject.projectInfoId+"/"+dataObject.configId+"/"+dataObject.teamId+"?type="+dataObject.type)

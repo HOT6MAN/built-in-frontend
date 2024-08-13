@@ -1,6 +1,8 @@
 <script setup>
 import { defineProps, defineEmits, ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import {findAllMessageByChatroomId, findReceiver} from '@/api/chat.js';
+import { storeToRefs } from 'pinia';
+import { useAuthStore } from '../../stores/authStore';
 const props = defineProps({
   chatObject: Object,
   messages: Array,
@@ -9,7 +11,8 @@ const props = defineProps({
       required: true
     }
 });
-
+const authStore = useAuthStore();
+const {userId, userName} = storeToRefs(authStore);
 const emit = defineEmits(['back']);
 
 const messageArray = ref([]);
@@ -61,9 +64,11 @@ const sendMessage = () => {
 async function connect() {
   // http://i11a606.p.ssafy.io:8080/
   // const socket = new SockJS(`http://localhost:8080/ws/chat`);
+  
   console.log("props object = ",props.chatObject);
   await findAllMessageByChatroomId(props.chatObject.chatRoom.id, (response) => {
     messageArray.value = response.data.data;
+    console.log("All message = ",messageArray.value);
   }, (error) => {
     console.error('API 호출 오류:', error);
   });
@@ -121,56 +126,116 @@ function disconnect() {
 
 <template>
   <div class="chat-detail">
-    <button @click="handleBack">취소</button>
-    <div class="message-list">
-      <div v-for="message in messageArray" :key="message.id" class="message-item">
-        <div class="message-sender">{{ message.sender }}</div>
-        <div class="message-content">{{ message.content }}</div>
-        <div class="message-date">{{ message.sendDate }}</div>
+    <div class="chat-header">
+      <button @click="handleBack" class="back-button">&larr;</button>
+      <h2>{{ props.chatObject.roomName }}</h2>
+    </div>
+    <div class="message-list" ref="messageList">
+      <div v-for="message in messageArray" :key="message.descSendDate" 
+        :class="['message-item', { 'sent': String(message.sender) === String(userId), 'received': String(message.sender) !== String(userId) }]">
+        <div class="message-content">
+          <p>{{ message.content }}</p>
+        </div>
+        <div class="message-info">
+          <span class="message-sender">{{ message.sender === userId ? 'You' : message.senderName }}</span>
+          <span class="message-date">{{ message.sendDate }}</span>
+        </div>
       </div>
     </div>
     <div class="message-input">
       <input v-model="newMessage" placeholder="메시지를 입력하세요." @keyup.enter="sendMessage"/>
-      <button @click="sendMessage">전송</button>
+      <button @click="sendMessage" class="send-button">전송</button>
     </div>
   </div>
 </template>
 
+
+
 <style scoped>
 .chat-detail {
-  height: 100%;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  background-color: #f0f2f5;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .message-list {
   flex: 1;
   overflow-y: auto;
-  padding: 10px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 .message-item {
-  padding: 10px;
-  border-bottom: 1px solid #e0e0e0;
+  max-width: 70%;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
-.message-sender {
-  font-weight: bold;
+.message-item.sent {
+  align-self: flex-end;
+}
+
+.message-item.received {
+  align-self: flex-start;
 }
 
 .message-content {
-  font-size: 14px;
-  color: #333;
+  padding: 10px;
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.message-date {
-  color: #888;
+.message-item.sent .message-content {
+  background-color: #F7F8E0;
+  color: black;
+  border-bottom-right-radius: 4px;
+}
+
+.message-item.received .message-content {
+  background-color: #ffffff;
+  border-bottom-left-radius: 4px;
+}
+
+.message-info {
   font-size: 12px;
+  margin-top: 5px;
+  color: #8e8e8e;
+}
+
+.message-item.sent .message-info {
+  text-align: right;
 }
 
 .message-input {
   display: flex;
   padding: 10px;
+  background-color: #ffffff;
   border-top: 1px solid #e0e0e0;
 }
 
@@ -178,20 +243,21 @@ function disconnect() {
   flex: 1;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 20px;
   margin-right: 10px;
 }
 
-.message-input button {
+.send-button {
   padding: 10px 20px;
   border: none;
   background-color: #007bff;
   color: white;
-  border-radius: 4px;
+  border-radius: 20px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.message-input button:hover {
+.send-button:hover {
   background-color: #0056b3;
 }
 </style>

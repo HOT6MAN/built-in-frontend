@@ -14,4 +14,17 @@ async function findAllNotificationByUserId(userId, success, fail){
     await api.get("/notify/list/"+userId).then(success).catch(fail);
 }
 
-export {send, findAllUnreadNotificationByUserId, findAllNotificationByUserId}; 
+async function readNotificationByNotificationId(notificationId, success, fail){
+    await api.put("/notify/"+notificationId).then(success).catch(fail);
+}
+
+async function deleteNotificationByNotificationId(notificationId, success, fail){
+    await api.delete("/notify/"+notificationId).then(success).catch(fail);
+}
+
+export {send, 
+    findAllUnreadNotificationByUserId, 
+    findAllNotificationByUserId,
+    readNotificationByNotificationId,
+    deleteNotificationByNotificationId
+}; 

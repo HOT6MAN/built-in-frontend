@@ -2,7 +2,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { defineProps } from 'vue';
 import { findAllRoomByUserId, findAllMessageByChatroomId } from '@/api/chat';
-import ChattingList from "@/components/chat/ChatList.vue";
+import ChatList from "@/components/chat/ChatList.vue";
 import ChatDetail from "@/components/chat/ChatDetail.vue";
 import ChatNavbar from '@/components/chat/ChatNavbar.vue';
 import { useAuthStore } from '../../stores/authStore';
@@ -60,62 +60,104 @@ const handleBackToChatList = () => {
   loadChatRooms();
 };
 </script>
-
 <template>
-  <div v-if="showChat" class="chat-modal">
-    <div class="chat-modal-content">
-      <span class="close" @click="toggleChat">&times;</span>
-      <template v-if="selectedChatObject">
-        <ChatDetail :chatObject="selectedChatObject" 
-                    :messages="chatMessageList"
-                    :userid="userId"
-                    @back="handleBackToChatList"></ChatDetail>
-      </template>
-      <template v-else>
-        <ChatNavbar></ChatNavbar>
-        <ChattingList :chatroomList="chatroomList" 
-                      @chatSelected="handleChatSelected"></ChattingList>
-      </template>
+  <div v-if="showChat" class="chat-modal-overlay">
+    <div class="chat-modal">
+      <div class="chat-modal-header">
+        <h2>채팅</h2>
+        <button @click="toggleChat" class="close-button">&times;</button>
+      </div>
+      <div class="chat-container">
+        <ChatList 
+          v-if="!selectedChatObject"
+          :chatroomList="chatroomList"
+          @chatSelected="handleChatSelected"
+        />
+        <ChatDetail
+          v-else
+          :chatObject="selectedChatObject"
+          :userid="userId"
+          @back="handleBackToChatList"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.chat-modal {
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+.chat-modal-overlay {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 400px;
-  height: 500px;
-  background-color: #fefefe;
-  border: 1px solid #888;
-  border-radius: 10px;
-  padding: 20px;
+  z-index: 1000;
 }
 
-.chat-modal-content {
-  width: 100%;
-  height: 100%;
+.chat-modal {
+  background-color: #ffffff;
+  border-radius: 12px 12px 0 0;
+  width: 350px;
+  height: 500px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  font-family: 'Noto Sans KR', sans-serif;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.close {
-  color: #aaa;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 28px;
-  font-weight: bold;
+.chat-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f0f2f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.chat-modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 20px;
   cursor: pointer;
+  color: #666;
+  padding: 5px;
+  line-height: 1;
+  transition: color 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
-  color: black;
+.close-button:hover {
+  color: #333;
+}
+
+.chat-container {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+/* 스크롤바 스타일링 (WebKit 브라우저용) */
+.chat-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.chat-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+.chat-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 </style>

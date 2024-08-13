@@ -1,8 +1,12 @@
 <script setup>
 import {ref, onMounted, defineProps, watch} from 'vue';
-import {findAllUnreadNotificationByUserId, findAllNotificationByUserId} from '@/api/notification.js';
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
+import {findAllUnreadNotificationByUserId, 
+  findAllNotificationByUserId,
+  readNotificationByNotificationId,
+  deleteNotificationByNotificationId,
+} from '@/api/notification.js';
 const props = defineProps({
     showNotificationModal : Boolean,
     toggleNotificationModal : Function
@@ -10,6 +14,30 @@ const props = defineProps({
 const authStore = useAuthStore();
 const {userId} = storeToRefs(authStore);
 const notificationList = ref([]);
+
+const confirmNotification = async (index) => {
+  const notification = notificationList.value[index];
+  console.log(`Notification ${notification.id} confirmed.`);
+  await readNotificationByNotificationId(notification.id, (reponse)=>{
+
+  },(error)=>{
+    console.log(error);
+  })
+  notification.isRead = true; 
+};
+
+// 알림 삭제 버튼 클릭 핸들러
+const deleteNotification = async (index) => {
+  const notification = notificationList.value[index];
+  console.log(`Notification ${notification.id} deleted.`);
+  await deleteNotificationByNotificationId(notification.id, (response)=>{
+
+  },(error)=>{
+    console.log(error);
+  })
+  notificationList.value.splice(index, 1); 
+};
+
 
 watch(() => props.showNotificationModal, async (newVal) => {
   if (newVal) {
@@ -22,30 +50,40 @@ watch(() => props.showNotificationModal, async (newVal) => {
   }
 });
 </script>
-
 <template>
-    <div v-if="showNotificationModal" class="notificationModal">
-      <div class="notificationHeader">
-        <h3>알림</h3>
-        <button @click="toggleNotificationModal" class="closeButton">
-          <span>&times;</span>
-        </button>
-      </div>
-      <div class="notificationListContainer">
-        <ul class="notificationList">
-          <li v-for="(notification, index) in notificationList" :key="index" class="notificationItem">
-            <div class="notificationContent">
-              <p class="notificationText">
-                <strong>{{ notification.senderName }}</strong> 님이 {{ notification.type }} 알림을 보냈습니다.
-              </p>
-              <small class="notificationDate">{{ formatDate(notification.notifyDate) }}</small>
-            </div>
-            <div class="notificationStatus"></div>
-          </li>
-        </ul>
+  <div v-if="showNotificationModal" class="notificationModal">
+    <div class="notificationHeader">
+      <h3>알림</h3>
+      <button @click="toggleNotificationModal" class="closeButton">
+        <span>&times;</span>
+      </button>
+    </div>
+    <div class="notificationListContainer">
+      <ul v-if="notificationList.length > 0" class="notificationList">
+        <li
+          v-for="(notification, index) in notificationList"
+          :key="index"
+          :class="['notificationItem', { read: notification.read }]"
+        >
+          <div class="notificationContent">
+            <p class="notificationText">
+              <strong>{{ notification.senderName }}</strong> {{ notification.content }}
+            </p>
+            <small class="notificationDate">{{ notification.notifyDate }}</small>
+          </div>
+          <div class="notificationActions">
+            <button v-if="!notification.read" @click="confirmNotification(index)" class="confirmButton">확인</button>
+            <button @click="deleteNotification(index)" class="deleteButton">삭제</button>
+          </div>
+          <div class="notificationStatus"></div>
+        </li>
+      </ul>
+      <div v-else class="emptyNotification">
+        현재 받은 알람 보관함이 비어있습니다.
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <style scoped>
 .notificationModal {
@@ -87,12 +125,17 @@ watch(() => props.showNotificationModal, async (newVal) => {
 .notificationListContainer {
   height: calc(100% - 56px);
   overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .notificationList {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 100%;
 }
 
 .notificationItem {
@@ -103,22 +146,12 @@ watch(() => props.showNotificationModal, async (newVal) => {
   transition: background-color 0.3s;
 }
 
+.notificationItem.read {
+  background-color: #e9ecef; /* 읽음 처리된 알림의 배경색 */
+}
+
 .notificationItem:hover {
   background-color: #f2f3f5;
-}
-
-.notificationAvatar {
-  width: 56px;
-  height: 56px;
-  margin-right: 12px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.notificationAvatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .notificationContent {
@@ -137,12 +170,42 @@ watch(() => props.showNotificationModal, async (newVal) => {
   color: #606770;
 }
 
-.notificationStatus {
-  width: 12px;
-  height: 12px;
-  background-color: #1877f2;
-  border-radius: 50%;
-  margin-left: 8px;
+.notificationActions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirmButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.confirmButton:hover {
+  background-color: #218838;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
+}
+
+.emptyNotification {
+  font-size: 16px;
+  color: #606770;
+  padding: 20px;
+  text-align: center;
 }
 
 /* 스크롤바 스타일링 (WebKit 브라우저용) */
@@ -163,3 +226,4 @@ watch(() => props.showNotificationModal, async (newVal) => {
   background: #888;
 }
 </style>
+

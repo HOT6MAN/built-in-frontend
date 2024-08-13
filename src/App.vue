@@ -48,14 +48,16 @@ const connectToSSE = async(userId)=>{
   eventSource.value = new EventSource(`${eventSourceUrl}`);
   console.log("source = ",eventSource.value);
 
-  eventSource.value.addEventListener('open', () => {
+  eventSource.value.addEventListener('open', async () => {
     console.log('Connection opened');
     showAlertMessage(`총 ${unreadNotificationSize.value} 건의 알림이 존재합니다.`);
+    await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 
-  eventSource.value.addEventListener('chat', (event) => {
+  eventSource.value.addEventListener('chat', async (event) => {
     console.log('New message:', event.data);
     showAlertMessage('새로운 채팅 알림이 도착했습니다.');
+    await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 
   eventSource.value.addEventListener('jenkins', (event) => {
@@ -76,15 +78,17 @@ const connectToSSE = async(userId)=>{
       return;
     }
     showAlertMessage('새로운 SSE 이벤트가 도착했습니다.');
+    await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 
-  eventSource.value.addEventListener('error', (event) => {
+  eventSource.value.addEventListener('error', async (event) => {
     if (eventSource.value.readyState === EventSource.CLOSED) {
       console.log('Connection closed');
     } else {
       console.error('EventSource error:', event);
     }
     showAlertMessage('새로운 Error 이벤트가 도착했습니다.');
+    await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 }
 
