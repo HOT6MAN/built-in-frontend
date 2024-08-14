@@ -31,8 +31,7 @@
             tag-pills
             placeholder="작성 후 ADD버튼 눌러주세요 + 1개만 작성 가능합니다" 
             v-model="domain" 
-            remove-on-delete
-            required />
+            remove-on-delete />          
         </b-form-group>
 
         <b-form-group for="desired-positions">
@@ -45,8 +44,7 @@
             separator=" "        
             @input="onTagsDuplicate"
             placeholder="작성 후 스페이스 바 눌러주세요" 
-            v-model="desiredPosList"
-            required />          
+            v-model="desiredPosList" />          
         </b-form-group>
 
         <b-form-group for="introduction">
