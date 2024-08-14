@@ -186,6 +186,7 @@ const connectToSSE = async(userId)=>{
     }
     else {
       // 이 부분 추가 필요
+      console.log("final 작업 실패");
     }
   });
 
