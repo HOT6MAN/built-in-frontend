@@ -14,10 +14,10 @@
           <p>아직 저장된 환경 설정이 없습니다.</p>
           <p>빌드 및 배포하실 환경 정보를 입력해보세요.</p>
         </div>
-        <div v-else  v-for="(backend, index) in backendConfigs" :key="'backend-' + index" class="configContainer">
+        <div v-else v-for="(backend, index) in backendConfigs" :key="'backend-' + index" class="configContainer">
           <div class="configBuildContainer">
             <div class="configHeader">
-              <span v-if="!backend.isEditing" class="configTitle" @dblclick="editConfigName(index)">{{ backend.configName }}</span> <!-- configName 바인딩 -->
+              <span v-if="!backend.isEditing" class="configTitle" @dblclick="editConfigName(index)">{{ backend.configName }}</span>
               <input v-else type="text" v-model="backend.configName" @blur="stopEditing(index)" @keyup.enter="stopEditing(index)" class="configTitleInput" />
               <b-button @click="removeBackendConfig(index)" variant="danger" size="sm" class="remove-button">삭제</b-button>
             </div>
@@ -78,6 +78,20 @@
                     </b-col>
                   </b-row>
                 </b-form-group>
+                <!-- 추가된 Context-Path input box -->
+                <b-form-group class="dropdownBox">
+                  <b-row>
+                    <b-col sm="3" class="dropdownTitle"><label for="context-path">Context-Path</label></b-col>
+                    <b-col sm="8">
+                      <b-form-input
+                        :id="'backend-context-path-' + index"
+                        v-model="backend.contextPath"
+                        placeholder="Context-Path를 입력해주세요"
+                        trim
+                      ></b-form-input>
+                    </b-col>
+                  </b-row>
+                </b-form-group>
               </div>
             </div>
           </div>
@@ -97,8 +111,6 @@ const props = defineProps({
 });
 const emits = defineEmits(["saveBackendData"]);
 
-console.log("backend Props = ",props);
-
 const backendTypes = ref(['gitUrl', 'gitAccessToken', 'gitBranch', 'gitUsername']);
 const backendConfigs = ref([]);
 const selectedConfigId = props.selectedConfigId;
@@ -117,6 +129,7 @@ const backendStates = computed(() => backendConfigs.value.map(config => ({
   'language': config.language !== null,
   'languageVersion': config.languageVersion !== null,
   'buildTool': config.buildTool !== null,
+  'contextPath': config.contextPath?.length > 0,
 })));
 
 const languages = ref([
@@ -153,6 +166,7 @@ const addBackendConfig = () => {
     language: null, 
     languageVersion: null, 
     buildTool: null,
+    contextPath: '',
     isEditing: false
   });
 };
