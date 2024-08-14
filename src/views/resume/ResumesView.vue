@@ -69,8 +69,8 @@ const onPreview = (id) => {
 const onDelete = (id) => {
   deleteResumeById(id, (resp) => {
     if (resp.status === 204) {
-      sweetAlert('','Delete Success')
       window.location.reload(); 
+      sweetAlert('','이력서 삭제 완료')
     }
   }, (err) => console.error(err))
 }

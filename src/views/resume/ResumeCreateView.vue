@@ -134,8 +134,7 @@ const onCreate = () => {
     form,
     (resp) => {
       if (resp.status === 201) {
-        router.push({path: '/resumes', query: {redirectYN: true, msg: 'Success Create'}})
-        .then(() => router.replace({path: '/resumes'}))
+        router.push({path: '/resumes'}).then(() => sweetAlert('','이력서 생성 완료'))
       }
     }, 
     (err) => console.error(err)
@@ -164,10 +163,7 @@ const onUpdate = () => {
   updateResume(id, form,    
     (resp) => {
       if (resp.status === 204) {
-        router.push({path: '/resumes'}).then(() => {
-          sweetAlert('','Success Update')
-          router.replace({path: '/resumes'})
-        })
+        router.push({path: '/resumes'}).then(() => sweetAlert('','이력서 갱신 완료'))
       }
     }, 
     (err) => console.error(err)
