@@ -124,7 +124,7 @@ const onCreate = () => {
   const experienceList = form.get('experiences')
   const isExpsAllCompleted = experienceList.every(item => item.title && item.description);
 
-  if (!title.value || !profile.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+  if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
@@ -155,7 +155,7 @@ const onUpdate = () => {
   const experienceList = form.get('experiences')
   const isExpsAllCompleted = experienceList.every(item => item.title && item.description);
 
-  if (!title.value || !profile.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+  if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
