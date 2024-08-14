@@ -185,7 +185,7 @@ onMounted(() => {
     findMyTeamList((resp) => {
       const result = resp.data.data;
 
-      if (!result) {
+      if (!result.length) {
         sweetAlertWarning('소속된 팀이 없습니다.','')
         router.push({path: '/teambuilding'})
         return;
