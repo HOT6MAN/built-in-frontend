@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-center mb-3">
       <b-img :src="resume.profileUrl" class="profile-img" rounded="circle" />
     </div>
-    <b-form-group label="Position">
+    <b-form-group label="포지션">
       <b-form-tag
         :title="resume.position"
         variant="primary"              
@@ -15,7 +15,7 @@
         class="tag-btn mx-1 mb-3"
       />
     </b-form-group>
-    <b-form-group label="Tech Stack">
+    <b-form-group label="기술 스택">
       <b-form-tag
         v-for="(tag, idx) in resume.techStack"
         :key="idx"
@@ -26,19 +26,19 @@
         class="tag-btn mx-1 mb-3"
       />
     </b-form-group>
-    <b-form-group label="Experience">
+    <b-form-group label="경험">
       <div v-for="(experience, idx) in resume.experiences" :key="idx">
         <b-card bg-variant="light" class="mb-2">
-          <b-form-group label="Title" :label-for="'nested-title-' + idx">
+          <b-form-group label="제목" :label-for="'nested-title-' + idx">
             <b-form-input v-model="experience.title" :id="'nested-title-' + idx" disabled />
           </b-form-group>
-          <b-form-group label="Description" :label-for="'nested-description-' + idx">
+          <b-form-group label="내용" :label-for="'nested-description-' + idx">
             <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" no-resize disabled />
           </b-form-group>
         </b-card>
       </div>
     </b-form-group>
-    <b-form-group label="Comment">
+    <b-form-group label="한마디" label-class="custom-label">
       <b-form-input v-model="resume.comment" class="mb-3" disabled />
     </b-form-group> 
   </b-modal>
@@ -71,6 +71,15 @@ watch(() => props.resumeId, async (resumeId) => {
 }, {immediate: true})
 </script>
 <style scoped>
+::v-deep .form-label{
+  font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text1);
+    white-space: nowrap; /* label의 텍스트가 줄 바꿈되지 않도록 설정 */
+    width: 200px; /* label의 고정 너비 설정 */
+
+}
+
 .profile-img {
   width: 130px;
   height: 130px;

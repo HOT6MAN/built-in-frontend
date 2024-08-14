@@ -34,7 +34,7 @@ function signUp(){
 <div class="main-content">     
     <div class="config-container"> 
         <div class="fYreJO">
-            <h1>회원가입</h1>
+            <label class="title">회원가입</label>
             <div class="contents">
                 <div class="jlNcEk">
                     <div class="sc-crHmcD fLCeMm">
@@ -97,12 +97,13 @@ function signUp(){
                     </div>
                 </div>
              
-        
+                <div class="button-group">
                 <button class="save-button" color="teal" @click="signUp">가입</button>
                 <button class="remove-button" variant="danger" size="sm">
                     <router-link :to="{name:'home'}"
                             style="text-decoration: none; color: white">취소</router-link>
                 </button>
+                </div>
         
             </div>
         
@@ -116,6 +117,25 @@ function signUp(){
 </template>
 
 <style scoped>
+
+.button-group {
+  display: flex;
+  gap: 10px; /* 버튼 간의 간격 설정 */
+  justify-content: center; /* 버튼들을 가운데 정렬 */
+  margin-bottom: 20px;
+}
+.contents{
+    margin-top: 20px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 2.0rem;
+    color: var(--text1);
+    white-space: nowrap; /* label의 텍스트가 줄 바꿈되지 않도록 설정 */
+    width: 200px; /* label의 고정 너비 설정 */
+  }
+  
  .main-content {
     display: flex;
     margin-top: 80px;
@@ -142,7 +162,7 @@ function signUp(){
   border: none;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 
-  background-color: #4c566a;
+  background-color: #4299e1;
   color: #ffffff;
 }
 
@@ -159,7 +179,7 @@ function signUp(){
   font-size: 16px;
   border: none;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  background-color: #bf616a;
+  background-color: #5e81ac;
   color: #ffffff;
   padding: 8px 16px;
   font-size: 16px;
@@ -213,7 +233,7 @@ function signUp(){
 
 .fYreJO {
     width: 768px;
-    margin: 100px auto 0px;
+    margin: 30px auto 0px;
     line-height: 1.5;
 }
 
