@@ -3,7 +3,7 @@
   <div class="config-header">
     <h2>프로젝트 빌드 세팅 선택</h2>
   </div>
-  <div v-if="dataLoaded" class="config-selection">
+  <div class="config-selection">
     <div class="input-group">
       <select v-model="selectedConfigId" class="form-select config-select">
         <option value="" disabled selected>설정 선택</option>
@@ -80,6 +80,49 @@ import { ref, watch, onMounted, computed } from 'vue'
 import { receiveBuildResult } from '@/api/build.js'
 import { useProjectStore } from '@/stores/projectStore.js'
 import { useRoute } from 'vue-router'
+import { ref, watch, onMounted, computed } from 'vue'
+import { receiveBuildResult } from '@/api/build.js'
+import { useProjectStore } from '@/stores/projectStore.js'
+import { useRoute } from 'vue-router'
+
+const response = ref([]);
+const builds = ref([]);
+const menuBuilds = ref([]);
+const selectedConfigId = ref(1);
+const dataLoaded = ref(false);
+const currentPage = ref(1);
+const perPage = ref(5);
+
+const store = useProjectStore();
+const route = useRoute();
+const teamId = route.params.teamId;
+
+const allConfigs = ref([]);
+const selectedIndex = computed(() => {
+  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);2
+});
+
+const curConfig = computed(() => {
+  if (selectedIndex.value !== -1) {
+    return allConfigs.value[selectedIndex.value];
+  } else {
+    return null;
+  }
+});
+
+const filteredResponse = computed(() => {
+  if (!selectedConfigId.value) return { totalCount: 0, buildResults: [] };
+
+  // 필터링 기준을 설정
+  const filteredBuilds = builds.value.filter(build => build.configId === selectedConfigId.value);
+  return { totalCount: filteredBuilds.length, buildResults: filteredBuilds };
+});
+
+const pageBuilds = computed(() => {
+  const pageStart = (currentPage.value - 1) * perPage.value;
+  const pageEnd = currentPage.value * perPage.value;
+  return filteredResponse.value.buildResults.slice(pageStart, pageEnd);
+});
 
 const response = ref([]);
 const builds = ref([]);
@@ -134,7 +177,23 @@ const formatDate = (dateString) => {
 
 const modalShow = ref({});
 
+  const date = new Date(dateString);
+  return {
+    year: date.getUTCFullYear(),
+    month: String(date.getUTCMonth() + 1).padStart(2, '0'),
+    day: String(date.getUTCDate()).padStart(2, '0'),
+    hour: String(date.getUTCHours()).padStart(2, '0'),
+    minute: String(date.getUTCMinutes()).padStart(2, '0'),
+    second: String(date.getUTCSeconds()).padStart(2, '0')
+  };
+};
+
+const modalShow = ref({});
+
 const toggleModal = (buildId, index) => {
+  const modalKey = `${buildId}-${index}`;
+  modalShow.value[modalKey] = !modalShow.value[modalKey];
+};
   const modalKey = `${buildId}-${index}`;
   modalShow.value[modalKey] = !modalShow.value[modalKey];
 };
@@ -159,13 +218,6 @@ const fetchBuildResults = () => {
   );
 };
 
-onMounted(() => {
-  fetchBuildResults();
-  store.findAllProjectInfosByTeamId(teamId).then(projectInfos => {
-    allConfigs.value = projectInfos;
-    dataLoaded.value = true;
-  });
-});
 
 watch(selectedConfigId, () => {
   currentPage.value = 1; // 설정 변경 시 페이지를 첫 페이지로 리셋
@@ -174,6 +226,43 @@ watch(selectedConfigId, () => {
 </script>
 
 <style scoped>
+.config-header {
+  background-color: #102a43;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+}
+.config-selection {
+	padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.config-select {
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
+}
+
+.btn-primary {
+  background-color: #4299e1;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #3182ce;
+}
+
 .config-header {
   background-color: #102a43;
   color: #ffffff;
