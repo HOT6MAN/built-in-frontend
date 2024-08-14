@@ -51,6 +51,8 @@ import { sweetAlert } from '../../api/sweetAlert'
 
 import { createRoomByTeamId } from '@/api/chat.js';
 
+import defaultThumbnail from '@/icons/default-thumbnail.svg';
+
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
@@ -61,9 +63,9 @@ const {chatOpen} = storeToRefs(chatStore);
 const {userId} = storeToRefs(authStore);
 
 const board = ref({})
-const headerStyle = computed(() => ({
-  '--background-image': `url(${board.value.thumbnailUrl})`
-}));
+const headerStyle = computed(() => (
+  {'--background-image': `url(${board.value.thumbnailUrl || defaultThumbnail})`}
+));
 const isMine = ref(false)
 const showModal = ref(false);
 const teamId = ref('')

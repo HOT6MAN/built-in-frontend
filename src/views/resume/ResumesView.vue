@@ -5,8 +5,8 @@
 
       <b-list-group v-show="!loading" class="resume-list">
         <RouterLink :to="{name: 'resumeCreate'}">
-          <b-list-group-item  button>
-            <b-row class="resume-item d-flex justify-content-center align-items-center h-100">
+          <b-list-group-item button >
+            <b-row class="resume-item d-flex justify-content-center align-items-center h-100 my-2">
               <b-col md="auto" ><img src="@/icons/addButton.svg" alt="" class="create-img" /></b-col>
             </b-row>
           </b-list-group-item>
@@ -20,7 +20,8 @@
         >
           <b-row class="resume-item" align-v="center" @click.prevent="onPreview(resume.id)">
             <b-col md="auto">
-              <b-img :src="resume.profileUrl" alt="" class="resume-img" rounded />
+              <b-img v-show="resume.profileUrl" :src="resume.profileUrl" alt="" class="resume-img" rounded />
+              <b-img v-show="!resume.profileUrl" :src="defaultImgSrc" alt="" class="resume-img" rounded />
             </b-col>
             <b-col>
               <h4 class="mb-1 px-2">{{ resume.title }}</h4>
@@ -48,6 +49,7 @@ import { RouterLink } from 'vue-router'
 import {findMyResumeList, deleteResumeById } from '@/api/resume.js'
 import { sweetAlert } from '../../api/sweetAlert';
 import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
+import defaultImgSrc from '@/icons/default-profile.svg';
 
 const list = ref([]);
 const loading = ref(true);
