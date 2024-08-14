@@ -120,7 +120,7 @@ watch(selectedConfigId, (newId) => {
 	console.log('체크박스 id =', curConfig.value.id)
 	const teamProjectInfoId = curConfig.id
 	receiveBuildResult(
-        teamProjectInfoId.value,
+        teamProjectInfoId.value.id,
         (response) => {
           // 성공 콜백
 					resultResponse.value = response.data
