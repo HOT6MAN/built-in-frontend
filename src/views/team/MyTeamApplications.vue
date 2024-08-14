@@ -97,7 +97,7 @@ const applyRowStyles = () => {
 onMounted(async () => {
   const result = await findApplyList(teamId)
 
-  if (!result) {
+  if (!result.length) {
     sweetAlert('지원 현황이 존재하지 않습니다', '')
     return;
   }
