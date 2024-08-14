@@ -34,8 +34,14 @@ watch(isLogined, (newValue)=>{
     console.log("userID in store = ",userId.value);
     connectToSSE(userId);
   }
-})
+});
 
+watch(eventSourceReadyState, (newState, oldState) => {
+  if (newState === EventSource.CLOSED && oldState !== EventSource.CLOSED) {
+    console.log('Connection closed. Attempting to reconnect...');
+    reconnectSSE();
+  }
+});
 
 const connectToSSE = async(userId)=>{
   console.log("connectToSSE Call By AfterLogin.vue");
@@ -46,9 +52,14 @@ const connectToSSE = async(userId)=>{
   const token = localStorage.getItem('access_token');
   const eventSourceUrl = `${url}/notify/subscribe/${userId.value}`;
   console.log("event source url = ",eventSourceUrl);
+  
+  if (eventSource.value) {
+    eventSource.value.close();
+  }
 
   eventSource.value = new EventSource(`${eventSourceUrl}`);
   console.log("source = ",eventSource.value);
+  eventSourceReadyState.value = eventSource.value.readyState;
 
   eventSource.value.addEventListener('open', async () => {
     console.log('Connection opened');
@@ -183,6 +194,13 @@ const showAlertMessage = (message) => {
   }, 3000);
 };
 
+const reconnectSSE = () => {
+  if (userId.value) {
+    setTimeout(() => {
+      connectToSSE(userId.value);
+    }, 5000);
+  }
+};
 
 </script>
 
