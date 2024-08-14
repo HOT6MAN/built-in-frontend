@@ -6,7 +6,7 @@
   <div class="config-selection">
     <div class="input-group">
       <select v-model="selectedConfigId" class="form-select config-select">
-        <option value="" disabled selected>설정 선택</option>
+        <option value="">설정 선택</option>
         <option v-for="(config, index) in allConfigs" :key="config.id" :value="config.id">
           {{ config.title }}
         </option>
@@ -118,7 +118,7 @@ watch(selectedConfigId, (newId) => {
   selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
 	console.log(selectedIndex.value)
 	receiveBuildResult(
-        selectedIndex,
+        selectedIndex.value,
         (response) => {
           // 성공 콜백
 					resultResponse.value = response.data
