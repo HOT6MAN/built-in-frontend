@@ -1,5 +1,5 @@
 <template>
-    <SideBarView></SideBarView>
+    <SideBarView class="sidebar" />
     <div class="main-content">     
         <div class="config-container">  
             <div class="team-info">
@@ -192,6 +192,9 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
 
 
 <style scoped>
+.sidebar {
+    top : 0px;
+}
 .container {
     display: flex;
     padding-top: 75px;
