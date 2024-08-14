@@ -11,157 +11,185 @@
           {{ config.title }}
         </option>
       </select>
-      <b-button class="btn btn-primary" @click="showModal">+ 추가</b-button>
     </div>
   </div>
-  <div class="buildResultContainer">
-    <div class="boxContainer">
-      <div class="menuboxWrapper">
-        <div class="menuBoxBlank"><p>전체 빌드 횟수 : {{ filteredResponse.totalCount }}</p></div>
-        <div v-for="menu in menuBuilds" :key="menu">
-          <div class="menuBox"><p>{{ menu.name }}</p></div>
-        </div>
-      </div>
-      <div v-for="build in pageBuilds.slice().reverse()" :key="build" class="boxWrapper">
-        <div class="buildRow">
-          <p class="dateCss">{{ formatDate(build.buildTime).year }}.{{ formatDate(build.buildTime).month }}.{{ formatDate(build.buildTime).day }} {{ formatDate(build.buildTime).hour }}:{{ formatDate(build.buildTime).minute }}:{{ formatDate(build.buildTime).second }}</p>
-          <p>현재 빌드 : {{ build.buildId }}</p>
-        </div>
-        <div v-for="(buildStage, index) in build.buildStages" :key="index">
-          <div v-if="buildStage.status === 'SUCCESS'">
-            <b-button @click="toggleModal(build.buildId, index)" class="boxSuccess">{{ milToSec(buildStage.duration) }}s</b-button>
-            <b-modal 
-              :id="`modal-${build.buildId}-${index}`"
-              v-model="modalShow[`${build.buildId}-${index}`]"
-              hide-backdrop content-class="shadow" 
-              title="Stage Logs">
-              <div v-for="log in buildStage.buildLogs" :key="log" class="logWrapper">
-                <b-button squared v-b-toggle="`${log.id}`" class="logButton">{{ log.title }}</b-button>
-                <b-collapse :id="`${log.id}`" v-for="logMessage in log.description" :key="logMessage">
-                  <b-card class="logCard">{{ logMessage }}</b-card>
-                </b-collapse>
-              </div>
-            </b-modal>
-          </div>
-          <div v-else>
-            <b-button @click="toggleModal(build.buildId, index)" class="boxFailed">{{ milToSec(buildStage.duration) }}s</b-button>
-            <b-modal 
-              :id="`modal-${build.buildId}-${index}`"
-              v-model="modalShow[`${build.buildId}-${index}`]"
-              hide-backdrop content-class="shadow" 
-              title="Stage Logs">
-              <div v-for="log in buildStage.buildLogs" :key="log" class="logWrapper">
-                <b-button squared v-b-toggle="`${log.id}`" class="logButton">{{ log.title }}</b-button>
-                <b-collapse :id="`${log.id}`" v-for="logMessage in log.description" :key="logMessage">
-                  <b-card class="logCard">{{ logMessage }}</b-card>
-                </b-collapse>
-              </div>
-            </b-modal>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- 페이지네이션 -->
-    <div class="d-flex justify-content-center mt-1 pageNation">
-      <b-pagination class="mb-0"
-        v-model="currentPage"
-        :total-rows="totalPages"
-        :per-page="perPage"
-        aria-controls="my-table">
-      </b-pagination>
-    </div>
-  </div>
+	<div class="buildResultContainer">
+			<div class="boxContainer">
+			 <div class="menuboxWrapper">
+				 <div class="menuBoxBlank"><p>전체 빌드 횟수 : {{resultResponse.totalCount}}</p></div>
+				 	<div v-for="menu in menuBuilds" :key="menu"><div class="menuBox"><p>{{ menu.name }}</p></div></div>
+				</div>
+				<div v-for= "build in pageBuilds.slice().reverse()" :key="build" class="boxWrapper">
+					<div class="buildRow">
+						<p class="dateCss">{{formatDate(build.buildTime).year}}.{{formatDate(build.buildTime).month}}.{{ formatDate(build.buildTime).day }} {{ formatDate(build.buildTime).hour }}:{{ formatDate(build.buildTime).minute }}:{{formatDate(build.buildTime).second}}</p>
+						<p>현재 빌드 : {{ build.buildId }}</p>
+					</div>
+							<!-- v-if를 이용해 만약 success면 success 버튼으로, fail이라면 fail 버튼을 보여줌 -->
+					<div v-for="(buildStage, index) in build.buildStages" :key="index">
+						<div v-if="`${buildStage.status}`==='SUCCESS'"><b-button @click="toggleModal(build.buildId, index)" class="boxSuccess">{{milToSec(buildStage.duration)}}s</b-button>
+							<b-modal 
+							:id="`modal-${build.buildId}-${index}`"
+							v-model="modalShow[`${build.buildId}-${index}`]"
+							hide-backdrop content-class="shadow" 
+							title="Stage Logs">
+							<div v-for="log in buildStage.buildLogs" :key="log" class="logWrapper">
+							<b-button squared v-b-toggle="`${log.id}`" class="logButton">{{log.title}}</b-button>
+							<b-collapse :id="`${log.id}`" v-for="logMessage in log.description" :key="logMessage">
+								<b-card class="logCard">{{ logMessage }}</b-card>
+							</b-collapse>
+						</div>
+						</b-modal>
+					</div>
+						<div v-else><b-button @click="toggleModal(build.buildId, index)" class="boxFailed">{{milToSec(buildStage.duration)}}s</b-button>
+							<b-modal 
+							:id="`modal-${build.buildId}-${index}`"
+							v-model="modalShow[`${build.buildId}-${index}`]"
+							hide-backdrop content-class="shadow" 
+							title="Stage Logs">
+							<div v-for="log in buildStage.buildLogs" :key="log" class="logWrapper">
+							<b-button squared v-b-toggle="`${log.id}`" class="logButton">{{log.title}}</b-button>
+							<b-collapse :id="`${log.id}`" v-for="logMessage in log.description" :key="logMessage">
+								<b-card class="logCard">{{ logMessage }}</b-card>
+							</b-collapse>
+						</div>
+						</b-modal>						
+					</div>
+					</div>
+				</div>
+		</div>
+				<!-- 페이지네이션 -->
+				<div class="d-flex justify-content-center mt-1 pageNation">
+					<b-pagination class="mb-0"
+						v-model="currentPage"
+						:total-rows="pages"
+						:per-page="perPage"
+						aria-controls="my-table">
+					</b-pagination>
+				</div>
+	</div>
 </template>
 
 
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue'
-import { receiveBuildResult } from '@/api/build.js'
+import { receiveBuildResult, testObject } from '@/api/build.js'
 import { useProjectStore } from '@/stores/projectStore.js'
 import { useRoute } from 'vue-router'
 
-const response = ref([]);
+const resultResponse = ref([]);
 const builds = ref([]);
 const menuBuilds = ref([]);
-const selectedConfigId = ref(null);
-const dataLoaded = ref(false);
+const selectedConfigId = ref(1);
 const currentPage = ref(1);
 const perPage = ref(5);
-
-const store = useProjectStore();
 const route = useRoute();
 const teamId = route.params.teamId;
 
-const allConfigs = ref([]);
+// 선택창 관련
+const store = useProjectStore();
+const { storeFindAllProjectInfosByTeamId } = store;
+const { projectInfos } = storeToRefs(store);
+
+
+import { storeToRefs } from 'pinia';
+
+const allConfigs = ref([])
+
 const selectedIndex = computed(() => {
+	console.log(allConfigs.value.findIndex(config => config.id === selectedConfigId.value))
   return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
 });
 
 const curConfig = computed(() => {
-  if (selectedIndex.value !== -1) {
-    return allConfigs.value[selectedIndex.value];
+	if (selectedIndex.value !== -1) {
+		return allConfigs.value[selectedIndex.value];
   } else {
-    return null;
+		return null; // 선택된 config가 없을 때 처리할 값
   }
 });
 
-const filteredResponse = computed(() => {
-  if (!selectedConfigId.value) return { totalCount: 0, buildResults: [] };
-
-  // 필터링 기준을 설정
-  const filteredBuilds = builds.value.filter(build => build.configId === selectedConfigId.value);
-  return { totalCount: filteredBuilds.length, buildResults: filteredBuilds };
+onMounted(async () => {
+	await storeFindAllProjectInfosByTeamId(teamId);
+	allConfigs.value = projectInfos.value;
+	console.log(allConfigs.value)
 });
 
-const pageBuilds = computed(() => {
-  const pageStart = (currentPage.value - 1) * perPage.value;
-  const pageEnd = currentPage.value * perPage.value;
-  return filteredResponse.value.buildResults.slice(pageStart, pageEnd);
+watch(selectedConfigId, (newId) => {
+  selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
+	console.log(selectedIndex.value)
+	receiveBuildResult(
+        selectedIndex,
+        (response) => {
+          // 성공 콜백
+					resultResponse.value = response.data
+					pages.value = resultResponse.value.totalCount
+					builds.value = resultResponse.value.buildResults
+					menuBuilds.value = resultResponse.value.buildResults[0].buildStages
+
+        },
+        (error) => {
+          // 실패 콜백
+					console.log('error -> ', error)
+				}
+      );
 });
 
+
+// 원래 있던 코드
+// onMounted(() => {
+// 	resultResponse.value = testObject.data
+// 	pages.value = resultResponse.value.totalCount
+// 	builds.value = resultResponse.value.buildResults
+// 	menuBuilds.value = resultResponse.value.buildResults[0].buildStages
+// 	console.log(resultResponse)
+// 	return resultResponse, builds, pages, menuBuilds
+// })
+
+// paginatin 관련
+const pages = ref(0)
+const pageBuilds = computed (() => {
+	const pageStart = (pages.value) - ((currentPage.value) * perPage.value)
+	const pageEnd = (pages.value) - ((currentPage.value-1) * perPage.value)
+	return builds.value.slice(pageStart, pageEnd)
+})
+
+
+// 빌드 시작 시간 나타내는 함수
 const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  return {
-    year: date.getUTCFullYear(),
-    month: String(date.getUTCMonth() + 1).padStart(2, '0'),
-    day: String(date.getUTCDate()).padStart(2, '0'),
-    hour: String(date.getUTCHours()).padStart(2, '0'),
-    minute: String(date.getUTCMinutes()).padStart(2, '0'),
-    second: String(date.getUTCSeconds()).padStart(2, '0')
-  };
-};
-
-const modalShow = ref({});
-
+	const date = new Date(dateString)
+	return {
+		year : date.getUTCFullYear(),
+		month: String(date.getUTCMonth()+1).padStart(2, '0'),
+		day: String(date.getUTCDate()).padStart(2,'0'),
+		hour: String(date.getUTCHours()).padStart(2,'0'),
+		minute: String(date.getUTCMinutes()).padStart(2,'0'),
+		second: String(date.getUTCSeconds()).padStart(2,'0')
+	}
+}
+// Stage Error 모달 창
+const modalShow = ref({})
+// buildId와 index는 위의 html에서 가져오는 것.
+// 위에서 v-for문으로 해서 생긴 buildId와 index를 아래 가져온 후, toggleModal model을 실행시킨다.
+// modalKey는 각 모달의 ID를 판별하기 위해 만든 것. buildId만 있어도 무방하나, 혹시 몰라 index도 추가한 것 같다.
+// 따라서 modalShow.value[modalKey]로 각 모달을 구분한다.
+// 다만 이렇게 되면 modalShow 변수는 ref(false)로 하면 true인지 아닌지 알 수 없기 때문에, toogleModal = !toggleModal로 click 시마다
+// true와 false를 왔다갔다 하는 것이 아니라 toggleModal(buildId, index)로 해서 함수에 매개변수 값을 내려보내줘야 한다.
 const toggleModal = (buildId, index) => {
-  const modalKey = `${buildId}-${index}`;
-  modalShow.value[modalKey] = !modalShow.value[modalKey];
-};
-
+	const modalKey = `${buildId}-${index}`
+	modalShow.value[modalKey] = !modalShow.value[modalKey]
+}
+// 로그 관련 모달 창
+const openIndex = ref(null);
+const toggleLog = (index) => {
+	openIndex.value = openIndex.value === index? null: index;
+}
+const isLogOpen = (index) => openIndex.value === index
 const milToSec = (milliSecond) => {
-  const second = milliSecond / 100;
-  return Math.floor(second) / 10;
-};
+	const second = milliSecond / 100
+	return Math.floor(second) /10
+}
 
-const fetchBuildResults = () => {
-  receiveBuildResult(
-    (data) => {
-      response.value = data;
-      builds.value = data.buildResults;
-      menuBuilds.value = data.buildResults[0]?.buildStages || [];
-      dataLoaded.value = true;
-    },
-    (error) => {
-      console.error('Error fetching build results:', error);
-      dataLoaded.value = false;
-    }
-  );
-};
 
-watch(selectedConfigId, () => {
-  currentPage.value = 1; // 설정 변경 시 페이지를 첫 페이지로 리셋
-  fetchBuildResults(); // 설정 변경 시 빌드 결과를 다시 가져옵니다.
-});
 </script>
 
 <style scoped>
