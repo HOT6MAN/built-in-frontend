@@ -18,7 +18,7 @@ const {userId, isLogined} = storeToRefs(authStore);
 const chatStore = useChatStore();
 const {chatOpen} = storeToRefs(chatStore);
 
-const { storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDatabaseJenkinsJob } = useProjectStore();
+const { storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDatabaseJenkinsJob, storeBuildFinalJenkinsJob } = useProjectStore();
 
 const route = useRoute();
 
@@ -62,11 +62,64 @@ const connectToSSE = async(userId)=>{
     await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 
-  eventSource.value.addEventListener('jenkins', (event) => {
-    console.log('jenkins data: ', event.data);
-    console.log("jenkins 알림이 도착했습니다");
+  eventSource.value.addEventListener('setup', (event) => {
+    console.log('setup data: ', event.data);
+    console.log("jenkins 알림이 도착했습니다 - type: setup");
 
-    storeBuildBackendJenkinsJob();
+    const response = event.data.response;
+    console.log("response = ", response);
+    if (response.result === "SUCCESS") {
+      storeBuildBackendJenkinsJob();
+    }
+    else {
+      // 이 부분 추가 필요
+    }
+    
+  });
+
+  eventSource.value.addEventListener('backend', (event) => {
+    console.log('backend data: ', event.data);
+    console.log("jenkins 알림이 도착했습니다 - type: backend");
+
+    const response = event.data.response;
+    console.log("response = ", response);
+    if (response.result === "SUCCESS") {
+      storeBuildFrontendJenkinsJob();
+    }
+    else {
+      // 이 부분 추가 필요
+    }
+    
+  });
+
+  eventSource.value.addEventListener('frontend', (event) => {
+    console.log('frontend data: ', event.data);
+    console.log("jenkins 알림이 도착했습니다 - type: frontend");
+
+    const response = event.data.response;
+    console.log("response = ", response);
+    if (response.result === "SUCCESS") {
+      // 이 부분 추가 필요
+      storeBuildDatabaseJenkinsJob();
+    }
+    else {
+      // 이 부분 추가 필요
+    }
+  });
+
+  eventSource.value.addEventListener('database', (event) => {
+    console.log('database data: ', event.data);
+    console.log("jenkins 알림이 도착했습니다 - type: database");
+
+    const response = event.data.response;
+    console.log("response = ", response);
+    if (response.result === "SUCCESS") {
+      // 이 부분 추가 필요
+      storeBuildFinalJenkinsJob();
+    }
+    else {
+      // 이 부분 추가 필요
+    }
   });
 
   eventSource.value.addEventListener('sse', async (event) => {

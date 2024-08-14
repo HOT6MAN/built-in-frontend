@@ -85,40 +85,6 @@ export const useProjectStore = defineStore('project', () => {
         const backendConfigs = deployConfig.value.backendConfigs;
         const frontendConfigs = deployConfig.value.frontendConfigs;
         const databaseConfigs = deployConfig.value.databaseConfigs;
-        // if (backendConfigs.length > 0) {
-        //     startJenkinsJob("backend", deployConfig.value,
-        //         (response) => {
-        //             console.log(response);
-        //         }, (error) => {
-        //             console.log(error);
-        //         }
-        //     );
-        // }
-        // else if (frontendConfigs.length > 0) {
-        //     startJenkinsJob("frontend", deployConfig.value,
-        //         (response) => {
-        //             console.log(response);
-        //         }, (error) => {
-        //             console.log(error);
-        //         }
-        //     );
-        // }
-        // else if (databaseConfigs.length > 0) {
-        //     startJenkinsJob("database", deployConfig.value,
-        //         (response) => {
-        //             console.log(response);
-        //         }, (error) => {
-        //             console.log(error);
-        //         }
-        //     );
-        // }
-    };
-
-    const storeBuildFrontendJenkinsJob = () => {
-        console.log("storeBuildFrontendJenkinsJob 까지는 무사히 옴...");
-        const backendConfigs = deployConfig.value.backendConfigs;
-        const frontendConfigs = deployConfig.value.frontendConfigs;
-        const databaseConfigs = deployConfig.value.databaseConfigs;
         if (backendConfigs.length > 0) {
             startJenkinsJob("backend", deployConfig.value,
                 (response) => {
@@ -139,6 +105,48 @@ export const useProjectStore = defineStore('project', () => {
         }
         else if (databaseConfigs.length > 0) {
             startJenkinsJob("database", deployConfig.value,
+                (response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+        }
+        else {
+            startJenkinsJob("final", deployConfig.value,
+                (response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+        }
+    };
+
+    const storeBuildFrontendJenkinsJob = () => {
+        console.log("storeBuildFrontendJenkinsJob 까지는 무사히 옴...");
+        const frontendConfigs = deployConfig.value.frontendConfigs;
+        const databaseConfigs = deployConfig.value.databaseConfigs;
+        if (frontendConfigs.length > 0) {
+            startJenkinsJob("frontend", deployConfig.value,
+                (response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+        }
+        else if (databaseConfigs.length > 0) {
+            startJenkinsJob("database", deployConfig.value,
+                (response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+        }
+        else {
+            startJenkinsJob("final", deployConfig.value,
                 (response) => {
                     console.log(response);
                 }, (error) => {
@@ -150,28 +158,8 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeBuildDatabaseJenkinsJob = () => {
         console.log("storeBuildDatabaseJenkinsJob 까지는 무사히 옴...");
-        const backendConfigs = deployConfig.value.backendConfigs;
-        const frontendConfigs = deployConfig.value.frontendConfigs;
         const databaseConfigs = deployConfig.value.databaseConfigs;
-        if (backendConfigs.length > 0) {
-            startJenkinsJob("backend", deployConfig.value,
-                (response) => {
-                    console.log(response);
-                }, (error) => {
-                    console.log(error);
-                }
-            );
-        }
-        else if (frontendConfigs.length > 0) {
-            startJenkinsJob("frontend", deployConfig.value,
-                (response) => {
-                    console.log(response);
-                }, (error) => {
-                    console.log(error);
-                }
-            );
-        }
-        else if (databaseConfigs.length > 0) {
+        if (databaseConfigs.length > 0) {
             startJenkinsJob("database", deployConfig.value,
                 (response) => {
                     console.log(response);
@@ -180,7 +168,30 @@ export const useProjectStore = defineStore('project', () => {
                 }
             );
         }
+        else {
+            startJenkinsJob("final", deployConfig.value,
+                (response) => {
+                    console.log(response);
+                }, (error) => {
+                    console.log(error);
+                }
+            );
+        }
+    };
+
+    const storeBuildFinalJenkinsJob = () => {
+        console.log("storeBuildFinalJenkinsJob 까지는 무사히 옴...");
+        const databaseConfigs = deployConfig.value.databaseConfigs;
+        startJenkinsJob("final", deployConfig.value,
+            (response) => {
+                console.log(response);
+            }, (error) => {
+                console.log(error);
+            }
+        );
     }
+
+    
 
     return {
         projectInfos,
@@ -195,6 +206,7 @@ export const useProjectStore = defineStore('project', () => {
         storeBuildStart,
         storeBuildBackendJenkinsJob,
         storeBuildFrontendJenkinsJob,
-        storeBuildDatabaseJenkinsJob
+        storeBuildDatabaseJenkinsJob,
+        storeBuildFinalJenkinsJob
     };
 })
