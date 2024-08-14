@@ -21,6 +21,7 @@
 import { ref, nextTick, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { findApplyList, acceptApplication, rejectApplication, deleteApplication } from '@/api/resume.js'
+import { sweetAlert, sweetConfirm } from '@/api/sweetAlert';
 import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
 
 const route = useRoute()
@@ -46,14 +47,12 @@ const onApprove = (resumeId) => {
     teamId, resumeId
   }
 
-  if (!confirm("Do you really want to approve?")) return;
+  sweetConfirm('정말 승인하시겠습니까?', '', acceptApplication(body, (resp) => {
+    if (resp.status !== 204) return;
 
-  acceptApplication(body, (resp) => {
-    if (resp.status === 204) {
-      alert("Success Approve!")
-      location.reload();
-    }
-  }, (err) => console.error(err))
+    sweetAlert('승인 성공! 지원자가 팀원으로 합류하게 되었습니다', '')
+    location.reload();
+  }, (err) => console.error(err)), (err) => console.error(err))
 }
 
 const onReject = (resumeId) => {
@@ -61,25 +60,20 @@ const onReject = (resumeId) => {
     teamId, resumeId
   }
 
-  if (!confirm("Do you really want to reject?")) return;
-
-  rejectApplication(body, (resp) => {
-    if (resp.status === 204) {
-      alert("Success Reject!")
-      location.reload();
-    }
-  }, (err) => console.error(err))
+  sweetConfirm('정말 거절하시겠습니까?', '', rejectApplication(body, (resp) => {
+    if (resp.status !== 204) return;
+    
+    location.reload();    
+  }, (err) => console.error(err)), (err) => console.error(err))
 }
 
 const onDelete = (resumeId) => {
-  if (!confirm("Do you really want to delete?")) return;
-
-  deleteApplication(teamId, resumeId, (resp) => {
-    if (resp.status === 204) {
-      alert("Success Delete!")
-      location.reload();
-    }
-  }, (err) => console.error(err))
+  sweetConfirm('삭제하시겠습니까?', '', deleteApplication(teamId, resumeId, (resp) => {
+    if (resp.status !== 204) return;
+    
+    sweetAlert('삭제 되었습니다', '')
+    location.reload();      
+  }, (err) => console.error(err)), (err) => console.error(err))
 }
 
 const applyRowStyles = () => {
