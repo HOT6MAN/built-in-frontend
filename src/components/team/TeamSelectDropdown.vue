@@ -11,7 +11,7 @@ const teamStore = useTeamStore()
 const { fetchAllTeamsForUser} = teamStore
 const {getTeams: teams} = storeToRefs(teamStore)
 
-const selectedTeam = ref(null);
+const selectedTeam = ref('');
 const router = useRouter();
 
 onMounted(  async()=> {
@@ -33,7 +33,6 @@ watch(selectedTeam, (newTeamId) => {
         <select v-model="selectedTeam" class="team-select">
             <option value="" disabled selected>팀을 선택해주세요</option>
             <option v-for="team in teams" :key="team.id" :value="team.id">
-                    {{team.id}}
                     {{ team.name }}
             </option>
         </select>
