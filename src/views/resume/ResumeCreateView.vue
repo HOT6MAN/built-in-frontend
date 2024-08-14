@@ -35,7 +35,7 @@
             <b-form-tags 
               v-model="techStack" 
               tag-variant="primary" tag-pills remove-on-delete separator=" " placeholder="작성 후 스페이스 바 눌러주세요"  
-              @input="onTagsDuplicate" class="mb-3" required />
+              @input="onTagsDuplicate" class="mb-3" />
           </b-form-group>
 
           <b-form-group>
@@ -49,14 +49,15 @@
                   <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize required />
                 </b-form-group>
                 <div class="d-flex justify-content-end">
-                  <b-button v-if="idx != 0" variant="outline-danger" @click="removeExperience(idx)" >삭제</b-button>
+                  <b-button v-if="idx" variant="outline-danger" @click="removeExperience(idx)" >삭제</b-button>
                 </div>
               </b-card>
             </div>
             <b-button class=" add-button" pill variant="primary" @click="addExperience">추가</b-button>
           </b-form-group>
 
-          <b-form-group label="Comment">
+          <b-form-group>
+            <label class="left-align">한마디</label>
             <b-form-input v-model="comment" class="mb-3" required />
           </b-form-group>
 
