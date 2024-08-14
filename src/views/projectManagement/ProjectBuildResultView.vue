@@ -102,6 +102,7 @@ const selectedIndex = computed(() => {
 
 const curConfig = computed(() => {
 	if (selectedIndex.value !== -1) {
+		console.log('선택된 체크박스', allConfigs.value[selectedIndex.value])
 		return allConfigs.value[selectedIndex.value];
   } else {
 		return null; // 선택된 config가 없을 때 처리할 값
@@ -115,10 +116,11 @@ onMounted(async () => {
 });
 
 watch(selectedConfigId, (newId) => {
-  selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
-	console.log(selectedIndex.value)
+	console.log('체크박스 번호 = ', selectedIndex.value)
+	console.log('체크박스 id =', curConfig.value)
+	const teamProjectInfoId = curConfig.id
 	receiveBuildResult(
-        selectedIndex.value,
+        teamProjectInfoId.value,
         (response) => {
           // 성공 콜백
 					resultResponse.value = response.data
