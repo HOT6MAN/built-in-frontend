@@ -72,14 +72,15 @@
 
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue'
-import { receiveBuildResult, testObject } from '@/api/build.js'
+import { receiveBuildResult } from '@/api/build.js'
 import { useProjectStore } from '@/stores/projectStore.js'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 
-const resultResponse = ref([]);
+const resultResponse = ref({});
 const builds = ref([]);
 const menuBuilds = ref([]);
-const selectedConfigId = ref(1);
+const selectedConfigId = ref('');
 const currentPage = ref(1);
 const perPage = ref(5);
 const route = useRoute();
@@ -90,54 +91,55 @@ const store = useProjectStore();
 const { storeFindAllProjectInfosByTeamId } = store;
 const { projectInfos } = storeToRefs(store);
 
-
-import { storeToRefs } from 'pinia';
-
-const allConfigs = ref([])
+const allConfigs = ref([]);
 
 const selectedIndex = computed(() => {
-	console.log(allConfigs.value.findIndex(config => config.id === selectedConfigId.value))
   return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
 });
 
 const curConfig = computed(() => {
-	if (selectedIndex.value !== -1) {
-		console.log('선택된 체크박스', allConfigs.value[selectedIndex.value])
-		return allConfigs.value[selectedIndex.value];
+  if (selectedIndex.value !== -1) {
+    return allConfigs.value[selectedIndex.value];
   } else {
-		return null; // 선택된 config가 없을 때 처리할 값
+    return null; // 선택된 config가 없을 때 처리할 값
   }
 });
 
 onMounted(async () => {
-	await storeFindAllProjectInfosByTeamId(teamId);
-	allConfigs.value = projectInfos.value;
-	console.log(allConfigs.value)
+  await storeFindAllProjectInfosByTeamId(teamId);
+  allConfigs.value = projectInfos.value;
 });
 
-const teamProjectInfoId = ref(0)
-watch(selectedConfigId, (newId) => {
-	console.log('체크박스 번호 = ', selectedIndex.value)
-	console.log('체크박스 id =', curConfig.value.id)
-	teamProjectInfoId.value = Number(curConfig.value.id)
-	console.log(teamProjectInfoId.value)
-	receiveBuildResult(
-        teamProjectInfoId.value,
-        (response) => {
-          // 성공 콜백
-					resultResponse.value = response.data
-					pages.value = resultResponse.value.totalCount
-					builds.value = resultResponse.value.buildResults
-					menuBuilds.value = resultResponse.value.buildResults[0].buildStages
-					console.log(resultResponse)
+const teamProjectInfoId = ref(0);
 
-        },
-        (error) => {
-          // 실패 콜백
-					console.log('error -> ', error)
-					console.log(teamProjectInfoId.value)
-				}
-      );
+watch(selectedConfigId, async (newId) => {
+  if (curConfig.value && curConfig.value.id) {
+    teamProjectInfoId.value = Number(curConfig.value.id);
+    
+    try {
+      const response = await receiveBuildResult(teamProjectInfoId.value);
+      
+      // response가 올바른지 확인
+      if (response && response.data) {
+        resultResponse.value = response.data || {};
+        if (resultResponse.value.buildResults) {
+          pages.value = resultResponse.value.totalCount || 0;
+          builds.value = resultResponse.value.buildResults || [];
+          menuBuilds.value = resultResponse.value.buildResults[0]?.buildStages || [];
+        } else {
+          console.error('Build results are missing in the response.');
+          builds.value = [];
+          menuBuilds.value = [];
+        }
+      } else {
+        console.error('Response data is undefined.');
+      }
+    } catch (error) {
+      console.error('Error fetching build results:', error);
+    }
+  } else {
+    console.error('Current config is not selected or has no id.');
+  }
 });
 
 
