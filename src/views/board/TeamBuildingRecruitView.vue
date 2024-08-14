@@ -9,12 +9,12 @@
   <div class="itemList">
     <b-container v-show="!loading" class="itemContainer">
       <b-row>
-        <b-col 
+        <b-col v-if="isAuth"
         class="createItem"
         md="3">
           <router-link :to="{path: '/teambuilding/recruit/create'}" class="createItemButton">
-          <img src="@/icons/createItemButton.svg" alt="" class="createItemImage">
-        </router-link>
+            <img src="@/icons/createItemButton.svg" alt="" class="createItemImage">
+          </router-link>
         </b-col>
         <b-col 
           v-for="item in list" 
@@ -44,6 +44,8 @@
 </template>
 <script setup>
   import {ref, defineProps, defineEmits, watch} from 'vue'
+  import { useAuthStore } from '../../stores/authStore';
+  import { storeToRefs } from 'pinia';
   import FilterDropdown from '../../components/board/BoardFilterDropdown.vue';
   import FilterInput from '../../components/board/BoardFilterInput.vue'
   import RecruitItem from '../../components/board/BoardRecruitItem.vue'
@@ -75,12 +77,16 @@
     emit('search', filterKey.value, filterValue.value)
   }
 
+  const authStore = useAuthStore();
+  const {userId} = storeToRefs(authStore);
+
   const curPage = ref(1)
   const perPage = ref(6)
   const list = ref([])
   const totRows = ref(0)
   const filterKey = ref('')
   const filterValue = ref('')
+  const isAuth = ref(userId.value)
 
   const updateList = (data) => {
     const start = (curPage.value - 1) * perPage.value;
