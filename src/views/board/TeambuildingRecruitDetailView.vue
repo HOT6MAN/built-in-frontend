@@ -47,7 +47,7 @@ import ResumeListModal from '@/modals/resume/ResumeListModal.vue'
 import {useChatStore} from '@/stores/chatStore.js';
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
-import { sweetAlert } from '../../api/sweetAlert'
+import { sweetAlert, sweetConfirm } from '../../api/sweetAlert'
 
 import { createRoomByTeamId } from '@/api/chat.js';
 
@@ -89,12 +89,12 @@ const upd = () => {
 }
 
 const del = () => {
-  deleteRecruit(id, (resp) => {
-    if (resp.status === 204) {
-      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Delete'}})        
-      .then(() => router.replace({path: '/teambuilding'}))
-    }
+  sweetConfirm('정말 삭제하시겠습니까?', '', () => deleteRecruit(id, (resp) => {
+    if (resp.status !== 204) return;
+    
+    router.push({path: '/teambuilding'}).then(() => sweetAlert('삭제되었습니다.', ''));    
   }, (err) => console.error(err))
+  , (err) => console.error(err))
 }
 
 const onApplyClick = () => {
