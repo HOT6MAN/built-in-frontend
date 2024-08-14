@@ -79,49 +79,6 @@ import { ref, watch, onMounted, computed } from 'vue'
 import { receiveBuildResult } from '@/api/build.js'
 import { useProjectStore } from '@/stores/projectStore.js'
 import { useRoute } from 'vue-router'
-import { ref, watch, onMounted, computed } from 'vue'
-import { receiveBuildResult } from '@/api/build.js'
-import { useProjectStore } from '@/stores/projectStore.js'
-import { useRoute } from 'vue-router'
-
-const response = ref([]);
-const builds = ref([]);
-const menuBuilds = ref([]);
-const selectedConfigId = ref(1);
-const dataLoaded = ref(false);
-const currentPage = ref(1);
-const perPage = ref(5);
-
-const store = useProjectStore();
-const route = useRoute();
-const teamId = route.params.teamId;
-
-const allConfigs = ref([]);
-const selectedIndex = computed(() => {
-  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);2
-});
-
-const curConfig = computed(() => {
-  if (selectedIndex.value !== -1) {
-    return allConfigs.value[selectedIndex.value];
-  } else {
-    return null;
-  }
-});
-
-const filteredResponse = computed(() => {
-  if (!selectedConfigId.value) return { totalCount: 0, buildResults: [] };
-
-  // 필터링 기준을 설정
-  const filteredBuilds = builds.value.filter(build => build.configId === selectedConfigId.value);
-  return { totalCount: filteredBuilds.length, buildResults: filteredBuilds };
-});
-
-const pageBuilds = computed(() => {
-  const pageStart = (currentPage.value - 1) * perPage.value;
-  const pageEnd = currentPage.value * perPage.value;
-  return filteredResponse.value.buildResults.slice(pageStart, pageEnd);
-});
 
 const response = ref([]);
 const builds = ref([]);
@@ -176,23 +133,7 @@ const formatDate = (dateString) => {
 
 const modalShow = ref({});
 
-  const date = new Date(dateString);
-  return {
-    year: date.getUTCFullYear(),
-    month: String(date.getUTCMonth() + 1).padStart(2, '0'),
-    day: String(date.getUTCDate()).padStart(2, '0'),
-    hour: String(date.getUTCHours()).padStart(2, '0'),
-    minute: String(date.getUTCMinutes()).padStart(2, '0'),
-    second: String(date.getUTCSeconds()).padStart(2, '0')
-  };
-};
-
-const modalShow = ref({});
-
 const toggleModal = (buildId, index) => {
-  const modalKey = `${buildId}-${index}`;
-  modalShow.value[modalKey] = !modalShow.value[modalKey];
-};
   const modalKey = `${buildId}-${index}`;
   modalShow.value[modalKey] = !modalShow.value[modalKey];
 };
@@ -216,7 +157,6 @@ const fetchBuildResults = () => {
     }
   );
 };
-
 
 watch(selectedConfigId, () => {
   currentPage.value = 1; // 설정 변경 시 페이지를 첫 페이지로 리셋
