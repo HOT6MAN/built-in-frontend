@@ -71,11 +71,11 @@
 
 
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue'
-import { receiveBuildResult } from '@/api/build.js'
-import { useProjectStore } from '@/stores/projectStore.js'
-import { useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
+import { ref, watch, onMounted, computed } from 'vue';
+import { receiveBuildResult } from '@/api/build.js';
+import { useProjectStore } from '@/stores/projectStore.js';
+import { useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 const resultResponse = ref({});
 const builds = ref([]);
@@ -118,10 +118,12 @@ watch(selectedConfigId, async (newId) => {
     
     try {
       const response = await receiveBuildResult(teamProjectInfoId.value);
+      console.log('API Response:', response); // API 응답 구조 확인
       
       // response가 올바른지 확인
       if (response && response.data) {
         resultResponse.value = response.data || {};
+        
         if (resultResponse.value.buildResults) {
           pages.value = resultResponse.value.totalCount || 0;
           builds.value = resultResponse.value.buildResults || [];
