@@ -48,6 +48,13 @@ onMounted(  async()=> {
 <template>
   <div class="main-content">     
     <div class="config-container">  
+
+      <div v-if="isTeamsEmpty">
+        <p class="no-teams-message">아직 가입한 팀이 없습니다.
+          팀을 새로 만들어보세요!</p>
+      </div>
+
+
       <!-- 팀이 있을 때 팀 카드 목록 표시 -->
       <div class="teams">
         <div class="card card-margin"><router-link :to="{name: 'myTeamRegister'}" class="add-card"><img src="@/icons/addButton.svg" alt=""></router-link></div>

@@ -1,80 +1,83 @@
 <template>
     <SideBarView></SideBarView>
-    <div class="container">
-        <div class="team-info">
-            <div class="team-header">
-                <div class="sc-crHmcD fLCeMm">
-                    <TeamSelectDropdown/>
-                    <label class="link-label">팀 이름 :</label>
-                    <h2 class="fw-bold ">{{ team.name }}</h2>
-                </div>
-                <div class="sc-crHmcD fLCeMm ">
-                    <label class="link-label">팀 소개 :</label>
-                    <p >{{ team.content }}</p>
-                </div>
-               
-                    
-                <div class="team-links ">
-                    <div class="link-row">
-                        <div class="link-group">
-                            <label class="link-label">Jira URL :</label>
-                            <input
-                                type="text"
-                                v-model="newJiraUrl"
-                                :disabled="!editingJiraUrl"
-                                class="link-input"
-                                placeholder="Jira URL을 등록해주세요"
-                            />
-                            <b-button @click="toggleEditJiraUrl" class="save-button">
-                                {{ editingJiraUrl ? '저장' : '수정' }}
-                            </b-button>
+    <div class="main-content">     
+        <div class="config-container">  
+            <div class="team-info">
+                <div class="team-header">
+                    <div class="sc-crHmcD fLCeMm">
+                        <!-- <TeamSelectDropdown/> -->
+                        <label class="link-label">팀 이름 :</label>
+                        <h2 class="fw-bold ">{{ team.name }}</h2>
+                    </div>
+                    <div class="sc-crHmcD fLCeMm ">
+                        <label class="link-label">팀 소개 :</label>
+                        <p >{{ team.content }}</p>
+                    </div>
+                   
+                        
+                    <div class="team-links ">
+                        <div class="link-row">
+                            <div class="link-group">
+                                <label class="link-label">Jira URL :</label>
+                                <input
+                                    type="text"
+                                    v-model="newJiraUrl"
+                                    :disabled="!editingJiraUrl"
+                                    class="link-input"
+                                    placeholder="Jira URL을 등록해주세요"
+                                />
+                                <b-button @click="toggleEditJiraUrl" class="save-button">
+                                    {{ editingJiraUrl ? '저장' : '수정' }}
+                                </b-button>
+                            </div>
+                            <div class="link-group">
+                                <label class="link-label">Git URL :</label>
+                                <input
+                                    type="text"
+                                    v-model="newGitUrl"
+                                    :disabled="!editingGitUrl"
+                                    class="link-input"
+                                    placeholder="Git URL을 등록해주세요"
+                                />
+                                <b-button @click="toggleEditGitUrl" class="save-button">
+                                    {{ editingGitUrl ? '저장' : '수정' }}
+                                </b-button>
+                            </div>
                         </div>
-                        <div class="link-group">
-                            <label class="link-label">Git URL :</label>
-                            <input
-                                type="text"
-                                v-model="newGitUrl"
-                                :disabled="!editingGitUrl"
-                                class="link-input"
-                                placeholder="Git URL을 등록해주세요"
-                            />
-                            <b-button @click="toggleEditGitUrl" class="save-button">
-                                {{ editingGitUrl ? '저장' : '수정' }}
-                            </b-button>
+    
+                        <div class="status-group">
+                            <label class="status-label">Status:</label>
+                            <p class="status-text" v-if="team.status==='RECRUIT'">
+                                <span class="badge badge-recruit" @click="changeStatus">모집중</span>
+                            </p>
+                            <p class="status-text" v-else>
+                                <span class="badge badge-finish" @click="changeStatus">모집완료</span>
+                            </p>
+                        </div>
+                    </div>   
+                        
+                    
+    
+                </div>
+                <div class="team-details">
+                    <div class="team-members">
+                        <div v-for="(item, index) in team.memberTeams" :key="index">
+                            <TeamMemberCard :member="item"/>
                         </div>
                     </div>
-
-                    <div class="status-group">
-                        <label class="status-label">Status:</label>
-                        <p class="status-text" v-if="team.status==='RECRUIT'">
-                            <span class="badge badge-recruit" @click="changeStatus">모집중</span>
-                        </p>
-                        <p class="status-text" v-else>
-                            <span class="badge badge-finish" @click="changeStatus">모집완료</span>
-                        </p>
+                    <div v-if="showDelete" class="delete-button">
+                        <b-button variant="danger" size="sm" class="remove-button" @click="clickDelete">팀 삭제</b-button>
                     </div>
-                </div>   
                     
-                
-
-            </div>
-            <div class="team-details">
-                <div class="team-members">
-                    <div v-for="(item, index) in team.memberTeams" :key="index">
-                        <TeamMemberCard :member="item"/>
+                    <div class="web-rtc">
+                        <WebRtc/>
                     </div>
+          
                 </div>
-                <div v-if="showDelete" class="delete-button">
-                    <b-button variant="danger" size="sm" class="remove-button" @click="clickDelete">팀 삭제</b-button>
-                </div>
-                
-                <div class="web-rtc">
-                    <WebRtc/>
-                </div>
-      
             </div>
         </div>
     </div>
+
 </template>
 
 <script setup>
@@ -125,6 +128,7 @@ onMounted( async ()=> {
         }
         
     }
+    console.log(team.value);
 
 })
 
@@ -186,10 +190,45 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
 
 
 <style scoped>
+.container {
+    display: flex;
+    padding-top: 75px;
+    padding-left: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 100%; /* 컨테이너의 높이를 100%로 설정 */
+    margin-left: 220px;
+    width: 80%;
+  }
+
+.main-content {
+    display: flex;
+    margin-top: 80px;
+    padding: 20px;
+    justify-content: center;
+    background-color: #f0f4f8;
+    min-height: 100vh;
+    font-family: var(--font-roboto);
+    width: 100%;
+  }
+  .config-container {
+    display: flex;
+    width: 100%;
+    max-width: 1000px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-left: 220px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
 
 .delete-button {
     position: absolute; /* 절대 위치로 설정 */
-    bottom: 10px; /* 아래쪽에서 10px 떨어진 위치 */
+    bottom: 35px; /* 아래쪽에서 10px 떨어진 위치 */
     left: 10px; /* 왼쪽에서 10px 떨어진 위치 */
     
 }
@@ -237,16 +276,6 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
     background-color: #960606;
 }
 
-.container {
-    display: flex;
-    padding-top: 75px;
-    padding-left: 20px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 100%; /* 컨테이너의 높이를 100%로 설정 */
-    margin-left: 220px;
-    width: 80%;
-  }
 
 
 .team-header {
@@ -396,6 +425,7 @@ button{
     justify-content: space-between;
     gap: 20px; /* 팀 구성원과 WebRTC 사이에 여백을 추가했습니다 */
     position: relative; /* 버튼의 절대 위치를 기준으로 설정 */
+    height: 100%;
 }
 
 .team-members {
