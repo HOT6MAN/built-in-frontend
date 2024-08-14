@@ -117,7 +117,7 @@ onMounted(async () => {
 
 watch(selectedConfigId, (newId) => {
 	console.log('체크박스 번호 = ', selectedIndex.value)
-	console.log('체크박스 id =', curConfig.value)
+	console.log('체크박스 id =', curConfig.value.id)
 	const teamProjectInfoId = curConfig.id
 	receiveBuildResult(
         teamProjectInfoId.value,
