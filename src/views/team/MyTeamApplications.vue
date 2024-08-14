@@ -1,4 +1,6 @@
 <template>
+  <NavigationBarView />
+  <SideBarView />
   <div class="page">
     <h1 class="page-title">지원 현황</h1>
     
@@ -23,6 +25,8 @@ import { useRoute } from 'vue-router'
 import { findApplyList, acceptApplication, rejectApplication, deleteApplication } from '@/api/resume.js'
 import { sweetAlert, sweetConfirm } from '@/api/sweetAlert';
 import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
+import NavigationBarView from '@/views/Bars/NavigationBarView.vue';
+import SideBarView from '@/views/Bars/SideBarView.vue';
 
 const route = useRoute()
 
