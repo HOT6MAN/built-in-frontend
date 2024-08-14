@@ -24,6 +24,8 @@ const route = useRoute();
 
 const eventSource = ref(null);
 const eventSourceReadyState = ref(0);
+const reconnectAttempts = ref(0);
+const reconnectInterval = ref(null);
 
 const showAlert = ref(false);
 const alertMessage = ref('');
@@ -41,7 +43,10 @@ watch(isLogined, (newValue)=>{
 watch(eventSourceReadyState, (newState, oldState) => {
   if (newState === EventSource.CLOSED && oldState !== EventSource.CLOSED) {
     console.log('Connection closed. Attempting to reconnect...');
-    reconnectSSE();
+    startReconnectAttempts();
+  } else if (newState === EventSource.OPEN && oldState !== EventSource.OPEN) {
+    console.log('Connection opened. Stopping reconnect attempts.');
+    stopReconnectAttempts();
   }
 });
 
@@ -67,7 +72,12 @@ const connectToSSE = async(userId)=>{
     console.log('Connection opened');
     showAlertMessage(`총 ${unreadNotificationSize.value} 건의 알림이 존재합니다.`);
     await storeFindAllUnreadNotificationByUserId(userId.value);
+    eventSourceReadyState.value = EventSource.OPEN;
   });
+  eventSource.value.onerror = (error) => {
+    console.error('EventSource failed:', error);
+    eventSourceReadyState.value = EventSource.CLOSED;
+  };
 
   eventSource.value.addEventListener('chat', async (event) => {
     console.log('New message:', event.data);
@@ -203,8 +213,34 @@ const connectToSSE = async(userId)=>{
     }
     showAlertMessage('새로운 Error 이벤트가 도착했습니다.');
     await storeFindAllUnreadNotificationByUserId(userId.value);
+    eventSourceReadyState.value = EventSource.CLOSED;
   });
 }
+
+const startReconnectAttempts = () => {
+  if (reconnectInterval.value === null) {
+    reconnectAttempts.value = 0;
+    reconnectInterval.value = setInterval(() => {
+      if (reconnectAttempts.value < 15) {
+        reconnectAttempts.value++;
+        console.log(`Reconnect attempt ${reconnectAttempts.value}`);
+        connectToSSE(userId.value);
+      } else {
+        console.log('Max reconnect attempts reached. Stopping reconnect attempts.');
+        stopReconnectAttempts();
+      }
+    }, 1000);
+  }
+};
+
+const stopReconnectAttempts = () => {
+  if (reconnectInterval.value !== null) {
+    clearInterval(reconnectInterval.value);
+    reconnectInterval.value = null;
+    reconnectAttempts.value = 0;
+  }
+};
+
 
 const showAlertMessage = (message) => {
   if (alertTimeout) {
