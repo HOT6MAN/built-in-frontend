@@ -42,7 +42,6 @@ const onPreview = (item) => {
 }
 
 const onApprove = (resumeId) => {
-  const teamId = selectedTeamId.value;
   const body = {
     teamId, resumeId
   }
@@ -58,7 +57,6 @@ const onApprove = (resumeId) => {
 }
 
 const onReject = (resumeId) => {
-  const teamId = selectedTeamId.value;
   const body = {
     teamId, resumeId
   }
@@ -74,8 +72,6 @@ const onReject = (resumeId) => {
 }
 
 const onDelete = (resumeId) => {
-  const teamId = selectedTeamId.value;
-
   if (!confirm("Do you really want to delete?")) return;
 
   deleteApplication(teamId, resumeId, (resp) => {
