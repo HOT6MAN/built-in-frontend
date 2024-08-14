@@ -115,10 +115,12 @@ onMounted(async () => {
 	console.log(allConfigs.value)
 });
 
+const teamProjectInfoId = ref(0)
 watch(selectedConfigId, (newId) => {
 	console.log('체크박스 번호 = ', selectedIndex.value)
 	console.log('체크박스 id =', curConfig.value.id)
-	const teamProjectInfoId = curConfig.value.id
+	teamProjectInfoId.value = Number(curConfig.value.id)
+	console.log(teamProjectInfoId.value)
 	receiveBuildResult(
         teamProjectInfoId.value,
         (response) => {
@@ -127,11 +129,13 @@ watch(selectedConfigId, (newId) => {
 					pages.value = resultResponse.value.totalCount
 					builds.value = resultResponse.value.buildResults
 					menuBuilds.value = resultResponse.value.buildResults[0].buildStages
+					console.log(resultResponse)
 
         },
         (error) => {
           // 실패 콜백
 					console.log('error -> ', error)
+					console.log(teamProjectInfoId.value)
 				}
       );
 });
