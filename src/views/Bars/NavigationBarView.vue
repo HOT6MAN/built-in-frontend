@@ -6,8 +6,8 @@
       </RouterLink>
       <div class="menu">
         <RouterLink :to="{name: 'teambuilding'}" class="menuButton">팀빌딩</RouterLink>
-        <RouterLink :to="{name: 'myteam'}" class="menuButton">팀 / 프로젝트 관리</RouterLink>
-        <RouterLink :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
+        <RouterLink v-if="userId" :to="{name: 'myteam'}" class="menuButton">팀 / 프로젝트 관리</RouterLink>
+        <RouterLink v-if="userId" :to="{name: 'resumes'}" class="menuButton">이력서</RouterLink>
       </div>
     <div class="rightMenu">
     <div v-if="userId" class="afterLoginContainer">
