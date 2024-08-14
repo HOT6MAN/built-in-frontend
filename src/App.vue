@@ -23,6 +23,7 @@ const { storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDat
 const route = useRoute();
 
 const eventSource = ref(null);
+const eventSourceReadyState = ref(0);
 
 const showAlert = ref(false);
 const alertMessage = ref('');
@@ -35,6 +36,7 @@ watch(isLogined, (newValue)=>{
     connectToSSE(userId);
   }
 });
+
 
 watch(eventSourceReadyState, (newState, oldState) => {
   if (newState === EventSource.CLOSED && oldState !== EventSource.CLOSED) {
