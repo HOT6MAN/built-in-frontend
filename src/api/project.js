@@ -20,6 +20,7 @@ async function updateProjectInfoNameByProjectInfoId(projectInfoId, updateConfigN
 }
 
 async function saveBackendConfigs(projectInfoId, backendConfigs, success, fail){
+    console.log("Before Save BackendConfig, value = ",backendConfigs);
     await api.post("/build/project/backend/"+projectInfoId, backendConfigs).then(success).catch(fail);
 }
 

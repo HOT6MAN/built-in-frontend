@@ -75,6 +75,20 @@
                       </b-col>
                     </b-row>
                   </b-form-group>
+                  <b-form-group class="dropdownBox">
+                    <b-row>
+                      <b-col sm="3" class="dropdownTitle"><label>Context Path</label></b-col>
+                      <b-col sm="8">
+                        <b-form-input
+                          :id="'backend-contextPath-' + index"
+                          v-model="backend.contextPath"
+                          placeholder="Context Path를 입력해주세요"
+                          trim
+                          readOnly
+                        ></b-form-input>
+                      </b-col>
+                    </b-row>
+                  </b-form-group>
                 </div>
               </div>
             </div>
