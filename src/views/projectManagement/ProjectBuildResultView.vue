@@ -118,9 +118,9 @@ onMounted(async () => {
 watch(selectedConfigId, (newId) => {
 	console.log('체크박스 번호 = ', selectedIndex.value)
 	console.log('체크박스 id =', curConfig.value.id)
-	const teamProjectInfoId = curConfig.id
+	const teamProjectInfoId = curConfig.value.id
 	receiveBuildResult(
-        teamProjectInfoId.value.id,
+        teamProjectInfoId.value,
         (response) => {
           // 성공 콜백
 					resultResponse.value = response.data
