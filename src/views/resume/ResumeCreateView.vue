@@ -113,16 +113,17 @@ const onSubmit =() => {
 }
 
 const onCreate = () => {
+  const filteredExpLists = experiences.value.filter(item => item.title && item.description);
+
   const form = new FormData();
   form.append('title', title.value);
   form.append('profile', profile.value);
   form.append('position', selectedPos.value[0]);
   form.append('techStack', JSON.stringify(techStack.value));
-  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title && item.description)));
+  form.append('experiences', JSON.stringify(filteredExpLists));
   form.append('comment', comment.value);
 
-  const experienceList = form.get('experiences')
-  const isExpsAllCompleted = experienceList.every(item => item.title && item.description);
+  const isExpsAllCompleted = filteredExpLists.every(item => item.title && item.description);
 
   if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
     sweetAlertWarning('모두 입력 해주세요','')
@@ -143,17 +144,17 @@ const onCreate = () => {
 
 const onUpdate = () => {
   const id = route.params.id
+  const filteredExpLists = experiences.value.filter(item => item.title && item.description);
 
   const form = new FormData();
   form.append('title', title.value);
   form.append('profile', profile.value);
   form.append('position', selectedPos.value[0]);
   form.append('techStack', JSON.stringify(techStack.value));
-  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title && item.description)));
+  form.append('experiences', JSON.stringify(filteredExpLists));
   form.append('comment', comment.value);
 
-  const experienceList = form.get('experiences')
-  const isExpsAllCompleted = experienceList.every(item => item.title && item.description);
+  const isExpsAllCompleted = filteredExpLists.every(item => item.title && item.description);
 
   if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
     sweetAlertWarning('모두 입력 해주세요','')

@@ -85,7 +85,7 @@ const connectToSSE = async(userId)=>{
     await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 
-  eventSource.value.addEventListener('SETUP', (event) => {
+  eventSource.value.addEventListener('setup', (event) => {
     const data = JSON.parse(event.data);
     console.log('setup data: ', data);
     console.log("jenkins 알림이 도착했습니다 - type: setup");
@@ -101,7 +101,7 @@ const connectToSSE = async(userId)=>{
     
   });
 
-  eventSource.value.addEventListener('BACKEND', (event) => {
+  eventSource.value.addEventListener('backend', (event) => {
     const data = JSON.parse(event.data);
     console.log('backend data: ', data);
     console.log("jenkins 알림이 도착했습니다 - type: backend");
@@ -117,7 +117,7 @@ const connectToSSE = async(userId)=>{
     
   });
 
-  eventSource.value.addEventListener('FRONTEND', (event) => {
+  eventSource.value.addEventListener('frontend', (event) => {
     const data = JSON.parse(event.data);
     console.log('FRONTEND data: ', data);
     console.log("jenkins 알림이 도착했습니다 - type: FRONTEND");
@@ -135,7 +135,7 @@ const connectToSSE = async(userId)=>{
 
 
 
-  eventSource.value.addEventListener('DATABASE', (event) => {
+  eventSource.value.addEventListener('database', (event) => {
     const data = JSON.parse(event.data);
     console.log('DATABASE data: ', data);
     console.log("jenkins 알림이 도착했습니다 - type: DATABASE");
@@ -151,7 +151,7 @@ const connectToSSE = async(userId)=>{
     }
   });
 
-  eventSource.value.addEventListener('FINAL', (event) => {
+  eventSource.value.addEventListener('final', (event) => {
     console.log('final까진 도달...');
 
     const response = event.data.response;

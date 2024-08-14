@@ -4,7 +4,8 @@
       <iframe ref="sonarQubeDashboard" width="100%" height="800" frameborder="0"></iframe>
     </div>
     <div v-else>
-      <p>빌드된 프로젝트가 없습니다.</p>
+      <hr>
+      <p style="font-size: 20px;">빌드된 프로젝트가 없습니다.</p>
     </div>
   </div>
 </template>
