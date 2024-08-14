@@ -6,89 +6,73 @@
           <h2 class="title">이력서 {{ pageTitle }}</h2>
         </div>
   
-          <b-form class="form" @submit.prevent="onSubmit" @keydown.enter.prevent>
-            <b-form-group >
-              <label class="left-align">제목</label>
-              <b-form-input v-model="title" size="lg" class="text-center mb-3" />
-            </b-form-group>
+        <b-form class="form" @submit.prevent="onSubmit" @keydown.enter.prevent>
+          <b-form-group >
+            <label class="left-align">제목</label>
+            <b-form-input v-model="title" size="lg" class="text-center mb-3" required />
+          </b-form-group>
 
-            <b-form-group class="image-form">
-              <label class="left-align">프로필</label>
-              <div><input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3 image-input"> </div> 
-              <div><b-img class="form-image" v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/></div>
-            </b-form-group>
+          <b-form-group class="image-form">
+            <label class="left-align">프로필</label>
+            <div><input type="file" ref="profileInput" accept="image/*" @change="handleFileChange" class="mb-3 image-input"> </div> 
+            <div><b-img class="form-image" v-if="profilePreview" :src="profilePreview" alt="image preview" fluid/></div>
+          </b-form-group>
 
-            <b-form-group>
-              <label class="left-align">포지션</label>
-              <b-form-tags 
-                v-model="selectedPos" 
-                placeholder=""
-                :limit="1" 
-                tag-variant="primary"
-                tag-pills
-                disabled  
-                class="mb-2"
-              />
-              <b-form-tag
-                v-for="(tag, idx) in positions"
-                :key="idx"
-                :title="tag"
-                variant="primary"              
-                no-remove
-                pill          
-                @click="selectTag(tag)"
-                class="tag-btn mx-1 mb-3"
-              />
-            </b-form-group>
-            <b-form-group>
-              <label class="left-align">기술 스택</label>
-              <b-form-tags 
-                v-model="techStack" 
-                placeholder="작성 후 스페이스 바 눌러주세요" 
-                tag-variant="primary"
-                tag-pills          
-                separator=" "
-                @input="onTagsDuplicate"
-                remove-on-delete
-                class="mb-3"
-              />
-            </b-form-group>
-            <b-form-group>
-              <label class="left-align">경험</label>
-              <div v-for="(experience, idx) in experiences" :key="idx">
-                <b-card bg-variant="light" class="mb-2">
-                  <b-form-group label="제목" :label-for="'nested-title-' + idx">
-                    <b-form-input v-model="experience.title" :id="'nested-title-' + idx" />
-                  </b-form-group>
-                  <b-form-group label="내용" :label-for="'nested-description-' + idx">
-                    <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize />
-                  </b-form-group>
-                  <div class="d-flex justify-content-end">
-                    <b-button v-if="idx != 0" variant="outline-danger" @click="removeExperience(idx)"  >삭제</b-button>
-                  </div>
-                </b-card>
-              </div>
-              <b-button class=" add-button" pill variant="primary" @click="addExperience">추가</b-button>
-            </b-form-group>
-            <b-form-group label="Comment">
-              <b-form-input v-model="comment" class="mb-3" />
-            </b-form-group>
-            <b-form-group class="d-flex justify-content-center mt-3">
+          <b-form-group>
+            <label class="left-align">포지션</label>
+            <b-form-tags 
+              v-model="selectedPos" 
+              :limit="1" tag-variant="primary" tag-pills placeholder=""
+              class="mb-2" disabled required />
+            <b-form-tag
+              v-for="(tag, idx) in positions" :key="idx" :title="tag"
+              variant="primary" pill no-remove
+              @click="selectTag(tag)" class="tag-btn mx-1 mb-3" />
+          </b-form-group>
 
-              <b-button type="submit" variant="primary" class="mx-1 save-button">제출</b-button>
-            </b-form-group>
-          </b-form>
- 
+          <b-form-group>
+            <label class="left-align">기술 스택</label>
+            <b-form-tags 
+              v-model="techStack" 
+              tag-variant="primary" tag-pills remove-on-delete separator=" " placeholder="작성 후 스페이스 바 눌러주세요"  
+              @input="onTagsDuplicate" class="mb-3" required />
+          </b-form-group>
+
+          <b-form-group>
+            <label class="left-align">경험</label>
+            <div v-for="(experience, idx) in experiences" :key="idx">
+              <b-card bg-variant="light" class="mb-2">
+                <b-form-group label="제목" :label-for="'nested-title-' + idx">
+                  <b-form-input v-model="experience.title" :id="'nested-title-' + idx" required />
+                </b-form-group>
+                <b-form-group label="내용" :label-for="'nested-description-' + idx">
+                  <b-form-textarea v-model="experience.description" :id="'nested-description-' + idx" rows="3" max-rows="6" no-resize required />
+                </b-form-group>
+                <div class="d-flex justify-content-end">
+                  <b-button v-if="idx != 0" variant="outline-danger" @click="removeExperience(idx)" >삭제</b-button>
+                </div>
+              </b-card>
+            </div>
+            <b-button class=" add-button" pill variant="primary" @click="addExperience">추가</b-button>
+          </b-form-group>
+
+          <b-form-group label="Comment">
+            <b-form-input v-model="comment" class="mb-3" required />
+          </b-form-group>
+
+          <b-form-group class="d-flex justify-content-center mt-3">
+            <b-button type="submit" variant="primary" class="mx-1 save-button">제출</b-button>
+          </b-form-group>
+        </b-form>
       <!-- </div> -->
     </div>
   </div>
-
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { findResumeById, registerResume, updateResume, getImageFromUrl } from '@/api/resume.js'
-import { sweetAlert } from '../../api/sweetAlert';
+import { sweetAlert, sweetAlertWarning } from '@/api/sweetAlert';
 
 const route = useRoute()
 const router = useRouter()
@@ -107,23 +91,20 @@ const isUpdateMode = computed(() => !!route.params.id)
 const pageTitle = computed(() => route.params.id ? '수정' : '생성') 
 
 const selectTag = (tag) => { selectedPos.value = [tag] }
-const addExperience = () => {
-  experiences.value.push({ title: '', description: '' })
-}
+const addExperience = () => experiences.value.push({ title: '', description: '' });
 
-const removeExperience = (idx) => {
-  experiences.value.splice(idx, 1)
-}
+const removeExperience = (idx) => experiences.value.splice(idx, 1)
 
 const handleFileChange = (event) => {
   const file = event.target.files[0];
-  if (file && file.type.startsWith('image/')) {
-    profile.value = file;
 
-    const reader = new FileReader();
-    reader.onload = (e) => { profilePreview.value = e.target.result; };
-    reader.readAsDataURL(file);
-  }
+  if (!file || !file.type.startsWith('image/')) return;
+
+  profile.value = file;
+
+  const reader = new FileReader();
+  reader.onload = (e) => { profilePreview.value = e.target.result; };
+  reader.readAsDataURL(file);
 }
 
 const onSubmit =() => {
@@ -136,8 +117,16 @@ const onCreate = () => {
   form.append('profile', profile.value);
   form.append('position', selectedPos.value[0]);
   form.append('techStack', JSON.stringify(techStack.value));
-  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title !== '' && item.description !== '')));
+  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title && item.description)));
   form.append('comment', comment.value);
+
+  const experienceList = form.get('experiences')
+  const isExpsAllCompleted = experienceList.every(item => item.title && item.description);
+
+  if (!title.value || !profile.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+    sweetAlertWarning('모두 입력 해주세요','')
+    return;
+  }
 
   registerResume(
     form,
@@ -159,8 +148,16 @@ const onUpdate = () => {
   form.append('profile', profile.value);
   form.append('position', selectedPos.value[0]);
   form.append('techStack', JSON.stringify(techStack.value));
-  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title !== '' && item.description !== '')));
+  form.append('experiences', JSON.stringify(experiences.value.filter(item => item.title && item.description)));
   form.append('comment', comment.value);
+
+  const experienceList = form.get('experiences')
+  const isExpsAllCompleted = experienceList.every(item => item.title && item.description);
+
+  if (!title.value || !profile.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+    sweetAlertWarning('모두 입력 해주세요','')
+    return;
+  }
 
   updateResume(id, form,    
     (resp) => {
@@ -176,45 +173,40 @@ const onUpdate = () => {
 }
 
 const onTagsDuplicate = (newTags) => {
-  techStack.value = newTags.filter((tag, index, self) => {
-    return self.indexOf(tag) === index;
-  });
+  techStack.value = newTags.filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
 onMounted(async () => {
-  if (isUpdateMode.value) {
-    const result = await findResumeById(route.params.id);
-    const resumeData = result.data
+  if (!isUpdateMode.value) return;
 
-    console.log(resumeData)
+  const result = await findResumeById(route.params.id);
+  const resumeData = result.data
     
-    const profileUrl = resumeData.profileUrl
-    getImageFromUrl(profileUrl, (resp) => {      
-      const urlParts = profileUrl.split('/')
-      const fileName = urlParts[urlParts.length - 1]
+  const profileUrl = resumeData.profileUrl
+  getImageFromUrl(profileUrl, (resp) => {      
+    const urlParts = profileUrl.split('/')
+    const fileName = urlParts[urlParts.length - 1]
 
-      const blob = resp.data;
-      const file = new File([blob], fileName, {type: blob.type});
-      
-      profile.value = file;
-      profilePreview.value = URL.createObjectURL(blob);
+    const blob = resp.data;
+    const file = new File([blob], fileName, {type: blob.type});
+    
+    profile.value = file;
+    profilePreview.value = URL.createObjectURL(blob);
 
-      if (profileInput.value) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        profileInput.value.files = dataTransfer.files;
-      }
-    }, (err) => console.error(err));
+    if (!profileInput.value) return;
 
-    title.value = resumeData.title;    
-    profile.value = resumeData.profile;    
-    selectedPos.value = [resumeData.position];
-    techStack.value = resumeData.techStack;
-    experiences.value = resumeData.experiences;
-    comment.value = resumeData.comment;
-  }
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    profileInput.value.files = dataTransfer.files;
+  }, (err) => console.error(err));
+
+  title.value = resumeData.title;    
+  profile.value = resumeData.profile;    
+  selectedPos.value = [resumeData.position];
+  techStack.value = resumeData.techStack;
+  experiences.value = resumeData.experiences;
+  comment.value = resumeData.comment;
 })
-
 </script>
 <style scoped>
 

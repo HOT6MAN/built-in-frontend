@@ -13,11 +13,9 @@
             id="team"
             :options="teamList"
             v-model="selectedTeam"
-            required
-          >
-
-        </b-form-select>
+            required />
         </b-form-group>
+
         <b-form-group class="image-form">
           <label class="left-align">이미지</label>
           <div><b-img class="form-image" v-if="thumbnailPreview" :src="thumbnailPreview" alt="image preview" fluid/></div>
@@ -33,7 +31,8 @@
             tag-pills
             placeholder="작성 후 ADD버튼 눌러주세요 + 1개만 작성 가능합니다" 
             v-model="domain" 
-            remove-on-delete />
+            remove-on-delete
+            required />
         </b-form-group>
 
         <b-form-group for="desired-positions">
@@ -46,7 +45,8 @@
             separator=" "        
             @input="onTagsDuplicate"
             placeholder="작성 후 스페이스 바 눌러주세요" 
-            v-model="desiredPosList" />          
+            v-model="desiredPosList"
+            required />          
         </b-form-group>
 
         <b-form-group for="introduction">
@@ -65,7 +65,7 @@
             placeholder="내용"
             size="xl"
             no-resize
-          ></b-form-textarea>
+            required />
         </b-form-group>
 
         <b-form-group class="d-flex justify-content-end mt-3">
@@ -81,18 +81,12 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { findMyTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
-import { useAuthStore } from '../../stores/authStore';
-import { storeToRefs } from 'pinia';
-import { sweetAlertWarning } from '../../api/sweetAlert';
-const authStore = useAuthStore();
-const {userId} = storeToRefs(authStore);
+import { sweetAlertWarning } from '@/api/sweetAlert';
 
 const route = useRoute()
 const router = useRouter()
 
 const teamList = ref([{}])
-const limitCnt = 5
-
 const title = ref('생성')
 const selectedTeam = ref('')
 const thumbnail = ref('')
@@ -102,8 +96,9 @@ const domain = ref([])
 const desiredPosList = ref([])
 const content = ref('')
 const introduction = ref('')
-
 const isUpdateMode = computed(() => !!route.params.id)
+
+const limitCnt = 5
 
 const onSubmit =() => {
   isUpdateMode.value ? onUpdate(): onCreate()
@@ -117,23 +112,22 @@ const onCreate = () => {
   form.append('desiredPosList', JSON.stringify(desiredPosList.value));
   form.append('content', content.value);
   form.append('introduction', introduction.value);
-  form.append('authorId', 1); // TODO: logged in user id
 
-  if(title.value!='' && selectedTeam.value!='' && thumbnail.value!='' && thumbnailPreview.value!=''&&
-  thumbnailInput.value!=null && domain.value.length>0 && desiredPosList.value.length>0 &&content.value!='' &&introduction.value!=''){
-    registerRecruit(
-      form,
-      (resp) => {
-        if (resp.status === 201) {
-          router.push({path: '/teambuilding', query: {redirectYN: true, msg: '작성 완료'}})
-          .then(() => router.replace({path: '/teambuilding'}))
-        }
-      }, 
-      (err) => console.error(err)
-    );  
-  }else{
+  if (!title.value || !selectedTeam.value || !thumbnail.value || !thumbnailPreview.value || !thumbnailInput.value || !domain.value.length || !desiredPosList.value.length || !content.value || !introduction.value) {
     sweetAlertWarning('모두 입력 해주세요','')
+    return;
   }
+  
+  registerRecruit(
+    form,
+    (resp) => {
+      if (resp.status === 201) {
+        router.push({path: '/teambuilding', query: {redirectYN: true, msg: '작성 완료'}})
+        .then(() => router.replace({path: '/teambuilding'}))
+      }
+    }, 
+    (err) => console.error(err)
+  );    
 }
 
 const onUpdate = () => {
@@ -146,12 +140,17 @@ const onUpdate = () => {
   form.append('content', content.value);
   form.append('introduction', introduction.value);
 
+  if (!title.value || !selectedTeam.value || !thumbnail.value || !thumbnailPreview.value || !thumbnailInput.value || !domain.value.length || !desiredPosList.value.length || !content.value || !introduction.value) {
+    sweetAlertWarning('모두 입력 해주세요','')
+    return;
+  }
+
   updateRecruit(id, form, 
     (resp) => {
-      if (resp.status === 204) {
-        router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Update'}})
-        .then(() => router.replace({path: '/teambuilding'}))
-      }
+      if (resp.status !== 204) return;
+
+      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Update'}})
+            .then(() => router.replace({path: '/teambuilding'}))
     }, 
     (err) => console.error(err)
   );  
@@ -169,9 +168,7 @@ const onReset = () => {
 }
 
 const onTagsDuplicate = (newTags) => {
-  desiredPosList.value = newTags.filter((tag, index, self) => {
-    return self.indexOf(tag) === index;
-  });
+  desiredPosList.value = newTags.filter((tag, index, self) => self.indexOf(tag) === index);
 }
 
 const handleFileChange = (event) => {
@@ -184,39 +181,44 @@ const handleFileChange = (event) => {
     reader.readAsDataURL(file);
   }
 }
+
 onMounted(() => {
-  if (isUpdateMode.value) {
-    title.value = "수정"
-
-    const boardData = JSON.parse(route.query.board);
-    const thumbnailUrl = boardData.thumbnailUrl
-    getImageFromUrl(thumbnailUrl, (resp) => {      
-      const urlParts = thumbnailUrl.split('/')
-      const fileName = urlParts[urlParts.length - 1]
-
-      const blob = resp.data;
-      const file = new File([blob], fileName, {type: blob.type});
-      
-      thumbnail.value = file;
-      thumbnailPreview.value = URL.createObjectURL(blob);
-
-      if (thumbnailInput.value) {
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        thumbnailInput.value.files = dataTransfer.files;
-      }
-    }, (err) => console.error(err));
-
-    selectedTeam.value = boardData.teamName;    
-    domain.value = [boardData.domain];
-    desiredPosList.value = boardData.desiredPosList;
-    introduction.value = boardData.introduction;
-    content.value = boardData.content;
-  } else {
+  if (!isUpdateMode.value) {
     findMyTeamList((resp) => {
       teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
     }, (err) => console.error(err))
-  }  
+
+    return;
+  }
+
+  // update mode
+  title.value = "수정"
+
+  const boardData = JSON.parse(route.query.board);
+  const thumbnailUrl = boardData.thumbnailUrl
+
+  getImageFromUrl(thumbnailUrl, (resp) => {      
+    const urlParts = thumbnailUrl.split('/')
+    const fileName = urlParts[urlParts.length - 1]
+
+    const blob = resp.data;
+    const file = new File([blob], fileName, {type: blob.type});
+    
+    thumbnail.value = file;
+    thumbnailPreview.value = URL.createObjectURL(blob);
+
+    if (!thumbnailInput.value) return;
+
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(file);
+    thumbnailInput.value.files = dataTransfer.files;
+  }, (err) => console.error(err));
+
+  selectedTeam.value = boardData.teamName;    
+  domain.value = [boardData.domain];
+  desiredPosList.value = boardData.desiredPosList;
+  introduction.value = boardData.introduction;
+  content.value = boardData.content;
 })
 </script>
 
