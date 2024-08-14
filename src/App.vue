@@ -62,7 +62,7 @@ const connectToSSE = async(userId)=>{
     await storeFindAllUnreadNotificationByUserId(userId.value);
   });
 
-  eventSource.value.addEventListener('setup', (event) => {
+  eventSource.value.addEventListener('SETUP', (event) => {
     console.log('setup data: ', event.data);
     console.log("jenkins 알림이 도착했습니다 - type: setup");
 
@@ -77,7 +77,7 @@ const connectToSSE = async(userId)=>{
     
   });
 
-  eventSource.value.addEventListener('backend', (event) => {
+  eventSource.value.addEventListener('BACKEND', (event) => {
     console.log('backend data: ', event.data);
     console.log("jenkins 알림이 도착했습니다 - type: backend");
 
@@ -92,7 +92,7 @@ const connectToSSE = async(userId)=>{
     
   });
 
-  eventSource.value.addEventListener('frontend', (event) => {
+  eventSource.value.addEventListener('FRONTEND', (event) => {
     console.log('frontend data: ', event.data);
     console.log("jenkins 알림이 도착했습니다 - type: frontend");
 
@@ -107,7 +107,9 @@ const connectToSSE = async(userId)=>{
     }
   });
 
-  eventSource.value.addEventListener('database', (event) => {
+
+
+  eventSource.value.addEventListener('DATABASE', (event) => {
     console.log('database data: ', event.data);
     console.log("jenkins 알림이 도착했습니다 - type: database");
 
@@ -116,6 +118,20 @@ const connectToSSE = async(userId)=>{
     if (response.result === "SUCCESS") {
       // 이 부분 추가 필요
       storeBuildFinalJenkinsJob();
+    }
+    else {
+      // 이 부분 추가 필요
+    }
+  });
+
+  eventSource.value.addEventListener('FINAL', (event) => {
+    console.log('final까진 도달...');
+
+    const response = event.data.response;
+    console.log("response = ", response);
+    if (response.result === "SUCCESS") {
+      // 이 부분 추가 필요
+      console.log("final 작업 성공")
     }
     else {
       // 이 부분 추가 필요
