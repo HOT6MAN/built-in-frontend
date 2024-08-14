@@ -74,7 +74,6 @@
 </template>
 
 
-
 <script setup>
 import { ref, watch, onMounted, computed } from 'vue'
 import { receiveBuildResult } from '@/api/build.js'
@@ -127,7 +126,7 @@ const pageBuilds = computed(() => {
 const response = ref([]);
 const builds = ref([]);
 const menuBuilds = ref([]);
-const selectedConfigId = ref(1);
+const selectedConfigId = ref(null);
 const dataLoaded = ref(false);
 const currentPage = ref(1);
 const perPage = ref(5);
@@ -138,7 +137,7 @@ const teamId = route.params.teamId;
 
 const allConfigs = ref([]);
 const selectedIndex = computed(() => {
-  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);2
+  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
 });
 
 const curConfig = computed(() => {
