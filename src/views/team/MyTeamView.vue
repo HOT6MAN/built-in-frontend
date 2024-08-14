@@ -98,6 +98,7 @@ onMounted(  async()=> {
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       transition: box-shadow 0.3s, transform 0.3s;
       max-width: 500px;
+      height: 150px;
   }
   .add-card {
     width: 100%;

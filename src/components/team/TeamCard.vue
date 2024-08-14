@@ -53,7 +53,7 @@ defineProps({
         transition: box-shadow 0.3s, transform 0.3s;
         overflow: hidden;
         width: 100%;
-        height: 100%;
+        height: 150px;
         max-width: 500px;
     }
 .fLCeMm {

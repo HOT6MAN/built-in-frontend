@@ -7,21 +7,9 @@
         <img class="sidebar-icon" alt="" src="@/icons/MemberSidebar/member.svg" />
           <p>회원</p>
       </div>
-            <div class="dropdownContainer">
-        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">계정</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">관심</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">메신저</b-button></RouterLink></div>
-      </div>
-
-      <!-- 환경설정 영역 -->
-      <div class="main-category">
-          <img class="sidebar-icon" alt="" src="@/icons/MemberSidebar/resume.svg" />
-            <p>이력서</p>
-      </div>
-      <div class="dropdownContainer">
-        <RouterLink :to="{name: 'projectGrafanaServiceView'}"><b-button class="dropdownItem">프로필</b-button></RouterLink>
-        <RouterLink :to="{name: 'projectGrafanaServiceView'}"><b-button class="dropdownItem">멀티이력서</b-button></RouterLink>
-        <RouterLink :to="{name: 'projectGrafanaServiceView'}"><b-button class="dropdownItem">팀원관리</b-button></RouterLink>
+        <div class="dropdownContainer">
+          <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">계정</b-button></RouterLink></div>
+          <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">관심</b-button></RouterLink></div>
       </div>
     </div>
   </div>
