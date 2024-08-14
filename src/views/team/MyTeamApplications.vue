@@ -97,6 +97,11 @@ const applyRowStyles = () => {
 onMounted(async () => {
   const result = await findApplyList(teamId)
 
+  if (!result) {
+    sweetAlert('지원 현황이 존재하지 않습니다', '')
+    return;
+  }
+
   for (let application of result.data) {
     for (let key in application) {
       if (application.hasOwnProperty(key)) {
@@ -113,6 +118,8 @@ onMounted(async () => {
 })
 
 watch(applicationList, () => {
+  if (!applicationList) return;
+
   nextTick(() => {
     applyRowStyles();
   });
