@@ -45,16 +45,16 @@ async function buildStart(teamId, projectInfoId, success, fail) {
       .catch(fail);
   }
 
-async function buildCheck(memberId, projectInfoId, success, fail){
-    await api.get(`/build/deploy/member/${memberId}/project-info/${projectInfoId}`).then(success).catch(fail);
+function buildCheck(memberId, projectInfoId, success, fail){
+    api.get(`/build/deploy/member/${memberId}/project-info/${projectInfoId}`).then(success).catch(fail);
 }
 
 async function addBuildResult(teamProjectInfoId, deployNum, success, fail){
     await api.post(`/build/project/team-project-info/${teamProjectInfoId}/deployNum/${deployNum}`).then(success).catch(fail);
 }
 
-async function startJenkinsJob(jobType, config, success, fail) {
-    await api.post(`/build/project/${jobType}`, config).then(success).catch(fail);
+function startJenkinsJob(jobType, config, success, fail) {
+    api.post(`/build/project/${jobType}`, config).then(success).catch(fail);
 }
 
 async function findNPrevLogs(dataObject, success, fail){

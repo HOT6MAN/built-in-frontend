@@ -117,7 +117,7 @@ const curConfig = computed(() => {
   }
 });
 
-const componentBuildStart = async () => {
+const componentBuildStart = () => {
   sweetAlert('',"빌드, 배포 시작");
 
   // 1. {projectInfoId}에 해당하는 서비스를, 배포할 수 있는지 여부를 판단한다
