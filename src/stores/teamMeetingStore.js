@@ -11,10 +11,10 @@ export const useTeamMeetingStore = defineStore('teamMeeting', ()=>{
     const getTeamMeeting = computed(()=>team.value)
 
 
-    const createMeeting = async (teamId) => {
+    const createMeeting = async (teamId, userId) => {
         try {
             await startMeetingByTeamId(
-                teamId,
+                teamId, userId,
                 (response) => {
                     team.value.sessionId = response.data.data.sessionId;
                     sessionId.value = response.data.data.sessionId;

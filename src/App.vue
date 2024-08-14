@@ -138,6 +138,12 @@ const connectToSSE = async(userId)=>{
     }
   });
 
+  eventSource.value.addEventListener('RTC', async (event)=>{
+    console.log("RTC 이벤트 도착");
+    showAlertMessage("새로운 팀 화상회의 알림이 도착했습니다.");
+    await storeFindAllUnreadNotificationByUserId(userId.value);
+  })
+
   eventSource.value.addEventListener('sse', async (event) => {
     let data;
     try {

@@ -2,6 +2,7 @@
 import { onMounted,ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useTeamMeetingStore } from '@/stores/teamMeetingStore';
+import { useAuthStore } from '@/stores/authStore.js';
 import { storeToRefs } from 'pinia';
 
 const { VITE_WEBRTC_URL } = import.meta.env;
@@ -9,11 +10,11 @@ const { VITE_WEBRTC_URL } = import.meta.env;
 const router = useRouter()
 const currentRoute = useRoute()
 const teamId = ref(currentRoute.params.teamId)
-
+const authStore = useAuthStore();
 const teamMeetingStore = useTeamMeetingStore()
 const {getTeamMeeting: team, sessionId } = storeToRefs(teamMeetingStore)
 const {createMeeting, getMeeting} = teamMeetingStore
-
+const {userId} = storeToRefs(authStore);
 const isCreated = ref(false);
 
 onMounted( async ()=> {
@@ -26,7 +27,7 @@ onMounted( async ()=> {
 
 
 const initializeMeeting = async () => {
-    await createMeeting(teamId.value);
+    await createMeeting(teamId.value, userId.value);
     if (sessionId.value) {
         window.open(`${VITE_WEBRTC_URL}/#/${sessionId.value}`, '_blank');
     } else {
