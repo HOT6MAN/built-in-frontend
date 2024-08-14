@@ -920,8 +920,3 @@ export const testObject = {
 export function receiveBuildResult(success, fail) {
   local.get('/build/deploy/result/team_project_info/{teamProjectInfoId}').then(success).catch({'fail' : fail});
 }
-
-
-// export function receiveBuildResult(success, fail) {
-//   local.get('/team/{teamid}/lastBuild').then(success).catch(fail);
-// }

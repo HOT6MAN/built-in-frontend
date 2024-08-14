@@ -6,7 +6,7 @@
       </div>
       <div v-if="dataLoaded" class="config-selection">
         <div class="input-group">
-          <select v-model="selectedConfigId" class="form-select config-select">
+          <select v-model="selectedConfigId" class="config-select">
             <option value="" disabled selected>설정 선택</option>
             <option v-for="(config, index) in allConfigs" :key="config.id" :value="config.id">
               {{ config.title }}

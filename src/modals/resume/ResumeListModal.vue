@@ -4,9 +4,7 @@
       <b-form-radio-group
         :options="resumeList"
         v-model="selectedResumeId"
-        stacked
-        class="resume-radio-group"
-      />
+        stacked required class="resume-radio-group" />
       <b-button class="b-button-block mb-4 mx-auto" pill variant="primary" @click.prevent="onApply">Apply</b-button>
     </div>
 
@@ -16,6 +14,7 @@
 <script setup>
 import { defineProps, defineEmits, ref, watch } from 'vue'
 import { findMyResumeList } from '@/api/resume.js'
+import { sweetAlertWarning } from '@/api/sweetAlert';
 
 const props = defineProps({
   showModal: Boolean,
@@ -29,6 +28,8 @@ const isVisible = ref(false)
 const ineligibilityReason = ref('')
 
 const onApply = () => {
+  if (!selectedResumeId.value) sweetAlertWarning('지원할 이력서를 선택해주세요','')
+
   emits('apply', selectedResumeId.value)
 }
 

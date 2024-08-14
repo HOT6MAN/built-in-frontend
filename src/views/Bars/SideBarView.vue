@@ -10,8 +10,6 @@
       </div>
       <div class="dropdownContainer">
         <div><RouterLink :to="{name: 'myTeamDetail', params: {teamId: teamId}}"><b-button class="dropdownItem">나의 팀</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">모집공고</b-button></RouterLink></div>
-        <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">팀원관리</b-button></RouterLink></div>
         <div><RouterLink :to="{name: 'myTeamApplications'}"><b-button class="dropdownItem">지원 현황</b-button></RouterLink></div>
       </div>
 
@@ -25,7 +23,7 @@
         <div><RouterLink :to="{name: 'projectBuildResultAndLogs', params: { teamId: teamId }}"><b-button class="dropdownItem">배포 보기</b-button></RouterLink></div>
       </div>
       <!-- 빌드 기록 영역 -->
-      <div class="main-category">
+      <div class="main-category-upper">
         <img class="sidebar-icon" alt="" src="@/icons/Sidebar/Build.svg" />
         <p>기록 및 분석</p>
       </div>
@@ -103,7 +101,7 @@ a {
   gap: 20px;
   font-weight: 600;
   /* cursor : pointer; */
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .main-category a {
   text-decoration: none;
@@ -119,18 +117,17 @@ a {
   justify-content: right;
   align-content: right;
   font-family: var(--font-roboto);
-  margin-bottom: 30px;
 }
 .dropdownItem {
   width: 188px;
-  height: 30px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0%;
   color: white;
   background-color: #6c757d;
-  padding: 20px;
+  padding: 18px;
 }
 
 
