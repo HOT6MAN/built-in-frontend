@@ -173,7 +173,7 @@ const startChat = async ()=>{
   }
   .page-container {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     background-color: #f0f4f8;
     display: flex;
     justify-content: center;

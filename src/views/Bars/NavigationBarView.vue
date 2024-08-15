@@ -141,6 +141,7 @@ a {
   display: flex;
   gap : 40px;
   width: auto;
+  margin-right: 30px;
 }
 .afterLoginContainer a {
   color: white;

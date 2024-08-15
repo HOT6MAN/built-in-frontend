@@ -83,7 +83,7 @@ font-family: var(--font-roboto);
 
 .container {
 display: grid;
-grid-template-columns: 250px 1fr;
+/* grid-template-columns: 220px 1fr; */
 height: 100%;
 width: 100%; /* 뷰포트 전체를 차지 */ 
 max-width: 100%;
@@ -94,6 +94,7 @@ overflow-x: hidden; /* 변경된 부분 */
 
 .content {
   margin-top: 80px;
+  margin-left: 220px;
 }
 
 .team-selection {

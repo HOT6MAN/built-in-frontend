@@ -209,6 +209,7 @@ const onTabChange = (newTabIndex) => {
   justify-content: center;
   background-color: #f0f4f8;
   min-height: 100vh;
+  padding : 20px;
 }
 
 .config-container {

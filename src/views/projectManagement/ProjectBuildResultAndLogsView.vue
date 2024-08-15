@@ -40,7 +40,7 @@ const openLogWindow = (dataObject) => {
 </script>
 
 <template>
-  <div class="container">
+  <div class="main-content">
     <div class="content">
       <ProjectBuildResult v-if="dataLoaded" :allConfigs="allConfigs" @viewLogs="viewLogs"></ProjectBuildResult>
     </div>
@@ -48,23 +48,41 @@ const openLogWindow = (dataObject) => {
 </template> 
 
 <style scoped>
+.main-content {
+  display: flex;
+  justify-content: center;
+  background-color: #f0f4f8;
+  height: 100%;
+  left: 220px;
+  padding : 20px;
+}
+
+.config-container {
+  width: 100%;
+  max-width: 1000px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-
+  width: 100vw;
   height: 100vh;
   overflow: auto;
+  background-color: aqua;
 }
 
 .content {
   width: 80vw;
-  max-width: 100vw;
+  max-width: 1000px;
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f0f0f0;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }

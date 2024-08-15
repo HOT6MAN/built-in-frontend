@@ -224,7 +224,6 @@ h2, h3 {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
 }
 
 .custom-modal {
@@ -233,7 +232,6 @@ h2, h3 {
   padding: 20px;
   width: 500px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1001;
 }
 
 .modal-header {
