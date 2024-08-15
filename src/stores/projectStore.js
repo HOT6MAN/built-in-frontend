@@ -42,7 +42,7 @@ export const useProjectStore = defineStore('project', () => {
     const storeFindUsedProjectInfosByTeamId = async (teamId) => {
         await findUsedProjectInfosByTeamId(teamId, (response) => {
             console.log("Used response = ", response);
-            serviceScheduleInfos.value = response.data.data;
+            usedProjectInfos.value = response.data.data;
         }, (error) => {
             console.log(error);
         })
@@ -51,7 +51,7 @@ export const useProjectStore = defineStore('project', () => {
     const storeFindServiceScheduleInfosById = async (serviceNum) => {
         await findUsedProjectInfosByTeamId(teamId, (response) => {
             console.log("Used response = ", response);
-            usedProjectInfos.value = response.data.data;
+            serviceScheduleInfo.value = response.data.data;
         }, (error) => {
             console.log(error);
         })
