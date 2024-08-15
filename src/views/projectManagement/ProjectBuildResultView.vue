@@ -79,7 +79,6 @@ import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendC
 import { addBuildResult, buildCheck, startJenkinsJob } from '../../api/project';
 import { errorMessages } from 'vue/compiler-sfc';
 import { sweetAlert } from '../../api/sweetAlert';
-import { useProjectStore } from '../../stores/projectStore';
 
 
 
@@ -88,9 +87,19 @@ const builds = ref([])
 const successOrNot = ref(null)
 const menuBuilds = ref(null)
 
-const projectStore = useProjectStore();
-const {buildResultInfo} = storeToRefs(projectStore);
-const { receiveBuildResult } = projectStore;
+// 환경설정 드롭다운 박스
+const route = useRoute();
+const teamId = route.params.teamId;
+const store = useProjectStore();
+const { storeFindAllProjectInfosByTeamId, receiveBuildResult } = store;
+const { projectInfos, buildResultInfo } = storeToRefs(store);
+const dataLoaded = ref(false);
+const allConfigs = ref([]);
+const selectedConfigId = ref(0);
+const updateConfigName = ref("");
+const selectedIndex = computed(() => {
+  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
+});
 
 
 onMounted(() => {
@@ -153,19 +162,7 @@ const milToSec = (milliSecond) => {
 	const second = milliSecond / 100
 	return Math.floor(second) /10
 }
-// 환경설정 드롭다운 박스
-const route = useRoute();
-const teamId = route.params.teamId;
-const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId } = store;
-const { projectInfos } = storeToRefs(store);
-const dataLoaded = ref(false);
-const allConfigs = ref([]);
-const selectedConfigId = ref(0);
-const updateConfigName = ref("");
-const selectedIndex = computed(() => {
-  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
-});
+
 
 const curConfig = computed(() => {
   if (selectedIndex.value !== -1) {
