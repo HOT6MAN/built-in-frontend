@@ -125,20 +125,20 @@ const onCreate = () => {
 
   const isExpsAllCompleted = filteredExpLists.every(item => item.title && item.description);
 
-  if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+  if (!title.value || !selectedPos.value[0] || !techStack.value.length || !comment.value || !isExpsAllCompleted) {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
 
-  registerResume(
-    form,
-    (resp) => {
-      if (resp.status === 201) {
-        router.push({path: '/resumes'}).then(() => sweetAlert('','이력서 생성 완료'))
-      }
-    }, 
-    (err) => console.error(err)
-  );  
+  sweetConfirm('', '정말 생성하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    registerResume(form, (resp) => {
+      if (resp.status !== 201) return;
+      
+      router.push({path: '/resumes'}).then(() => sweetAlert('','이력서 생성 완료'))
+    }, (err) => console.error(err));
+  }, (err) => console.error(err))
 }
 
 const onUpdate = () => {
@@ -155,19 +155,20 @@ const onUpdate = () => {
 
   const isExpsAllCompleted = filteredExpLists.every(item => item.title && item.description);
 
-  if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+  if (!title.value || !selectedPos.value[0] || !techStack.value.length || !comment.value || !isExpsAllCompleted) {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
 
-  updateResume(id, form,    
-    (resp) => {
-      if (resp.status === 204) {
-        router.push({path: '/resumes'}).then(() => sweetAlert('','이력서 갱신 완료'))
-      }
-    }, 
-    (err) => console.error(err)
-  );  
+  sweetConfirm('', '정말 수정하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+      updateResume(id, form, (resp) => {
+      if (resp.status !== 204) return;
+
+      router.push({path: '/resumes'}).then(() => sweetAlert('','이력서 갱신 완료'))
+    }, (err) => console.error(err));  
+  }, (err) => console.error(err))
 }
 
 const onTagsDuplicate = (newTags) => {
