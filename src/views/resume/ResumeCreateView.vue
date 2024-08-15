@@ -73,7 +73,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { findResumeById, registerResume, updateResume, getImageFromUrl } from '@/api/resume.js'
-import { sweetAlert, sweetAlertWarning } from '@/api/sweetAlert';
+import { sweetAlert, sweetConfirm, sweetAlertWarning } from '@/api/sweetAlert';
 
 const route = useRoute()
 const router = useRouter()

@@ -54,7 +54,7 @@
 import {ref, onMounted} from 'vue'
 import { RouterLink } from 'vue-router'
 import {findMyResumeList, deleteResumeById } from '@/api/resume.js'
-import { sweetAlert } from '../../api/sweetAlert';
+import { sweetAlert, sweetConfirm } from '../../api/sweetAlert';
 import PreviewModal from '@/modals/resume/ResumePreviewModal.vue'
 import defaultImgSrc from '@/icons/default-profile.svg';
 
