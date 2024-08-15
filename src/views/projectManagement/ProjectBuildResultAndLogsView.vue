@@ -21,7 +21,7 @@ onMounted(async () => {
   console.log("team Id = ",teamId);
   console.log("onMount Build result and logs view UsedProjectInfo = ",usedProjectInfos.value);
   allConfigs.value = [];
-  allConfigs.value.push(usedProjectInfos.value);
+  allConfigs.value = usedProjectInfos.value;
   console.log("Result and Logs all Configs. value = ",allConfigs.value);
   dataLoaded.value = true;
 });
