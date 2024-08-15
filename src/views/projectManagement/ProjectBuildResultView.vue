@@ -91,7 +91,7 @@ const menuBuilds = ref(null)
 const route = useRoute();
 const teamId = route.params.teamId;
 const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId, receiveBuildResult } = store;
+const { storeFindAllProjectInfosByTeamId, storeBuildResult } = store;
 const { projectInfos, buildResultInfo } = storeToRefs(store);
 const dataLoaded = ref(false);
 const allConfigs = ref([]);
@@ -103,7 +103,7 @@ const selectedIndex = computed(() => {
 
 
 onMounted(() => {
-	receiveBuildResult(selectedConfigId.value);
+	storeBuildResult(selectedConfigId.value);
 	response.value = buildResultInfo.value;
 
 
