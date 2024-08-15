@@ -71,7 +71,7 @@ watch(() => props.resumeId, async (resumeId) => {
 }, {immediate: true})
 </script>
 <style scoped>
-::v-deep .form-label{
+:deep .form-label{
   font-weight: bold;
     font-size: 0.9rem;
     color: var(--text1);

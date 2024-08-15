@@ -3,8 +3,8 @@
   <SideBar />
   <div class="all-container">
     <div class="page-container">
-      <h1 class="page-title">지원 현황</h1>
-      
+      <label class="title">지원 현황</label>
+      <hr class="mb-2">
       <b-table head-variant="light" hover :items="applicationList" :fields="fields" @row-clicked="onPreview" sticky-header class="table table-text-center" ref="table">    
         <template #cell(actions)="data">
           <b-button v-show="showButton(data.item.status)" variant="outline-primary" @click.prevent.stop="onApprove(data.item.resumeId)" >Approve</b-button>
@@ -12,8 +12,8 @@
           <b-button variant="danger" @click.prevent.stop="onDelete(data.item.resumeId)">Delete</b-button>
         </template>
       </b-table>    
-      <div v-show="!applicationList.length">
-        <h3>지원한 사람이 없습니다.</h3>
+      <div v-show="!applicationList.length" class="noApply">
+        <h4>지원한 사람이 없습니다.</h4>
       </div>
       <PreviewModal v-model="showModal" :resumeId="resumeId"/>
     </div>
@@ -143,6 +143,19 @@ watch(applicationList, () => {
 });
 </script>
 <style scoped>
+.noApply{
+  font-size: 12px;
+  color: #adadad;
+}
+.title {
+    font-weight: bold;
+    font-size: 1.7rem;
+    color: var(--text1);
+    white-space: nowrap; /* label의 텍스트가 줄 바꿈되지 않도록 설정 */
+    width: 200px; /* label의 고정 너비 설정 */
+    margin-top: 20px;
+  }
+
 .all-container {
   display: flex;
   justify-content: center;

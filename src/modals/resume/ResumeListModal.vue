@@ -5,7 +5,7 @@
         :options="resumeList"
         v-model="selectedResumeId"
         stacked required class="resume-radio-group" />
-      <b-button class="b-button-block mb-4 mx-auto" pill variant="primary" @click.prevent="onApply">Apply</b-button>
+      <b-button class="b-button-block mb-4 mx-auto" pill variant="primary" @click.prevent="onApply">지원하기</b-button>
     </div>
 
     <div v-show="!isVisible">{{ ineligibilityReason }}</div>
@@ -61,8 +61,15 @@ watch(showModal, async (newVal) => {
   }
   
   .b-button-block {
-    margin-top: 20px;
-    width: 85%;
+    font-family: var(--font-roboto);
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 16px !important;
+  border: none !important;
+  background-color: #4299e1 !important;
+  color: #ffffff !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
     display: block;
   }
 </style>

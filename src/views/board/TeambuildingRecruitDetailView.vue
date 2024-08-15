@@ -6,7 +6,7 @@
     </div>
 
     <div class="auth-buttons d-flex justify-content-end mb-2 w-100">
-      <b-button class="mx-1" @click="startChat">1:1 채팅</b-button>
+      <b-button class="mx-1 apply" @click="startChat">1:1 채팅</b-button>
       <b-button v-if="isMine" variant="success" class="mx-1" @click.prevent="upd">수정</b-button>
       <b-button v-if="isMine" variant="danger" class="delete-btn" @click.prevent="del">삭제</b-button>
     </div>
@@ -32,7 +32,7 @@
         <b-card-text class="mt-3"> {{ board.content }} </b-card-text>
       </b-card-body>
       <b-card-body v-if="isAuth" class="d-flex justify-content-end">          
-        <b-button variant="primary" @click.prevent="onApplyClick">지원하기</b-button>
+        <b-button class="apply" variant="primary" @click.prevent="onApplyClick">지원하기</b-button>
       </b-card-body>
     </b-card>    
 
@@ -145,6 +145,21 @@ const startChat = async ()=>{
 }
 </script>
 <style scoped>
+.apply{
+  font-family: var(--font-roboto);
+  font-weight: 700 !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  font-size: 16px !important;
+  border: none !important;
+  background-color: #4299e1 !important;
+  color: #ffffff !important;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+.apply:hover {
+  background-color: #434c5e !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
   .header {
     display: flex;
     justify-content: center;
