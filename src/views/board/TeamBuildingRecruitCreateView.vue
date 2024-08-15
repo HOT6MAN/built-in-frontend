@@ -186,8 +186,7 @@ onMounted(() => {
       const result = resp.data.data;
 
       if (!result.length) {
-        sweetAlertWarning('소속된 팀이 없습니다.','')
-        router.push({path: '/teambuilding'})
+        router.push({path: '/teambuilding'}).then(() => sweetAlertWarning('소속된 팀이 없습니다.',''));    
         return;
       }
       

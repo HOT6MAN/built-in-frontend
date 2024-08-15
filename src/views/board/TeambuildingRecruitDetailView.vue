@@ -125,8 +125,7 @@ const onApply = (resumeId) => {
   applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
     if (resp.status === 201) {
       showModal.value = false
-      sweetAlert('',"지원 완료")
-      router.push("/teambuilding")
+      router.push("/teambuilding").then(() => sweetAlert('',"지원 완료"));    
     }
   }, (err) => console.error(err))
 }

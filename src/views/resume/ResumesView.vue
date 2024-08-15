@@ -51,7 +51,7 @@
     </div>
 </template>
 <script setup>
-import {ref} from 'vue'
+import {ref, onMounted} from 'vue'
 import { RouterLink } from 'vue-router'
 import {findMyResumeList, deleteResumeById } from '@/api/resume.js'
 import { sweetAlert } from '../../api/sweetAlert';
@@ -75,12 +75,22 @@ const onPreview = (id) => {
 
 const onDelete = (id) => {
   deleteResumeById(id, (resp) => {
-    if (resp.status === 204) {
-      window.location.reload(); 
-      sweetAlert('','이력서 삭제 완료')
-    }
+    if (resp.status !== 204) return;
+    
+    localStorage.setItem('alertType', 'deleted');      
+    location.reload(); 
   }, (err) => console.error(err))
 }
+
+onMounted(() => {
+  const alertType = localStorage.getItem('alertType');
+
+  if (alertType === 'deleted') {
+    sweetAlert('','이력서 삭제 완료')
+  }
+
+  localStorage.removeItem('alertType');
+})
 </script>
 <style scoped>
 .save-button {
