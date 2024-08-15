@@ -56,8 +56,8 @@ const onApprove = (resumeId) => {
   sweetConfirm('정말 승인하시겠습니까?', '', acceptApplication(body, (resp) => {
     if (resp.status !== 204) return;
 
+    localStorage.setItem('alertType', 'approved');
     location.reload();
-    sweetAlert('승인 성공! 지원자가 팀원으로 합류하게 되었습니다', '')
   }, (err) => console.error(err)), (err) => console.error(err))
 }
 
@@ -69,8 +69,8 @@ const onReject = (resumeId) => {
   sweetConfirm('정말 거절하시겠습니까?', '', rejectApplication(body, (resp) => {
     if (resp.status !== 204) return;
     
+    localStorage.setItem('alertType', 'rejected');
     location.reload();    
-    sweetAlert('거절 되었습니다', '')
   }, (err) => console.error(err)), (err) => console.error(err))
 }
 
@@ -78,8 +78,8 @@ const onDelete = (resumeId) => {
   sweetConfirm('삭제하시겠습니까?', '', deleteApplication(teamId, resumeId, (resp) => {
     if (resp.status !== 204) return;
     
+    localStorage.setItem('alertType', 'deleted');
     location.reload();      
-    sweetAlert('삭제 되었습니다', '')
   }, (err) => console.error(err)), (err) => console.error(err))
 }
 
@@ -98,6 +98,18 @@ const applyRowStyles = () => {
 };
 
 onMounted(async () => {
+  const alertType = localStorage.getItem('alertType');
+
+  if (alertType === 'approved') {
+    sweetAlert('승인 성공! 지원자가 팀원으로 합류하게 되었습니다', '');
+  } else if (alertType === 'rejected') {
+    sweetAlert('거절 되었습니다', '');
+  } else if (alertType === 'deleted') {
+    sweetAlert('삭제 되었습니다', '');
+  }
+
+  localStorage.removeItem('alertType');
+
   const result = await findApplyList(teamId)
 
   if (!result.length) {
