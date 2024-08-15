@@ -37,7 +37,7 @@ export function applyTeamByResumeId(json, successCB, failCB) {
 
 export async function findApplyList(teamId) {
   const res = await local.get(`/applications/team/${teamId}`);
-  return res.data;
+  return res.data.data;
 }
 
 export function acceptApplication(json, successCB, failCB) {

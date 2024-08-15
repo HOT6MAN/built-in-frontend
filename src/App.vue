@@ -186,6 +186,7 @@ const connectToSSE = async(userId)=>{
     }
     else {
       // 이 부분 추가 필요
+      console.log("final 작업 실패");
     }
   });
 
@@ -229,7 +230,7 @@ const startReconnectAttempts = () => {
         console.log('Max reconnect attempts reached. Stopping reconnect attempts.');
         stopReconnectAttempts();
       }
-    }, 1000);
+    }, 100);
   }
 };
 

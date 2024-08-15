@@ -48,7 +48,8 @@ onMounted(  async()=> {
 <template>
   <div class="main-content">     
     <div class="config-container">  
-
+      <label class="title">나의 팀 목록</label>
+      <hr class="mb-2">
       <div v-if="isTeamsEmpty">
         <p class="no-teams-message">아직 가입한 팀이 없습니다.
           팀을 새로 만들어보세요!</p>
@@ -67,6 +68,15 @@ onMounted(  async()=> {
 </template>
   
 <style scoped>
+
+.title {
+    font-weight: bold;
+    font-size: 1.7rem;
+    color: var(--text1);
+    white-space: nowrap; /* label의 텍스트가 줄 바꿈되지 않도록 설정 */
+    width: 200px; /* label의 고정 너비 설정 */
+    margin-top: 20px;
+  }
   .main-content {
     display: flex;
     margin-top: 80px;

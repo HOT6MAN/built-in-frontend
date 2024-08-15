@@ -181,9 +181,16 @@ const handleFileChange = (event) => {
 }
 
 onMounted(() => {
-  if (!isUpdateMode.value) {
+  if (!isUpdateMode.value) {    
     findMyTeamList((resp) => {
-      teamList.value = resp.data.data.map(item => ({ text: item.name, value: item.id }));
+      const result = resp.data.data;
+
+      if (!result.length) {
+        router.push({path: '/teambuilding'}).then(() => sweetAlertWarning('소속된 팀이 없습니다.',''));    
+        return;
+      }
+      
+      teamList.value = result.map(item => ({ text: item.name, value: item.id }));
     }, (err) => console.error(err))
 
     return;

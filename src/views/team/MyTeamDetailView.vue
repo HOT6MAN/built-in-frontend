@@ -1,16 +1,18 @@
 <template>
-    <SideBarView></SideBarView>
+    <SideBarView class="sidebar" />
     <div class="main-content">     
         <div class="config-container">  
             <div class="team-info">
                 <div class="team-header">
                     <div class="sc-crHmcD fLCeMm">
-                        <!-- <TeamSelectDropdown/> -->
-                        <label class="link-label">팀 이름 :</label>
+                        <TeamSelectDropdown/>
+                    </div>
+                    <div class="sc-crHmcD fLCeMm">
+                        <label class="link-label">팀 이름 </label>
                         <h2 class="fw-bold ">{{ team.name }}</h2>
                     </div>
                     <div class="sc-crHmcD fLCeMm ">
-                        <label class="link-label">팀 소개 :</label>
+                        <label class="link-label">팀 소개 </label>
                         <p >{{ team.content }}</p>
                     </div>
                    
@@ -18,7 +20,7 @@
                     <div class="team-links ">
                         <div class="link-row">
                             <div class="link-group">
-                                <label class="link-label">Jira URL :</label>
+                                <label class="link-label">Jira URL </label>
                                 <input
                                     type="text"
                                     v-model="newJiraUrl"
@@ -31,7 +33,7 @@
                                 </b-button>
                             </div>
                             <div class="link-group">
-                                <label class="link-label">Git URL :</label>
+                                <label class="link-label">Git URL </label>
                                 <input
                                     type="text"
                                     v-model="newGitUrl"
@@ -46,7 +48,7 @@
                         </div>
     
                         <div class="status-group">
-                            <label class="status-label">Status:</label>
+                            <label class="status-label">Status</label>
                             <p class="status-text" v-if="team.status==='RECRUIT'">
                                 <span class="badge badge-recruit" @click="changeStatus">모집중</span>
                             </p>
@@ -190,6 +192,9 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
 
 
 <style scoped>
+.sidebar {
+    top : 0px;
+}
 .container {
     display: flex;
     padding-top: 75px;
@@ -243,15 +248,15 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
 
 .fLCeMm label {
     font-weight: bold;
-    font-size: 1.050rem;
+    font-size: 1.000rem;
     color: var(--text1);
     white-space: nowrap; /* label의 텍스트가 줄 바꿈되지 않도록 설정 */
-    width: 120px; /* label의 고정 너비 설정 */
+    width: 70px; /* label의 고정 너비 설정 */
     
 }
 
 .badge-recruit {
-    background-color: green; /* Leader 배경 색상 */
+    background-color: #4299e1; /* Leader 배경 색상 */
     color: #fff; /* Leader 텍스트 색상 */
     padding: 5px 10px;
     border-radius: 12px; /* 배지 둥근 모서리 */
@@ -264,7 +269,7 @@ watch(() => cuurentRoute.params.teamId, async (newTeamId) => {
 }
 
 .badge-finish {
-    background-color: red; /* Leader 배경 색상 */
+    background-color: #bf616a; /* Leader 배경 색상 */
     color: #fff; /* Leader 텍스트 색상 */
     padding: 5px 10px;
     border-radius: 12px; /* 배지 둥근 모서리 */
@@ -348,8 +353,9 @@ button{
 
 .link-label {
     font-weight: bold;
+    font-size: 1.000rem;
     margin-right: -30px; /* label과 input 사이의 간격 조정 */
-    width: 100px; /* label의 고정 폭 */
+    width: 70px; /* label의 고정 폭 */
 }
 
 .link-input {
@@ -415,7 +421,7 @@ button{
 }
 
 .status-text {
-    font-size: 1.1rem;
+    font-size: 1.0rem;
     color: #333;
 }
 

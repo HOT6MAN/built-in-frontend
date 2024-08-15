@@ -71,7 +71,7 @@ defineProps({
 }
 
 .badge-recruit {
-    background-color: green; /* Leader 배경 색상 */
+    background-color: #4299e1; /* Leader 배경 색상 */
     color: #fff; /* Leader 텍스트 색상 */
     padding: 5px 10px;
     border-radius: 12px; /* 배지 둥근 모서리 */
@@ -79,7 +79,7 @@ defineProps({
     font-weight: 600; /* 배지 폰트 두께 */
 }
 .badge-finish {
-    background-color: red; /* Leader 배경 색상 */
+    background-color: #bf616a; /* Leader 배경 색상 */
     color: #fff; /* Leader 텍스트 색상 */
     padding: 5px 10px;
     border-radius: 12px; /* 배지 둥근 모서리 */

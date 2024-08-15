@@ -92,10 +92,6 @@ padding: 0;
 overflow-x: hidden; /* 변경된 부분 */
 }
 
-.sidebar {
-  background-color: #f4f4f4;
-}
-
 .content {
   margin-top: 80px;
 }

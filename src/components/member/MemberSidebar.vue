@@ -9,7 +9,6 @@
       </div>
         <div class="dropdownContainer">
           <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">계정</b-button></RouterLink></div>
-          <div><RouterLink :to="{name: 'member'}"><b-button class="dropdownItem">관심</b-button></RouterLink></div>
       </div>
     </div>
   </div>

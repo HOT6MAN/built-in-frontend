@@ -1,4 +1,5 @@
 <template>
+  <div class="page-container">
   <div class="page">
     <div :style="headerStyle" class="header">
       <h1 class="page-title">모집</h1>
@@ -30,13 +31,15 @@
         <b-card-title class="h4 my-1">{{ board.introduction }} </b-card-title>          
         <b-card-text class="mt-3"> {{ board.content }} </b-card-text>
       </b-card-body>
-      <b-card-body class="d-flex justify-content-end">          
+      <b-card-body v-if="userId.value" class="d-flex justify-content-end">          
         <b-button variant="primary" @click.prevent="onApplyClick">지원하기</b-button>
       </b-card-body>
     </b-card>    
 
     <ResumeListModal v-model="showModal" @apply="onApply" @apply:isEligibleToApply="checkEligibleToApply" />
   </div>
+</div>
+
 </template>
 <script setup>
 import { ref, computed } from 'vue'
@@ -47,7 +50,7 @@ import ResumeListModal from '@/modals/resume/ResumeListModal.vue'
 import {useChatStore} from '@/stores/chatStore.js';
 import { useAuthStore } from '../../stores/authStore';
 import { storeToRefs } from 'pinia';
-import { sweetAlert } from '../../api/sweetAlert'
+import { sweetAlert, sweetConfirm } from '../../api/sweetAlert'
 
 import { createRoomByTeamId } from '@/api/chat.js';
 
@@ -89,12 +92,12 @@ const upd = () => {
 }
 
 const del = () => {
-  deleteRecruit(id, (resp) => {
-    if (resp.status === 204) {
-      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Delete'}})        
-      .then(() => router.replace({path: '/teambuilding'}))
-    }
+  sweetConfirm('정말 삭제하시겠습니까?', '', () => deleteRecruit(id, (resp) => {
+    if (resp.status !== 204) return;
+    
+    router.push({path: '/teambuilding'}).then(() => sweetAlert('삭제되었습니다.', ''));    
   }, (err) => console.error(err))
+  , (err) => console.error(err))
 }
 
 const onApplyClick = () => {
@@ -103,9 +106,9 @@ const onApplyClick = () => {
 
 const checkEligibleToApply = async (resolve) => {
   const checks = [
-    {func: () => checkMyResumeExists(), condition: res => !res, errorMsg: "you don't have resume to apply"},
-    {func: () => checkMyTeam(teamId.value), condition: res => res, errorMsg: "you already teammate"},
-    {func: () => checkMyApplicationApplied(teamId.value), condition: res => res, errorMsg: "you already applied (under review)"},
+    {func: () => checkMyResumeExists(), condition: res => !res, errorMsg: "지원할 이력서가 없습니다. (지원할 이력서 생성하세요)"},
+    {func: () => checkMyTeam(teamId.value), condition: res => res, errorMsg: "당신은 이미 팀원입니다."},
+    {func: () => checkMyApplicationApplied(teamId.value), condition: res => res, errorMsg: "당신은 이미 지원하였습니다. (심사중)"},
   ]
 
   for (const check of checks) {
@@ -125,8 +128,7 @@ const onApply = (resumeId) => {
   applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
     if (resp.status === 201) {
       showModal.value = false
-      sweetAlert('',"지원 완료")
-      router.push("/teambuilding")
+      router.push("/teambuilding").then(() => sweetAlert('',"지원 완료"));    
     }
   }, (err) => console.error(err))
 }
@@ -153,9 +155,16 @@ const startChat = async ()=>{
     color: white;
     margin: 10px;
   }
-
+  .page-container {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+  }
   .page {
     margin-top: 100px;
+    width: 80%;
   }  
 
   .page-title {

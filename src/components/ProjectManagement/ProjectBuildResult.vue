@@ -118,7 +118,7 @@ const stopBuildDeploy = async ()=>{
   const serviceScheduleId = allConfigByComponent.value[0].serviceScheduleId;
   if(confirm("정말 배포를 종료하시겠습니까?")){
     await buildStop(serviceScheduleId, (response)=>{
-
+      alert("빌드/배포 서비스가 성공적으로 종료되었습니다.");
     },(error)=>{
       console.log(error);
     })

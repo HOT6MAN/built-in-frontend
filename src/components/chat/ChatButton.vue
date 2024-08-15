@@ -9,9 +9,7 @@ const toggleChat = () => {
 </script>
 
 <template>
-    <div class="chat-button" @click="toggleChat">
-    채팅
-  </div>
+    <div class="chat-button"><img src="@/icons/chatButton.svg" @click="toggleChat"></img></div>
 </template>
 
 <style scoped>
@@ -19,10 +17,7 @@ const toggleChat = () => {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 50px;
   cursor: pointer;
+  z-index: 100;
 }
 </style>
