@@ -205,7 +205,6 @@ const onTabChange = (newTabIndex) => {
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
 .main-content {
-  margin: 20px;
   display: flex;
   justify-content: center;
   background-color: #f0f4f8;

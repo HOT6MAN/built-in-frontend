@@ -1,4 +1,5 @@
 <template>
+  <div class="page-container">
   <div class="page">
     <div :style="headerStyle" class="header">
       <h1 class="page-title">모집</h1>
@@ -37,6 +38,8 @@
 
     <ResumeListModal v-model="showModal" @apply="onApply" @apply:isEligibleToApply="checkEligibleToApply" />
   </div>
+</div>
+
 </template>
 <script setup>
 import { ref, computed } from 'vue'
@@ -152,9 +155,16 @@ const startChat = async ()=>{
     color: white;
     margin: 10px;
   }
-
+  .page-container {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f4f8;
+    display: flex;
+    justify-content: center;
+  }
   .page {
     margin-top: 100px;
+    width: 80%;
   }  
 
   .page-title {
