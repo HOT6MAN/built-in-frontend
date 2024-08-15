@@ -30,7 +30,7 @@
         <b-card-title class="h4 my-1">{{ board.introduction }} </b-card-title>          
         <b-card-text class="mt-3"> {{ board.content }} </b-card-text>
       </b-card-body>
-      <b-card-body class="d-flex justify-content-end">          
+      <b-card-body v-if="userId.value" class="d-flex justify-content-end">          
         <b-button variant="primary" @click.prevent="onApplyClick">지원하기</b-button>
       </b-card-body>
     </b-card>    
