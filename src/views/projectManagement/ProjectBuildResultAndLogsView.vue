@@ -20,6 +20,7 @@ onMounted(async () => {
   await storeFindUsedProjectInfosByTeamId(teamId);
   console.log("team Id = ",teamId);
   console.log("onMount Build result and logs view UsedProjectInfo = ",usedProjectInfos.value);
+  allConfigs.value = [];
   allConfigs.value.push(usedProjectInfos.value);
   console.log("Result and Logs all Configs. value = ",allConfigs.value);
   dataLoaded.value = true;
