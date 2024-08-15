@@ -104,7 +104,7 @@ onMounted(async () => {
     return;
   }
 
-  for (let application of result.data) {
+  for (let application of result) {
     for (let key in application) {
       if (application.hasOwnProperty(key)) {
         if (key === 'resumeId') continue;
@@ -114,7 +114,7 @@ onMounted(async () => {
     }
   }
 
-  applicationList.value = result.data;
+  applicationList.value = result;
 
   if (applicationList.value.length) fields.value.push({key: 'actions', label: 'Actions'})
 })
