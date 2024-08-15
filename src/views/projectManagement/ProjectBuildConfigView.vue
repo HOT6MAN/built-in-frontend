@@ -165,9 +165,23 @@ const saveFrontendData = async (frontendConfigs) => {
 };
 
 const saveDBData = async (databaseConfigs) => {
+  console.log("전달받은 db configs = ", databaseConfigs);
   const formData = new FormData();
   
-  await saveDatabaseConfigs(selectedConfigId.value, databaseConfigs, async (response) => {
+  databaseConfigs.forEach((config, index) => {
+    // isEditing과 attachedFile을 제외한 나머지 속성만 추출
+    const { isEditing, attachedFile, attatchFile, ...configToSend } = config;
+    
+    const configBlob = new Blob([JSON.stringify(configToSend)], { type: 'application/json' });
+    formData.append(`config_${index}`, configBlob, `config_${index}.json`);
+    
+    if (attachedFile) {
+      formData.append(`file_${index}`, attachedFile, attachedFile.name);
+    }
+  });
+
+  console.log("전송 전 FormData 확인 = ", formData);
+  await saveDatabaseConfigs(selectedConfigId.value, formData, async (response) => {
     sweetAlert('',"DB 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
     allConfigs.value = projectInfos.value;
@@ -175,7 +189,7 @@ const saveDBData = async (databaseConfigs) => {
   }, (error) => {
     console.log(error);
   });
-  
+
 };
 
 onMounted(async () => {
