@@ -74,11 +74,15 @@ const onPreview = (id) => {
 }
 
 const onDelete = (id) => {
-  deleteResumeById(id, (resp) => {
-    if (resp.status !== 204) return;
-    
-    localStorage.setItem('alertType', 'deleted');      
-    location.reload(); 
+  sweetConfirm('', '정말 삭제하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    deleteResumeById(id, (resp) => {
+      if (resp.status !== 204) return;
+      
+      localStorage.setItem('alertType', 'deleted');      
+      location.reload(); 
+    }, (err) => console.error(err))
   }, (err) => console.error(err))
 }
 
