@@ -103,9 +103,9 @@ const onApplyClick = () => {
 
 const checkEligibleToApply = async (resolve) => {
   const checks = [
-    {func: () => checkMyResumeExists(), condition: res => !res, errorMsg: "you don't have resume to apply"},
-    {func: () => checkMyTeam(teamId.value), condition: res => res, errorMsg: "you already teammate"},
-    {func: () => checkMyApplicationApplied(teamId.value), condition: res => res, errorMsg: "you already applied (under review)"},
+    {func: () => checkMyResumeExists(), condition: res => !res, errorMsg: "지원할 이력서가 없습니다. (지원할 이력서 생성하세요)"},
+    {func: () => checkMyTeam(teamId.value), condition: res => res, errorMsg: "당신은 이미 팀원입니다."},
+    {func: () => checkMyApplicationApplied(teamId.value), condition: res => res, errorMsg: "당신은 이미 지원하였습니다. (심사중)"},
   ]
 
   for (const check of checks) {

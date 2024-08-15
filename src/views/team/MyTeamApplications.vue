@@ -13,7 +13,7 @@
         </template>
       </b-table>    
       <div v-show="!applicationList.length">
-        <h3>No Result</h3>
+        <h3>지원한 사람이 없습니다.</h3>
       </div>
       <PreviewModal v-model="showModal" :resumeId="resumeId"/>
     </div>
@@ -56,8 +56,8 @@ const onApprove = (resumeId) => {
   sweetConfirm('정말 승인하시겠습니까?', '', acceptApplication(body, (resp) => {
     if (resp.status !== 204) return;
 
-    sweetAlert('승인 성공! 지원자가 팀원으로 합류하게 되었습니다', '')
     location.reload();
+    sweetAlert('승인 성공! 지원자가 팀원으로 합류하게 되었습니다', '')
   }, (err) => console.error(err)), (err) => console.error(err))
 }
 
@@ -70,6 +70,7 @@ const onReject = (resumeId) => {
     if (resp.status !== 204) return;
     
     location.reload();    
+    sweetAlert('거절 되었습니다', '')
   }, (err) => console.error(err)), (err) => console.error(err))
 }
 
@@ -77,8 +78,8 @@ const onDelete = (resumeId) => {
   sweetConfirm('삭제하시겠습니까?', '', deleteApplication(teamId, resumeId, (resp) => {
     if (resp.status !== 204) return;
     
-    sweetAlert('삭제 되었습니다', '')
     location.reload();      
+    sweetAlert('삭제 되었습니다', '')
   }, (err) => console.error(err)), (err) => console.error(err))
 }
 
@@ -104,7 +105,9 @@ onMounted(async () => {
     return;
   }
 
-  for (let application of result.data) {
+  fields.value = []
+
+  for (let application of result) {
     for (let key in application) {
       if (application.hasOwnProperty(key)) {
         if (key === 'resumeId') continue;
@@ -114,7 +117,7 @@ onMounted(async () => {
     }
   }
 
-  applicationList.value = result.data;
+  applicationList.value = result;
 
   if (applicationList.value.length) fields.value.push({key: 'actions', label: 'Actions'})
 })
