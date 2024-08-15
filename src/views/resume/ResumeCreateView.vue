@@ -125,7 +125,7 @@ const onCreate = () => {
 
   const isExpsAllCompleted = filteredExpLists.every(item => item.title && item.description);
 
-  if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+  if (!title.value || !selectedPos.value[0] || !techStack.value.length || !comment.value || !isExpsAllCompleted) {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
@@ -155,7 +155,7 @@ const onUpdate = () => {
 
   const isExpsAllCompleted = filteredExpLists.every(item => item.title && item.description);
 
-  if (!title.value || !selectedPos.value[0] || !techStack.value || !isExpsAllCompleted || !comment.value) {
+  if (!title.value || !selectedPos.value[0] || !techStack.value.length || !comment.value || !isExpsAllCompleted) {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
