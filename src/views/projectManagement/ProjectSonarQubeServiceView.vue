@@ -3,7 +3,7 @@
     <div>
       {{ serviceScheduleInfo }}
     </div>
-    <div v-if="isServiceIdValid">
+    <div v-if="serviceScheduleInfo.value.id">
       <iframe ref="sonarQubeDashboard" width="100%" height="800" frameborder="0"></iframe>
     </div>
     <div v-else>
@@ -14,22 +14,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 import { useProjectStore } from '../../stores/projectStore';
 import { storeToRefs } from 'pinia';
 
-const serviceScheduleInfo = storeToRefs(useProjectStore());
-const isServiceIdValid = ref(false);
+const { serviceScheduleInfo } = storeToRefs(useProjectStore());
 const sonarQubeDashboard = ref(null);
 
-onMounted(() => {
-  if (serviceScheduleInfo.value.id) {
-    isServiceIdValid.value = true;
+// Watcher to track changes in serviceScheduleInfo.value.id
+watch(
+  () => serviceScheduleInfo.value.id,
+  (newId) => {
+    if (newId) {
+      const dashboardURL = `https://sonarqube.hot6man.duckdns.org/dashboard?id=sonarqube_${newId}`;
+      const apiToken = 'Bearer sqa_62b2bc5a57c05a977ec55752d70a5a5b105c9d51';
 
-    const dashboardURL = `https://sonarqube.hot6man.duckdns.org/dashboard?id=sonarqube_${serviceScheduleInfo.value.id}`;
-    const apiToken = 'Bearer sqa_62b2bc5a57c05a977ec55752d70a5a5b105c9d51';
-
-    if (sonarQubeDashboard.value) {
       sonarQubeDashboard.value.src = dashboardURL;
 
       sonarQubeDashboard.value.onload = function () {
@@ -39,8 +38,9 @@ onMounted(() => {
         );
       };
     }
-  }
-});
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
