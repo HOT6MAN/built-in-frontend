@@ -16,7 +16,7 @@ const pinia = createPinia()
 pinia.use(piniaPluginPersitedstate)
 
 const app = createApp(App);
-app.use(pinia)
-app.use(BootstrapVue3)
-app.use(router)
+app.use(router);
+app.use(pinia);
+app.use(BootstrapVue3);
 app.mount("#app");

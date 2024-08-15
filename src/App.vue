@@ -18,6 +18,7 @@ const {userId, isLogined} = storeToRefs(authStore);
 const chatStore = useChatStore();
 const {chatOpen} = storeToRefs(chatStore);
 
+const projectStore = useProjectStore();
 const { storeServiceScheduleInfo, storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDatabaseJenkinsJob, storeBuildFinalJenkinsJob } = useProjectStore();
 
 const route = useRoute();

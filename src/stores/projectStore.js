@@ -219,7 +219,6 @@ export const useProjectStore = defineStore('project', () => {
         projectInfos,
         usedProjectInfos,
         deployConfig,
-        serviceNum,
         storeServiceScheduleInfo,
         storeFindUsedProjectInfosByTeamId,
         storeInsertNewProjectInfo,
