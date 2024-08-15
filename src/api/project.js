@@ -2,6 +2,10 @@ import { localAxios } from "@/util/http-commons";
 import api from '@/util/axios-common'
 const local = localAxios();
 
+async function findServiceScheduleById(serviceNum, success, fail){
+    await api.get(`/build/service-schedule/${serviceNum}`).then(success).catch(fail);
+}
+
 async function findAllProjectInfosByTeamId(teamId, success, fail){
     await api.get("/build/project/"+teamId).then(success).catch(fail);
 }
@@ -72,7 +76,9 @@ async function buildStop(serviceScheduleId, success, fail){
     await api.post("/build/deploy/"+serviceScheduleId).then(success).catch(fail);
 }
 
-export {findAllProjectInfosByTeamId,
+export {
+    findServiceScheduleById,
+    findAllProjectInfosByTeamId,
     findUsedProjectInfosByTeamId,
     insertNewProjectInfo, 
     updateProjectInfoNameByProjectInfoId,

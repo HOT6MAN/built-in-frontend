@@ -11,12 +11,23 @@ import {
     startJenkinsJob
 } from '@/api/project.js';
 import { sweetAlert } from '../api/sweetAlert';
+import { findServiceScheduleById } from '../api/project';
 
 export const useProjectStore = defineStore('project', () => {
 
     const projectInfos = ref([]);
     const usedProjectInfos = ref([]);
     const deployConfig = ref("");
+    const serviceScheduleInfo = ref([]);
+
+    const storeServiceScheduleInfo = async (serviceNum) => {
+        await findServiceScheduleById(serviceNum, (response) => {
+            serviceScheduleInfo.value = response.data.data;
+            console.log("serviceScheduleInfo : ", serviceScheduleInfo.value);
+        }, (error) => {
+            console.log("error = ", error);
+        })
+    };
 
     const storeFindAllProjectInfosByTeamId = async (teamId) => {
         await findAllProjectInfosByTeamId(teamId, (response) => {
@@ -31,11 +42,21 @@ export const useProjectStore = defineStore('project', () => {
     const storeFindUsedProjectInfosByTeamId = async (teamId) => {
         await findUsedProjectInfosByTeamId(teamId, (response) => {
             console.log("Used response = ", response);
+            serviceScheduleInfos.value = response.data.data;
+        }, (error) => {
+            console.log(error);
+        })
+    }
+
+    const storeFindServiceScheduleInfosById = async (serviceNum) => {
+        await findUsedProjectInfosByTeamId(teamId, (response) => {
+            console.log("Used response = ", response);
             usedProjectInfos.value = response.data.data;
         }, (error) => {
             console.log(error);
         })
     }
+
 
     const storeInsertNewProjectInfo = async (teamId, title) => {
 
@@ -194,10 +215,12 @@ export const useProjectStore = defineStore('project', () => {
     
 
     return {
+        serviceScheduleInfo,
         projectInfos,
         usedProjectInfos,
         deployConfig,
-        storeFindAllProjectInfosByTeamId,
+        serviceNum,
+        storeServiceScheduleInfo,
         storeFindUsedProjectInfosByTeamId,
         storeInsertNewProjectInfo,
         storeSaveBackendConfigs,

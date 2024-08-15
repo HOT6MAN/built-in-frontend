@@ -18,7 +18,7 @@ const {userId, isLogined} = storeToRefs(authStore);
 const chatStore = useChatStore();
 const {chatOpen} = storeToRefs(chatStore);
 
-const { storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDatabaseJenkinsJob, storeBuildFinalJenkinsJob } = useProjectStore();
+const { storeServiceScheduleInfo, storeBuildBackendJenkinsJob, storeBuildFrontendJenkinsJob, storeBuildDatabaseJenkinsJob, storeBuildFinalJenkinsJob } = useProjectStore();
 
 const route = useRoute();
 
@@ -158,10 +158,12 @@ const connectToSSE = async(userId)=>{
     console.log("response = ", response);
     if (response.result === "SUCCESS") {
       // 이 부분 추가 필요
-      console.log("final 작업 성공")
+      console.log("final 작업 성공");
+      storeServiceScheduleInfo(response.serviceNum);
     }
     else {
       // 이 부분 추가 필요
+      console.log("작업 실패");
     }
   });
 
@@ -170,25 +172,6 @@ const connectToSSE = async(userId)=>{
     showAlertMessage("새로운 팀 화상회의 알림이 도착했습니다.");
     await storeFindAllUnreadNotificationByUserId(userId.value);
   })
-
-  eventSource.value.addEventListener('FINAL', (event) => {
-    console.log('final까진 도달...');
-
-    const data = JSON.parse(event.data);
-    console.log('DATABASE data: ', data);
-    console.log("jenkins 알림이 도착했습니다 - type: DATABASE");
-
-    const response = data.response;
-    console.log("response= ", response);
-    if (response.result === "SUCCESS") {
-      // 이 부분 추가 필요
-      console.log("final 작업 성공");
-    }
-    else {
-      // 이 부분 추가 필요
-      console.log("final 작업 실패");
-    }
-  });
 
   eventSource.value.addEventListener('sse', async (event) => {
     let data;
