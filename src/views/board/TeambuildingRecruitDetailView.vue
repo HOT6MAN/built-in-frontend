@@ -81,24 +81,19 @@ findRecruit(id, (resp) => {
 }, (err) => console.error(err))
 
 const upd = () => {
-  router.push({
-    name: 'teambuildingRecruitUpdate',
-    params: {
-      id
-    },
-    query: {
-      board: JSON.stringify(board.value)
-    }
-  })
+  router.push({name: 'teambuildingRecruitUpdate', params: {id}, query: {board: JSON.stringify(board.value)}})
 }
 
 const del = () => {
-  sweetConfirm('정말 삭제하시겠습니까?', '', () => deleteRecruit(id, (resp) => {
-    if (resp.status !== 204) return;
-    
-    router.push({path: '/teambuilding'}).then(() => sweetAlert('삭제되었습니다.', ''));    
+  sweetConfirm('', '정말 삭제하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    deleteRecruit(id, (resp) => {
+      if (resp.status !== 204) return;
+      
+      router.push({path: '/teambuilding'}).then(() => sweetAlert('삭제되었습니다.', ''));    
+    }, (err) => console.error(err))
   }, (err) => console.error(err))
-  , (err) => console.error(err))
 }
 
 const onApplyClick = () => {
@@ -126,11 +121,15 @@ const checkEligibleToApply = async (resolve) => {
 }
 
 const onApply = (resumeId) => {
-  applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
-    if (resp.status === 201) {
+  sweetConfirm('', '정말 지원하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    applyTeamByResumeId({'teamId': teamId.value, 'resumeId': resumeId}, (resp) => {
+      if (resp.status !== 201) return;
+      
       showModal.value = false
-      router.push("/teambuilding").then(() => sweetAlert('',"지원 완료"));    
-    }
+      router.push("/teambuilding").then(() => sweetAlert('',"지원 완료"));
+    }, (err) => console.error(err))
   }, (err) => console.error(err))
 }
 

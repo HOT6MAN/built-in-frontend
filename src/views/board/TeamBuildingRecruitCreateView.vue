@@ -79,7 +79,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { findMyTeamList, registerRecruit, getImageFromUrl, updateRecruit } from '@/api/teambuilding.js'
-import { sweetAlertWarning } from '@/api/sweetAlert';
+import { sweetConfirm, sweetAlertWarning } from '@/api/sweetAlert';
 
 const route = useRoute()
 const router = useRouter()
@@ -115,17 +115,16 @@ const onCreate = () => {
     sweetAlertWarning('모두 입력 해주세요','')
     return;
   }
-  
-  registerRecruit(
-    form,
-    (resp) => {
-      if (resp.status === 201) {
-        router.push({path: '/teambuilding', query: {redirectYN: true, msg: '작성 완료'}})
-        .then(() => router.replace({path: '/teambuilding'}))
-      }
-    }, 
-    (err) => console.error(err)
-  );    
+
+  sweetConfirm('', '정말 등록하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    registerRecruit(form, (resp) => {
+      if (resp.status !== 201) return;
+
+      router.push({path: '/teambuilding', query: {redirectYN: true, msg: '작성 완료'}}).then(() => router.replace({path: '/teambuilding'}))      
+    }, (err) => console.error(err))
+  }, (err) => console.error(err))
 }
 
 const onUpdate = () => {
@@ -143,15 +142,15 @@ const onUpdate = () => {
     return;
   }
 
-  updateRecruit(id, form, 
-    (resp) => {
+  sweetConfirm('', '정말 갱신하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    updateRecruit(id, form, (resp) => {
       if (resp.status !== 204) return;
 
-      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Update'}})
-            .then(() => router.replace({path: '/teambuilding'}))
-    }, 
-    (err) => console.error(err)
-  );  
+      router.push({path: '/teambuilding', query: {redirectYN: true, msg: 'Success Update'}}).then(() => router.replace({path: '/teambuilding'}))            
+    }, (err) => console.error(err))
+  }, (err) => console.error(err))
 }
 
 const onReset = () => {

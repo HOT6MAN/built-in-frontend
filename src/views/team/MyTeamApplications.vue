@@ -17,8 +17,6 @@
       </div>
       <PreviewModal v-model="showModal" :resumeId="resumeId"/>
     </div>
-
-
   </div>
 </template>
 <script setup>
@@ -53,12 +51,16 @@ const onApprove = (resumeId) => {
     teamId, resumeId
   }
 
-  sweetConfirm('정말 승인하시겠습니까?', '', acceptApplication(body, (resp) => {
-    if (resp.status !== 204) return;
+  sweetConfirm('', '정말 승인하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
 
-    localStorage.setItem('alertType', 'approved');
-    location.reload();
-  }, (err) => console.error(err)), (err) => console.error(err))
+    acceptApplication(body, (resp) => {
+      if (resp.status !== 204) return;
+
+      localStorage.setItem('alertType', 'approved');
+      location.reload();
+    }, (err) => console.error(err))
+  }, (err) => console.error(err))
 }
 
 const onReject = (resumeId) => {
@@ -66,21 +68,29 @@ const onReject = (resumeId) => {
     teamId, resumeId
   }
 
-  sweetConfirm('정말 거절하시겠습니까?', '', rejectApplication(body, (resp) => {
-    if (resp.status !== 204) return;
-    
-    localStorage.setItem('alertType', 'rejected');
-    location.reload();    
-  }, (err) => console.error(err)), (err) => console.error(err))
+  sweetConfirm('', '정말 거절하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    rejectApplication(body, (resp) => {
+      if (resp.status !== 204) return;
+      
+      localStorage.setItem('alertType', 'rejected');
+      location.reload();
+    }, (err) => console.error(err))
+  }, (err) => console.error(err))
 }
 
 const onDelete = (resumeId) => {
-  sweetConfirm('삭제하시겠습니까?', '', deleteApplication(teamId, resumeId, (resp) => {
-    if (resp.status !== 204) return;
-    
-    localStorage.setItem('alertType', 'deleted');
-    location.reload();      
-  }, (err) => console.error(err)), (err) => console.error(err))
+  sweetConfirm('', '정말 삭제하시겠습니까?', (result) => {
+    if (!result.isConfirmed) return;
+
+    deleteApplication(teamId, resumeId, (resp) => {
+      if (resp.status !== 204) return;
+      
+      localStorage.setItem('alertType', 'deleted');
+      location.reload();    
+    }, (err) => console.error(err))
+  }, (err) => console.error(err))
 }
 
 const applyRowStyles = () => {
