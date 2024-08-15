@@ -28,6 +28,7 @@ const addDBConfig = () => {
   const newIndex = dbConfigs.value.length + 1;
   dbConfigs.value.push({ id:null, teamProjectInfoId : selectedConfigId , url: '', schemaName: '', username: '', password: '',
   isEditing: false,configName :`환경설정 ${newIndex}`,
+  attatchFile : null,
    });
   console.log(dbConfigs.value);
 };
@@ -47,6 +48,13 @@ const removeDBConfig = (index) => {
 
 const saveDBData = () => {
   emits("saveDBData", dbConfigs.value);
+};
+
+const handleFileUpload = (event, index) => {
+  const file = event.target.files[0];
+  if (file) {
+    dbConfigs.value[index].attachedFile = file;
+  }
 };
 
 watch(() => props.selectedConfigId, (newConfigId) => {
@@ -103,6 +111,20 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
                     <b-form-invalid-feedback :id="'input-live-feedback-db-' + type + '-' + index">
                       아직 채워지지 않았군요!
                     </b-form-invalid-feedback>
+                  </b-col>
+                </b-row>
+                <b-row class="inputBox">
+                  <b-col sm="3" class="inputTitle">
+                    <label :for="'db-file-' + index">파일 첨부</label>
+                  </b-col>
+                  <b-col sm="8">
+                    <input
+                      type="file"
+                      :id="'db-file-' + index"
+                      @change="handleFileUpload($event, index)"
+                      class="file-input"
+                    />
+                    <span v-if="db.attachedFile" class="file-name">{{ db.attachedFile.name }}</span>
                   </b-col>
                 </b-row>
               </b-container>

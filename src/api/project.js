@@ -32,9 +32,16 @@ async function saveFrontendConfigs(projectInfoId, frontendConfigs, success, fail
     await api.post("/build/project/frontend/"+projectInfoId, frontendConfigs).then(success).catch(fail);
 }
 
-async function saveDatabaseConfigs(projectInfoId, databaseConfigs, success, fail){
-    await api.post("/build/project/database/"+projectInfoId, databaseConfigs).then(success).catch(fail);
-}
+async function saveDatabaseConfigs(projectInfoId, formData, success, fail) {
+
+      await api.post(`/build/project/database/${projectInfoId}`, formData, {        headers: {
+          'Content-Type': 'multipart/form-data'
+        }}).
+        then(success).fail(fail);
+  }
+
+
+
 async function buildStart(teamId, projectInfoId, success, fail) {
     const data = {
       records: [{

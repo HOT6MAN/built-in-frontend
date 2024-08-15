@@ -38,6 +38,22 @@
                       </b-form-invalid-feedback>
                     </b-col>
                   </b-row>
+                  <b-row class="inputBox">
+                  <b-col sm="3" class="inputTitle">
+                    <label>첨부한 파일 이름</label>
+                  </b-col>
+                  <b-col sm="8">
+                    <b-form-input
+                      v-if="db.sqlFileName"
+                      v-model="db.sqlFileName"
+                      readonly
+                      class="sql-file-name-input"
+                    ></b-form-input>
+                    <b-form-text v-else>
+                      첨부하신 sql 파일이 없습니다.
+                    </b-form-text>
+                  </b-col>
+                </b-row>
                 </b-container>
               </div>
             </div>
@@ -312,5 +328,11 @@
     outline: none;
     width: 100%;
   }
+  .sql-file-name-input {
+  color: #333 !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+}
   </style>
   

@@ -170,6 +170,7 @@ const buildSetupJenkinsJob = () => {
 onMounted(async () => {
   await storeFindAllProjectInfosByTeamId(teamId);
   allConfigs.value = projectInfos.value;
+  console.log("All Config Value = ",allConfigs.value);
   dataLoaded.value = true;
 });
 
