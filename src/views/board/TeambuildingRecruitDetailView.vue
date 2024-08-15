@@ -31,7 +31,7 @@
         <b-card-title class="h4 my-1">{{ board.introduction }} </b-card-title>          
         <b-card-text class="mt-3"> {{ board.content }} </b-card-text>
       </b-card-body>
-      <b-card-body v-if="userId.value" class="d-flex justify-content-end">          
+      <b-card-body v-if="isAuth" class="d-flex justify-content-end">          
         <b-button variant="primary" @click.prevent="onApplyClick">지원하기</b-button>
       </b-card-body>
     </b-card>    
@@ -72,6 +72,7 @@ const headerStyle = computed(() => (
 const isMine = ref(false)
 const showModal = ref(false);
 const teamId = ref('')
+const isAuth = ref(userId.value)
 
 findRecruit(id, (resp) => {
   board.value = resp.data.data
