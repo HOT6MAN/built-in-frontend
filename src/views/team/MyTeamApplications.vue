@@ -104,6 +104,8 @@ onMounted(async () => {
     return;
   }
 
+  fields.value = []
+
   for (let application of result) {
     for (let key in application) {
       if (application.hasOwnProperty(key)) {
