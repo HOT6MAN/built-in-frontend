@@ -71,7 +71,7 @@ const onFileSelected = (event)=>{
       <div class="form-row">
         <div class="form-group">
           <label for="region">가입일</label>
-          <input type="text" id="region" v-model="updateMemberObject.REG_DTTM" readonly />
+          <input type="text" id="region" v-model="updateMemberObject.regDTTM" readonly />
         </div>
         <div class="form-group">
           <label for="country">주소</label>

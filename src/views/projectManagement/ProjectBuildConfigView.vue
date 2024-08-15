@@ -165,6 +165,8 @@ const saveFrontendData = async (frontendConfigs) => {
 };
 
 const saveDBData = async (databaseConfigs) => {
+  const formData = new FormData();
+  
   await saveDatabaseConfigs(selectedConfigId.value, databaseConfigs, async (response) => {
     sweetAlert('',"DB 설정 저장 성공");
     await storeFindAllProjectInfosByTeamId(teamId);
@@ -173,7 +175,7 @@ const saveDBData = async (databaseConfigs) => {
   }, (error) => {
     console.log(error);
   });
-  // 데이터베이스 데이터 저장 로직
+  
 };
 
 onMounted(async () => {
