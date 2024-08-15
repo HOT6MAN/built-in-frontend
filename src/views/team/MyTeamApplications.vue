@@ -7,9 +7,9 @@
       <hr class="mb-2">
       <b-table head-variant="light" hover :items="applicationList" :fields="fields" @row-clicked="onPreview" sticky-header class="table table-text-center" ref="table">    
         <template #cell(actions)="data">
-          <b-button v-show="showButton(data.item.status)" variant="outline-primary" @click.prevent.stop="onApprove(data.item.resumeId)" >Approve</b-button>
-          <b-button v-show="showButton(data.item.status)" variant="outline-danger" @click.prevent.stop="onReject(data.item.resumeId)" class="mx-2" >Reject</b-button>
-          <b-button variant="danger" @click.prevent.stop="onDelete(data.item.resumeId)">Delete</b-button>
+          <b-button v-show="showButton(data.item.status)" variant="outline-primary" @click.prevent.stop="onApprove(data.item.resumeId)" >승인</b-button>
+          <b-button v-show="showButton(data.item.status)" variant="outline-danger" @click.prevent.stop="onReject(data.item.resumeId)" class="mx-2" >거절</b-button>
+          <b-button variant="danger" @click.prevent.stop="onDelete(data.item.resumeId)">삭제</b-button>
         </template>
       </b-table>    
       <div v-show="!applicationList.length" class="noApply">
