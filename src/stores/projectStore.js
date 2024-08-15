@@ -11,7 +11,7 @@ import {
     startJenkinsJob
 } from '@/api/project.js';
 import { sweetAlert } from '../api/sweetAlert';
-import { findServiceScheduleById } from '../api/project';
+import { findServiceScheduleById, receiveBuildResult } from '../api/project';
 
 export const useProjectStore = defineStore('project', () => {
 
@@ -19,6 +19,16 @@ export const useProjectStore = defineStore('project', () => {
     const usedProjectInfos = ref([]);
     const deployConfig = ref("");
     const serviceScheduleInfo = ref([]);
+    const buildResultInfo = ref("");
+
+    const storeBuildResult = async (teamProjectInfoId) => {
+        await receiveBuildResult(teamProjectInfoId, (response) => {
+            buildResultInfo.value = response.data.data;
+            console.log("(Store) buildResultInfo : ", buildResultInfo.value);
+        }, (error) => {
+            console.log("error = ", error);
+        })
+    };
 
     const storeServiceScheduleInfo = async (serviceNum) => {
         await findServiceScheduleById(serviceNum, (response) => {
@@ -219,6 +229,7 @@ export const useProjectStore = defineStore('project', () => {
         projectInfos,
         usedProjectInfos,
         deployConfig,
+        buildResultInfo,
         storeFindAllProjectInfosByTeamId,
         storeServiceScheduleInfo,
         storeFindUsedProjectInfosByTeamId,
@@ -230,6 +241,7 @@ export const useProjectStore = defineStore('project', () => {
         storeBuildBackendJenkinsJob,
         storeBuildFrontendJenkinsJob,
         storeBuildDatabaseJenkinsJob,
-        storeBuildFinalJenkinsJob
+        storeBuildFinalJenkinsJob,
+        storeBuildResult
     };
 })

@@ -1,5 +1,8 @@
 <template>
   <!-- <SideBarView /> -->
+   <div>
+	selectConfigId = {{ selectedConfigId }}
+   </div>
 	<div class="buildResultContainer">
 			<div class="boxContainer">
 			 <div class="menuboxWrapper">
@@ -59,7 +62,7 @@
 
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import SideBarView from '@/views/Bars/SideBarView.vue'
 import { receiveBuildResult, testObject } from '@/api/build.js'
 
@@ -76,6 +79,7 @@ import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendC
 import { addBuildResult, buildCheck, startJenkinsJob } from '../../api/project';
 import { errorMessages } from 'vue/compiler-sfc';
 import { sweetAlert } from '../../api/sweetAlert';
+import { useProjectStore } from '../../stores/projectStore';
 
 
 
@@ -84,14 +88,23 @@ const builds = ref([])
 const successOrNot = ref(null)
 const menuBuilds = ref(null)
 
+const projectStore = useProjectStore();
+const {buildResultInfo} = storeToRefs(projectStore);
+const { receiveBuildResult } = projectStore;
+
 
 onMounted(() => {
-	response.value = testObject.data
-	pages.value = response.value.totalCount
-	builds.value = response.value.buildResults
-	successOrNot.value = response.value
-	menuBuilds.value = response.value.buildResults[0].buildStages
-	return response, builds, pages, menuBuilds
+	receiveBuildResult(selectedConfigId.value);
+	response.value = buildResultInfo.value;
+
+
+	// response.value가 비어 있지 않은 경우에만 작업 실행
+	if (response.value) {
+		pages.value = response.value.totalCount;
+		builds.value = response.value.buildResults;
+		successOrNot.value = response.value;
+		menuBuilds.value = response.value.buildResults[0].buildStages;
+	}
 })
 
 // paginatin 관련
@@ -170,8 +183,19 @@ onMounted(async () => {
 
 
 watch(selectedConfigId, (newId) => {
-  selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
-  updateConfigName.value = allConfigs.value[selectedIndex.value]?.title || "";
+//   selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
+//   updateConfigName.value = allConfigs.value[selectedIndex.value]?.title || "";
+	receiveBuildResult(newId);
+	response.value = buildResultInfo.value;
+
+
+	// response.value가 비어 있지 않은 경우에만 작업 실행
+	if (response.value) {
+		pages.value = response.value.totalCount;
+		builds.value = response.value.buildResults;
+		successOrNot.value = response.value;
+		menuBuilds.value = response.value.buildResults[0].buildStages;
+	}
 });
 
 
