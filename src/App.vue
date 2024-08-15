@@ -230,7 +230,7 @@ const startReconnectAttempts = () => {
         console.log('Max reconnect attempts reached. Stopping reconnect attempts.');
         stopReconnectAttempts();
       }
-    }, 1000);
+    }, 100);
   }
 };
 
