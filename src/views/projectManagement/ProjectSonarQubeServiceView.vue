@@ -1,17 +1,9 @@
 <template>
   <div id="app">
-    <div>
-      {{ serviceScheduleInfo }}
-    </div>
-    <div v-if="serviceScheduleInfo.id">
-      <iframe ref="sonarQubeDashboard" width="100%" height="800" frameborder="0"></iframe>
-    </div>
-    <div v-else>
-      <hr />
-      <p style="font-size: 20px;">빌드된 프로젝트가 없습니다.</p>
-    </div>
+    <iframe ref="sonarQubeDashboard" width="100%" height="600" frameborder="0"></iframe>
   </div>
 </template>
+
 
 <script>
 export default {
