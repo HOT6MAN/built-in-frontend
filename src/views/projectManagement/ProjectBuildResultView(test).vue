@@ -1,9 +1,9 @@
 <template>
-  <!-- 각 매개변수를 받아 보여주는 페이지 -->
+  <!-- <SideBarView /> -->
 	<div class="buildResultContainer">
 			<div class="boxContainer">
 			 <div class="menuboxWrapper">
-				 <div class="menuBoxBlank"><p>전체 빌드 횟수 : {{resultResponse.totalCount}}</p></div>
+				 <div class="menuBoxBlank"><p>전체 빌드 횟수 : {{response.totalCount}}</p></div>
 				 	<div v-for="menu in menuBuilds" :key="menu"><div class="menuBox"><p>{{ menu.name }}</p></div></div>
 				</div>
 				<div v-for= "build in pageBuilds.slice().reverse()" :key="build" class="boxWrapper">
@@ -53,104 +53,56 @@
 						aria-controls="my-table">
 					</b-pagination>
 				</div>
-	</div></template>
+	</div>
+</template>
+
+
 
 <script setup>
-import { ref, watch, onMounted, computed } from 'vue';
-import { receiveBuildResult, testObject } from '@/api/build.js';
+import { ref, onMounted, computed } from 'vue'
+import SideBarView from '@/views/Bars/SideBarView.vue'
+import { receiveBuildResult, testObject } from '@/api/build.js'
+
+// 드롭다운 창 관련
+import ProjectBackendDataCheck from '../../components/ProjectManagement/ProjectBackendDataCheck.vue';
+import ProjectFrontendDataCheck from '../../components/ProjectManagement/ProjectFrontendDataCheck.vue';
+import ProjectDatabaseDataCheck from '../../components/ProjectManagement/ProjectDatabaseDataCheck.vue';
 import { useProjectStore } from '@/stores/projectStore.js';
-import { useRoute } from 'vue-router';
+import { buildStart } from '@/api/project.js';
 import { storeToRefs } from 'pinia';
-
-const resultResponse = ref({});
-const builds = ref([]);
-const menuBuilds = ref([]);
-const selectedConfigId = ref('');
-const currentPage = ref(1);
-const perPage = ref(5);
-const route = useRoute();
-const teamId = route.params.teamId;
-
-// 선택창 관련
-const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId } = store;
-const { projectInfos } = storeToRefs(store);
-
-const allConfigs = ref([]);
+import { useAuthStore } from '@/stores/authStore.js';
+import { useRoute } from 'vue-router';
+import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
+import { addBuildResult, buildCheck, startJenkinsJob } from '../../api/project';
+import { errorMessages } from 'vue/compiler-sfc';
+import { sweetAlert } from '../../api/sweetAlert';
 
 
-import { defineProps } from 'vue';
 
-const props = defineProps({
-  selectedConfigId: Number
-});
-
-console.log(props.selectedConfigId)
-
-const selectedIndex = computed(() => {
-  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
-});
-
-const curConfig = computed(() => {
-  if (selectedIndex.value !== -1) {
-    return allConfigs.value[selectedIndex.value];
-  } else {
-    return null; // 선택된 config가 없을 때 처리할 값
-  }
-});
-
-onMounted(async () => {
-  await storeFindAllProjectInfosByTeamId(teamId);
-  allConfigs.value = projectInfos.value;
-});
-
-const teamProjectInfoId = ref(0);
-
-watch(selectedConfigId, async (newId) => {
-    try {
-      const response = await receiveBuildResult(props.selectedConfigId);
-      console.log('API가 답을 줬다!:', response); // API 응답 구조 확인
-      
-      // response가 올바른지 확인
-      if (response) {
-        resultResponse.value = response.data || {};
-        
-        if (resultResponse.value.buildResults) {
-          pages.value = resultResponse.value.totalCount || 0;
-          builds.value = resultResponse.value.buildResults || [];
-          menuBuilds.value = resultResponse.value.buildResults[0]?.buildStages || [];
-        } else {
-          console.error('Build results are missing in the response.');
-          builds.value = [];
-          menuBuilds.value = [];
-        }
-      } else {
-        console.error('Response data is undefined.');
-      }
-    } catch (error) {
-      console.error('Error fetching build results:', error);
-    }
-  });
+const response = ref([])
+const builds = ref([])
+const successOrNot = ref(null)
+const menuBuilds = ref(null)
 
 
-// // 원래 있던 코드
-// onMounted(() => {
-// 	resultResponse.value = testObject.data
-// 	pages.value = resultResponse.value.totalCount
-// 	builds.value = resultResponse.value.buildResults
-// 	menuBuilds.value = resultResponse.value.buildResults[0].buildStages
-// 	console.log(resultResponse)
-// 	return resultResponse, builds, pages, menuBuilds
-// })
+onMounted(() => {
+	response.value = testObject.data
+	pages.value = response.value.totalCount
+	builds.value = response.value.buildResults
+	successOrNot.value = response.value
+	menuBuilds.value = response.value.buildResults[0].buildStages
+	return response, builds, pages, menuBuilds
+})
 
 // paginatin 관련
+const currentPage = ref(1)
 const pages = ref(0)
+const perPage = ref(5)
 const pageBuilds = computed (() => {
 	const pageStart = (pages.value) - ((currentPage.value) * perPage.value)
 	const pageEnd = (pages.value) - ((currentPage.value-1) * perPage.value)
 	return builds.value.slice(pageStart, pageEnd)
 })
-
 
 // 빌드 시작 시간 나타내는 함수
 const formatDate = (dateString) => {
@@ -172,6 +124,7 @@ const modalShow = ref({})
 // 따라서 modalShow.value[modalKey]로 각 모달을 구분한다.
 // 다만 이렇게 되면 modalShow 변수는 ref(false)로 하면 true인지 아닌지 알 수 없기 때문에, toogleModal = !toggleModal로 click 시마다
 // true와 false를 왔다갔다 하는 것이 아니라 toggleModal(buildId, index)로 해서 함수에 매개변수 값을 내려보내줘야 한다.
+
 const toggleModal = (buildId, index) => {
 	const modalKey = `${buildId}-${index}`
 	modalShow.value[modalKey] = !modalShow.value[modalKey]
@@ -182,54 +135,43 @@ const toggleLog = (index) => {
 	openIndex.value = openIndex.value === index? null: index;
 }
 const isLogOpen = (index) => openIndex.value === index
+
 const milToSec = (milliSecond) => {
 	const second = milliSecond / 100
 	return Math.floor(second) /10
 }
+// 환경설정 드롭다운 박스
+const route = useRoute();
+const teamId = route.params.teamId;
+const store = useProjectStore();
+const { storeFindAllProjectInfosByTeamId } = store;
+const { projectInfos } = storeToRefs(store);
+const dataLoaded = ref(false);
+const allConfigs = ref([]);
+const selectedConfigId = ref(0);
+const updateConfigName = ref("");
+const selectedIndex = computed(() => {
+  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
+});
+
+const curConfig = computed(() => {
+  if (selectedIndex.value !== -1) {
+    return allConfigs.value[selectedIndex.value];
+  } else {
+    return null; // 선택된 config가 없을 때 처리할 값
+  }
+});
+
+onMounted(async () => {
+  await storeFindAllProjectInfosByTeamId(teamId);
+  allConfigs.value = projectInfos.value;
+  dataLoaded.value = true;
+});
 
 
 </script>
 
-
-
 <style scoped>
-.config-header {
-  background-color: #102a43;
-  color: #ffffff;
-  padding: 20px;
-  text-align: center;
-}
-.config-selection {
-	padding: 20px;
-  border-bottom: 1px solid #e2e8f0;
-}
-.input-group {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-.config-select {
-  flex: 1;
-  margin-right: 10px;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #cbd5e0;
-}
-
-.btn-primary {
-  background-color: #4299e1;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #3182ce;
-}
-
 .config-header {
   background-color: #102a43;
   color: #ffffff;
