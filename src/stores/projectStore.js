@@ -18,7 +18,7 @@ export const useProjectStore = defineStore('project', () => {
     const projectInfos = ref([]);
     const usedProjectInfos = ref([]);
     const deployConfig = ref("");
-    const serviceScheduleInfo = ref([]);
+    const serviceScheduleInfo = ref("");
     const buildResultInfo = ref("");
 
     const storeBuildResult = async (teamProjectInfoId) => {
