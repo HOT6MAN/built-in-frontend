@@ -922,6 +922,6 @@ export const testObject = {
 // }
 
 export async function receiveBuildResult(teamProjectInfoId){
-    await local.get("/build/deploy/result/team_project_info/"+teamProjectInfoId)
+    await local.get("/build/deploy/result/team_project_info/"+teamProjectInfoId).then(success).catch(fail)
 };
 
