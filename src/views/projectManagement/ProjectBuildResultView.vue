@@ -2,6 +2,7 @@
 	<!-- <SideBarView /> -->
 	<div>
 		selectConfigId = {{ selectedConfigId }}
+    {{  serviceScheduleInfo }}
 	</div>
 	<!-- 드롭다운 바 추가 -->
 	<div class="config-selection">
@@ -28,7 +29,8 @@
 				</div>
 			</div>
 			<div v-for="build in pageBuilds.slice().reverse()" :key="build" class="boxWrapper">
-				<div class="buildRow">
+        {{ build }}
+				<!-- <div class="buildRow">
 					<p class="dateCss">{{ formatDate(build.buildTime).year }}.{{ formatDate(build.buildTime).month }}.{{
 						formatDate(build.buildTime).day }} {{ formatDate(build.buildTime).hour }}:{{
 							formatDate(build.buildTime).minute }}:{{ formatDate(build.buildTime).second }}</p>
@@ -63,7 +65,7 @@
 							</div>
 						</b-modal>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 		<!-- 페이지네이션 -->
