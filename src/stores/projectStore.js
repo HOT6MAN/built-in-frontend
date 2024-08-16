@@ -32,6 +32,7 @@ export const useProjectStore = defineStore('project', () => {
 
     const storeServiceScheduleInfo = async (serviceNum) => {
         await findServiceScheduleById(serviceNum, (response) => {
+            console.log("findServiceScheduleById 실행 결과 response : ", response);
             serviceScheduleInfo.value = response.data.data;
             console.log("serviceScheduleInfo : ", serviceScheduleInfo.value);
         }, (error) => {
