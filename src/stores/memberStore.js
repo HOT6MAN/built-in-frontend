@@ -16,7 +16,7 @@ export const useMemberStore = defineStore('member', () => {
     console.log("parameter = ",userId);
     await findMemberProfileByMemberId(userId, (response)=>{
         userObject.value = {...response.data.data};
-    },(erorr)=>{
+    },(error)=>{
         console.log(error);
     })
   };

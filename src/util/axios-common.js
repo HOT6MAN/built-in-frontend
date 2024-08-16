@@ -3,10 +3,14 @@ import refreshAxios from "@/util/axios-refresh"
 import { useAuthStore } from '../stores/authStore';
 import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
-
-const router = useRouter();
+import { sweetAlert } from '../api/sweetAlert';
 
 const { VITE_VUE_API_URL } = import.meta.env;
+
+// 전역 라우터 객체를 가져오는 유틸리티 함수
+const getRouter = () => {
+  return window.__ROUTER__;
+};
 
 const api = axios.create({
     baseURL : VITE_VUE_API_URL,
@@ -38,9 +42,9 @@ api.interceptors.response.use(function(response){
 
   return response;
 }, async function(error){
-  console.log(error.response.data.process.message);
+  console.log(error.response.status);
 
-  if(error.response.data.process.message=='유효기간이 만료된 Token입니다.'){
+  if(error.response?.data?.process?.message !== undefined &&error.response.data.process.message=='유효기간이 만료된 Token입니다.'){
     
     try {
       // /reissue 엔드포인트로 쿠키를 포함하여 재요청
@@ -61,7 +65,7 @@ api.interceptors.response.use(function(response){
     .catch(error => {
         console.error('Error:', error);
         if(error.response.status==401){
-          alert("로그인 필요")
+          sweetAlert("로그인 필요",'')
           const authStore = useAuthStore()
           const {clearAuthData} = authStore
           clearAuthData()
@@ -72,6 +76,12 @@ api.interceptors.response.use(function(response){
     }
 
 
+  }else if(error.response.status==401){
+    const router = window.__ROUTER__;
+    if (router) {
+      sweetAlert('로그인이 필요합니다','')
+      router.push({ path: '/' });
+    }
   }
 
   return Promise.reject(error)

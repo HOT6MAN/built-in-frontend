@@ -58,6 +58,7 @@ export const useTeamStore = defineStore('team', ()=>{
             },
             (error)=>{
                 console.log(error);
+                router.push({ path: '/' });
             }
         )
     }
