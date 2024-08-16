@@ -1,91 +1,40 @@
 <template>
-	<!-- <SideBarView /> -->
-	<div>
-		selectConfigId = {{ selectedConfigId }}
-	</div>
-	<!-- 드롭다운 바 추가 -->
-	<div class="config-selection">
-		<div class="input-group">
-			<select v-model="selectedConfigId" class="config-select">
-				<option v-for="config in allConfigs" :key="config.id" :value="config.id">
-					{{ config.title }}
-				</option>
-			</select>
-			<button class="btn-primary" @click="onConfigSelect">Select Configuration</button>
-		</div>
-	</div>
+  <div class="main-content">
+    <div class="config-container">
+      <div class="row config-header">
+        <h2>프로젝트 빌드 시작</h2>
+      </div>
+      <div v-if="dataLoaded" class="row config-selection">
+        <div class="input-group">
+          <select v-model="selectedConfigId" class="form-select config-select">
+            <option value="">설정 선택</option>
+            <option v-for="(config, index) in allConfigs" :key="config.id" :value="config.id">
+              {{ config.title }}
+            </option>
+          </select>
+        </div>
+      </div>
 
-	<div class="buildResultContainer">
-		<div class="boxContainer">
-			<div class="menuboxWrapper">
-				<div class="menuBoxBlank">
-					<p>전체 빌드 횟수 : {{ response.totalCount }}</p>
-				</div>
-				<div v-for="menu in menuBuilds" :key="menu">
-					<div class="menuBox">
-						<p>{{ menu.name }}</p>
-					</div>
-				</div>
-			</div>
-			<div v-for="build in pageBuilds.slice().reverse()" :key="build" class="boxWrapper">
-				<div class="buildRow">
-					<p class="dateCss">{{ formatDate(build.buildTime).year }}.{{ formatDate(build.buildTime).month }}.{{
-						formatDate(build.buildTime).day }} {{ formatDate(build.buildTime).hour }}:{{
-							formatDate(build.buildTime).minute }}:{{ formatDate(build.buildTime).second }}</p>
-					<p>현재 빌드 : {{ build.buildId }}</p>
-				</div>
-				<div v-for="(buildStage, index) in build.buildStages" :key="index">
-					<div v-if="`${buildStage.status}` === 'SUCCESS'">
-						<b-button @click="toggleModal(build.buildId, index)" class="boxSuccess">{{
-							milToSec(buildStage.duration) }}s</b-button>
-						<b-modal :id="`modal-${build.buildId}-${index}`"
-							v-model="modalShow[`${build.buildId}-${index}`]" hide-backdrop content-class="shadow"
-							title="Stage Logs">
-							<div v-for="log in buildStage.buildLogs" :key="log" class="logWrapper">
-								<b-button squared v-b-toggle="`${log.id}`" class="logButton">{{ log.title }}</b-button>
-								<b-collapse :id="`${log.id}`" v-for="logMessage in log.description" :key="logMessage">
-									<b-card class="logCard">{{ logMessage }}</b-card>
-								</b-collapse>
-							</div>
-						</b-modal>
-					</div>
-					<div v-else>
-						<b-button @click="toggleModal(build.buildId, index)" class="boxFailed">{{
-							milToSec(buildStage.duration) }}s</b-button>
-						<b-modal :id="`modal-${build.buildId}-${index}`"
-							v-model="modalShow[`${build.buildId}-${index}`]" hide-backdrop content-class="shadow"
-							title="Stage Logs">
-							<div v-for="log in buildStage.buildLogs" :key="log" class="logWrapper">
-								<b-button squared v-b-toggle="`${log.id}`" class="logButton">{{ log.title }}</b-button>
-								<b-collapse :id="`${log.id}`" v-for="logMessage in log.description" :key="logMessage">
-									<b-card class="logCard">{{ logMessage }}</b-card>
-								</b-collapse>
-							</div>
-						</b-modal>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 페이지네이션 -->
-		<div class="d-flex justify-content-center mt-1 pageNation">
-			<b-pagination class="mb-0" v-model="currentPage" :total-rows="pages" :per-page="perPage"
-				aria-controls="my-table">
-			</b-pagination>
-		</div>
-	</div>
+        <!-- 동적으로 컴포넌트를 렌더링하며, teamProjectInfoId를 prop으로 전달 -->
+        <ProjectBuildResultUI 
+          v-if="selectedConfigId"
+          :is="currentComponent" 
+          :allConfigs="allConfigs"
+          :selectedConfigId="selectedConfigId" 
+          :selectedIndex="selectedIndex"
+          :teamProjectInfoId="teamProjectInfoId"
+        />
+      </div>
+      <p>{{selectedConfigId}}</p>
+  </div>
 </template>
 
-
-
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
-import SideBarView from '@/views/Bars/SideBarView.vue'
-import { receiveBuildResult } from '@/api/project.js'
-
-// 드롭다운 창 관련
 import ProjectBackendDataCheck from '../../components/ProjectManagement/ProjectBackendDataCheck.vue';
 import ProjectFrontendDataCheck from '../../components/ProjectManagement/ProjectFrontendDataCheck.vue';
 import ProjectDatabaseDataCheck from '../../components/ProjectManagement/ProjectDatabaseDataCheck.vue';
+
+import { ref, watch, onMounted, computed, shallowRef, markRaw } from 'vue';
 import { useProjectStore } from '@/stores/projectStore.js';
 import { buildStart } from '@/api/project.js';
 import { storeToRefs } from 'pinia';
@@ -93,92 +42,32 @@ import { useAuthStore } from '@/stores/authStore.js';
 import { useRoute } from 'vue-router';
 import { updateProjectInfoNameByProjectInfoId, saveBackendConfigs, saveFrontendConfigs, saveDatabaseConfigs } from '@/api/project.js';
 import { addBuildResult, buildCheck, startJenkinsJob } from '../../api/project';
-import { errorMessages } from 'vue/compiler-sfc';
 import { sweetAlert } from '../../api/sweetAlert';
+import ProjectBuildResultUI from '@/components/ProjectManagement/ProjectBuildResultUI.vue'
 
-
-
-const response = ref([])
-const builds = ref([])
-const successOrNot = ref(null)
-const menuBuilds = ref(null)
-
-// 환경설정 드롭다운 박스
 const route = useRoute();
 const teamId = route.params.teamId;
+
+const authStore = useAuthStore();
+const { userId } = storeToRefs(authStore);
+
 const store = useProjectStore();
-const { storeFindAllProjectInfosByTeamId, storeBuildResult } = store;
-const { projectInfos, buildResultInfo } = storeToRefs(store);
+const { storeFindAllProjectInfosByTeamId } = store;
+const { deployConfig } = storeToRefs(store);
+
+const { projectInfos } = storeToRefs(store);
 const dataLoaded = ref(false);
+const activeTab = ref(0);
+const currentComponent = shallowRef(markRaw(ProjectBackendDataCheck));
+
 const allConfigs = ref([]);
 const selectedConfigId = ref(0);
+
 const updateConfigName = ref("");
+
 const selectedIndex = computed(() => {
-	return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
+  return allConfigs.value.findIndex(config => config.id === selectedConfigId.value);
 });
-
-
-onMounted(() => {
-	storeBuildResult(selectedConfigId.value);
-	response.value = buildResultInfo.value;
-
-
-	// response.value가 비어 있지 않은 경우에만 작업 실행
-	if (response.value) {
-		pages.value = response.value.totalCount;
-		builds.value = response.value.buildResults;
-		successOrNot.value = response.value;
-		menuBuilds.value = response.value.buildResults[0].buildStages;
-	}
-})
-
-// paginatin 관련
-const currentPage = ref(1)
-const pages = ref(0)
-const perPage = ref(5)
-const pageBuilds = computed(() => {
-	const pageStart = (pages.value) - ((currentPage.value) * perPage.value)
-	const pageEnd = (pages.value) - ((currentPage.value - 1) * perPage.value)
-	return builds.value.slice(pageStart, pageEnd)
-})
-
-// 빌드 시작 시간 나타내는 함수
-const formatDate = (dateString) => {
-	const date = new Date(dateString)
-	return {
-		year: date.getUTCFullYear(),
-		month: String(date.getUTCMonth() + 1).padStart(2, '0'),
-		day: String(date.getUTCDate()).padStart(2, '0'),
-		hour: String(date.getUTCHours()).padStart(2, '0'),
-		minute: String(date.getUTCMinutes()).padStart(2, '0'),
-		second: String(date.getUTCSeconds()).padStart(2, '0')
-	}
-}
-// Stage Error 모달 창
-const modalShow = ref({})
-// buildId와 index는 위의 html에서 가져오는 것.
-// 위에서 v-for문으로 해서 생긴 buildId와 index를 아래 가져온 후, toggleModal model을 실행시킨다.
-// modalKey는 각 모달의 ID를 판별하기 위해 만든 것. buildId만 있어도 무방하나, 혹시 몰라 index도 추가한 것 같다.
-// 따라서 modalShow.value[modalKey]로 각 모달을 구분한다.
-// 다만 이렇게 되면 modalShow 변수는 ref(false)로 하면 true인지 아닌지 알 수 없기 때문에, toogleModal = !toggleModal로 click 시마다
-// true와 false를 왔다갔다 하는 것이 아니라 toggleModal(buildId, index)로 해서 함수에 매개변수 값을 내려보내줘야 한다.
-
-const toggleModal = (buildId, index) => {
-	const modalKey = `${buildId}-${index}`
-	modalShow.value[modalKey] = !modalShow.value[modalKey]
-}
-// 로그 관련 모달 창
-const openIndex = ref(null);
-const toggleLog = (index) => {
-	openIndex.value = openIndex.value === index ? null : index;
-}
-const isLogOpen = (index) => openIndex.value === index
-
-const milToSec = (milliSecond) => {
-	const second = milliSecond / 100
-	return Math.floor(second) / 10
-}
-
 
 const curConfig = computed(() => {
 	if (selectedIndex.value !== -1) {
@@ -188,51 +77,147 @@ const curConfig = computed(() => {
 	}
 });
 
-onMounted(async () => {
-	await storeFindAllProjectInfosByTeamId(teamId);
-	allConfigs.value = projectInfos.value;
-	dataLoaded.value = true;
+const teamProjectInfoId = computed(() => {
+  return curConfig.value ? Number(curConfig.value.id) : 0;
 });
 
+const componentBuildStart = () => {
+  sweetAlert('',"빌드, 배포 시작");
+
+  // 1. {projectInfoId}에 해당하는 서비스를, 배포할 수 있는지 여부를 판단한다
+  buildCheck(userId.value, selectedConfigId.value, (response) => {
+    const data = response.data.data;
+    console.log(data);
+    console.log("asdfasdfdas", curConfig.value);
+
+    // 배포할 수 없는 경우(모든 포트가 사용 중인 경우)
+    if (data === null) {
+      sweetAlert('',"현재 서비스의 모든 포트가 사용 중입니다");
+    }
+    else {
+      addBuildResult(selectedConfigId.value, data.deployNum, (response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+
+      console.log("buildResult 추가 완료");
+
+      deployConfig.value = {
+        ...curConfig.value,
+        deployNum: data.deployNum,
+        memberId: userId.value,
+        teamProjectInfoId: selectedConfigId.value,
+        serviceNum: data.serviceNum,
+        accessToken: localStorage.getItem("access_token")
+      };
+
+      console.log("deployConfig = ", deployConfig.value);
+
+      buildSetupJenkinsJob();
+    }
+  }, (error) => {
+    console.log(error);
+  })
+}
+
+const buildSetupJenkinsJob = () => {
+  console.log("setup job 시작");
+
+  startJenkinsJob("setup", deployConfig.value, 
+    (response) => console.log(response),
+    (error) => console.log(error)
+  );
+}
+
+onMounted(async () => {
+  await storeFindAllProjectInfosByTeamId(teamId);
+  allConfigs.value = projectInfos.value;
+  console.log("All Config Value = ",allConfigs.value);
+  dataLoaded.value = true;
+});
 
 watch(selectedConfigId, (newId) => {
-	//   selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
-	//   updateConfigName.value = allConfigs.value[selectedIndex.value]?.title || "";
-	receiveBuildResult(newId);
-	response.value = buildResultInfo.value;
-
-
-	// response.value가 비어 있지 않은 경우에만 작업 실행
-	if (response.value) {
-		pages.value = response.value.totalCount;
-		builds.value = response.value.buildResults;
-		successOrNot.value = response.value;
-		menuBuilds.value = response.value.buildResults[0].buildStages;
-	}
+  selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
+  updateConfigName.value = allConfigs.value[selectedIndex.value]?.title || "";
 });
 
+watch(activeTab, (newValue) => {
+  onTabChange(newValue);
+});
 
+const onTabChange = (newTabIndex) => {
+  console.log("탭 체인지", newTabIndex);
+  activeTab.value = newTabIndex;
+  switch (newTabIndex) {
+    case 0:
+      currentComponent.value = markRaw(ProjectBackendDataCheck);
+      break;
+    case 1:
+      currentComponent.value = markRaw(ProjectFrontendDataCheck);
+      break;
+    case 2:
+      currentComponent.value = markRaw(ProjectDatabaseDataCheck);
+      break;
+  }
+};
 </script>
+
+
 
 <style scoped>
 .config-header {
-	background-color: #102a43;
-	color: #ffffff;
-	padding: 20px;
-	text-align: center;
+  background-color: #102a43;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
 }
-
 .config-selection {
 	padding: 20px;
-	border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
 }
-
 .input-group {
-	display: flex;
-	align-items: center;
-	width: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.config-select {
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e0;
 }
 
+.btn-primary {
+  background-color: #4299e1;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #3182ce;
+}
+
+.config-header {
+  background-color: #102a43;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+}
+.config-selection {
+	padding: 20px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.input-group {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .config-select {
 	flex: 1;
 	margin-right: 10px;

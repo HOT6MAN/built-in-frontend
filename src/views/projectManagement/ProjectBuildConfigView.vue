@@ -170,7 +170,7 @@ const saveDBData = async (databaseConfigs) => {
   
   databaseConfigs.forEach((config, index) => {
     // isEditing과 attachedFile을 제외한 나머지 속성만 추출
-    const { isEditing, attachedFile, attatchFile, ...configToSend } = config;
+    const { isEditing, attachedFile, attatchFile,urlGenerated, ...configToSend } = config;
     
     const configBlob = new Blob([JSON.stringify(configToSend)], { type: 'application/json' });
     formData.append(`config_${index}`, configBlob, `config_${index}.json`);
