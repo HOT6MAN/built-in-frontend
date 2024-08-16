@@ -80,7 +80,7 @@
 <script setup>
 import { ref, onMounted, computed, watch } from 'vue'
 import SideBarView from '@/views/Bars/SideBarView.vue'
-import { receiveBuildResult, testObject } from '@/api/build.js'
+import { receiveBuildResult } from '@/api/project.js'
 
 // 드롭다운 창 관련
 import ProjectBackendDataCheck from '../../components/ProjectManagement/ProjectBackendDataCheck.vue';

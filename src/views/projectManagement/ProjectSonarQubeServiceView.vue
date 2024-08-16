@@ -3,7 +3,7 @@
     <div>
       {{ serviceScheduleInfo }}
     </div>
-    <div v-if="serviceScheduleInfo.value.id">
+    <div v-if="serviceScheduleInfo.id">
       <iframe ref="sonarQubeDashboard" width="100%" height="800" frameborder="0"></iframe>
     </div>
     <div v-else>
