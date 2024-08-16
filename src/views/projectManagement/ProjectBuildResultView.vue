@@ -2,7 +2,7 @@
 	<!-- <SideBarView /> -->
 	<div>
 		selectConfigId = {{ selectedConfigId }}
-    {{  serviceScheduleInfo }}
+        response = {{  response }}
 	</div>
 	<!-- 드롭다운 바 추가 -->
 	<div class="config-selection">
@@ -200,7 +200,7 @@ onMounted(async () => {
 watch(selectedConfigId, (newId) => {
 	//   selectedIndex.value = allConfigs.value.findIndex(config => config.id === newId);
 	//   updateConfigName.value = allConfigs.value[selectedIndex.value]?.title || "";
-	receiveBuildResult(newId);
+	storeBuildResult(newId);
 	response.value = buildResultInfo.value;
 
 
