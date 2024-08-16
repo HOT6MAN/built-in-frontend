@@ -51,7 +51,7 @@ watch(eventSourceReadyState, (newState, oldState) => {
 });
 
 const connectToSSE = async(userId)=>{
-  console.log("connectToSSE Call By AfterLogin.vue");
+  console.log("connectToSSE Call By AfterLogin.vue UserId = ",userId);
   await storeFindAllUnreadNotificationByUserId(userId.value);
   const { unreadNotificationSize } = storeToRefs(notificationStore);
   console.log("pinia update value = ", unreadNotificationSize.value);
@@ -205,7 +205,7 @@ const startReconnectAttempts = () => {
   if (reconnectInterval.value === null) {
     reconnectAttempts.value = 0;
     reconnectInterval.value = setInterval(() => {
-      if (reconnectAttempts.value < 150) {
+      if (reconnectAttempts.value < 10) {
         reconnectAttempts.value++;
         console.log(`Reconnect attempt ${reconnectAttempts.value}`);
         connectToSSE(userId.value);
