@@ -22,6 +22,7 @@ export const useProjectStore = defineStore('project', () => {
     const buildResultInfo = ref("");
 
     const storeBuildResult = async (teamProjectInfoId) => {
+        console.log("storeBuildResult - teamProjectInfoId : ", teamProjectInfoId);
         await receiveBuildResult(teamProjectInfoId, (response) => {
             buildResultInfo.value = response.data.data;
             console.log("(Store) buildResultInfo : ", buildResultInfo.value);
