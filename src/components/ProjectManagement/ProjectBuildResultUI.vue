@@ -106,42 +106,42 @@ onMounted(async () => {
 
 const teamProjectInfoId = ref(0);
 
-watch(selectedConfigId, async (newId) => {
-    try {
-      const response = await receiveBuildResult(props.selectedConfigId);
-      console.log('API가 답을 줬다!:', response); // API 응답 구조 확인
+// watch(selectedConfigId, async (newId) => {
+//     try {
+//       const response = await receiveBuildResult(props.selectedConfigId);
+//       console.log('API가 답을 줬다!:', response); // API 응답 구조 확인
       
-      // response가 올바른지 확인
-      if (response) {
-        resultResponse.value = response.data || {};
+//       // response가 올바른지 확인
+//       if (response) {
+//         resultResponse.value = response.data || {};
         
-        if (resultResponse.value.buildResults) {
-          pages.value = resultResponse.value.totalCount || 0;
-          builds.value = resultResponse.value.buildResults || [];
-          menuBuilds.value = resultResponse.value.buildResults[0]?.buildStages || [];
-        } else {
-          console.error('Build results are missing in the response.');
-          builds.value = [];
-          menuBuilds.value = [];
-        }
-      } else {
-        console.error('Response data is undefined.');
-      }
-    } catch (error) {
-      console.error('Error fetching build results:', error);
-    }
-  });
+//         if (resultResponse.value.buildResults) {
+//           pages.value = resultResponse.value.totalCount || 0;
+//           builds.value = resultResponse.value.buildResults || [];
+//           menuBuilds.value = resultResponse.value.buildResults[0]?.buildStages || [];
+//         } else {
+//           console.error('Build results are missing in the response.');
+//           builds.value = [];
+//           menuBuilds.value = [];
+//         }
+//       } else {
+//         console.error('Response data is undefined.');
+//       }
+//     } catch (error) {
+//       console.error('Error fetching build results:', error);
+//     }
+//   });
 
 
 // // 원래 있던 코드
-// onMounted(() => {
-// 	resultResponse.value = testObject.data
-// 	pages.value = resultResponse.value.totalCount
-// 	builds.value = resultResponse.value.buildResults
-// 	menuBuilds.value = resultResponse.value.buildResults[0].buildStages
-// 	console.log(resultResponse)
-// 	return resultResponse, builds, pages, menuBuilds
-// })
+onMounted(() => {
+	resultResponse.value = testObject.data
+	pages.value = resultResponse.value.totalCount
+	builds.value = resultResponse.value.buildResults
+	menuBuilds.value = resultResponse.value.buildResults[0].buildStages
+	console.log(resultResponse)
+	return resultResponse, builds, pages, menuBuilds
+})
 
 // paginatin 관련
 const pages = ref(0)
@@ -338,7 +338,7 @@ const milToSec = (milliSecond) => {
 	display: flex;
 	align-items: center;
 	height: 120px;
-	width: 8vw;
+	width: 200px;
 	color: black;
 	font-weight: 600;
 }
@@ -357,10 +357,11 @@ const milToSec = (milliSecond) => {
   border-width: 0px 0.1px 0px 0px;
 	color: black;
 }
+
 .buildRow {
-	width: 8vw;
-	margin : auto;
+	width: 200px;
 	font-weight: 600;
+	align-self: center;
 }
 .buildRow p {
 	margin: 2px;

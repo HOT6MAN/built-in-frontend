@@ -14,9 +14,9 @@
       <!-- 알람 여부에 따른 상태 변화 -->
       <img v-if="unreadNotificationSize != 0" class="alarmicon" alt="알림" src="@/icons/Navbar/alarm.svg" @click="toggleNotificationModal" />
       <img v-if="unreadNotificationSize == 0" class="alarmicon" alt="알림" src="@/icons/Navbar/state=off.svg" @click="toggleNotificationModal" />
-      <b-button class="rightButtons" @click="clickLogout">로그아웃</b-button>
+      <b-button @click="clickLogout">로그아웃</b-button>
       <div @click="routeToMemberProfile">
-        <b-button class="rightButtons"><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
+        <b-button><RouterLink :to="{name:'member'}">마이페이지</RouterLink></b-button>
       </div>
     </div>
       <div v-else>
@@ -159,6 +159,7 @@ a {
   box-sizing: border-box;
   width: 120px;
   height: 40px;
+  right: 30px;
   align-items: center;
   justify-content: center;
   padding: var(--space-300);
