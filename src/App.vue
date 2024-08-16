@@ -154,7 +154,12 @@ const connectToSSE = async(userId)=>{
   eventSource.value.addEventListener('final', (event) => {
     console.log('final까진 도달...');
 
-    const response = event.data.response;
+    const data = JSON.parse(event.data);
+    console.log('FRONTEND data: ', data);
+    console.log("jenkins 알림이 도착했습니다 - type: FINAL");
+
+    const response = data.response;
+
     console.log("response = ", response);
     if (response.result === "SUCCESS") {
       // 이 부분 추가 필요
