@@ -205,7 +205,7 @@ const startReconnectAttempts = () => {
   if (reconnectInterval.value === null) {
     reconnectAttempts.value = 0;
     reconnectInterval.value = setInterval(() => {
-      if (reconnectAttempts.value < 15) {
+      if (reconnectAttempts.value < 150) {
         reconnectAttempts.value++;
         console.log(`Reconnect attempt ${reconnectAttempts.value}`);
         connectToSSE(userId.value);
