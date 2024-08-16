@@ -59,7 +59,7 @@ const handleFileUpload = (event, index) => {
 
 const generateUrl = (index) => {
   const config = dbConfigs.value[index];
-  config.url = `jdbc:mysql://mysql-${config.teamProjectInfoId}:3306/ssafy?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8`;
+  config.url = `jdbc:mysql://mysql_TPIID-${config.teamProjectInfoId}:3306/ssafy?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8`;
   config.urlGenerated = true;
 };
 
@@ -107,8 +107,9 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
                   <b-col sm="3" class="inputTitle">
                     <label :for="'db-' + type + '-' + index">{{ type }}</label>
                   </b-col>
-                  <b-col sm="8">
-                    <b-form-input
+                  <b-col sm="9">
+                    <div class="input-button-container">
+                      <b-form-input
                         :id="'db-' + type + '-' + index"
                         v-model="db[type]"
                         :state="dbStates[index][type]"
@@ -116,6 +117,7 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
                         placeholder="입력해주세요"
                         trim
                         :readonly="type === 'url'"
+                        :class="{ 'url-input': type === 'url' }"
                       ></b-form-input>
                       <b-button 
                         v-if="type === 'url'"
@@ -124,12 +126,13 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
                       >
                         생성
                       </b-button>
+                    </div>
                     <b-form-invalid-feedback :id="'input-live-feedback-db-' + type + '-' + index">
                       아직 채워지지 않았군요!
                     </b-form-invalid-feedback>
                     <small v-if="type === 'url' && db.urlGenerated" class="url-info">
-                        application jdbc url에 해당 주소를 입력해주세요.
-                      </small>
+                      application jdbc url에 해당 주소를 입력해주세요.
+                    </small>
                   </b-col>
                 </b-row>
                 <b-row class="inputBox">
@@ -358,13 +361,18 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
   cursor: pointer;
 }
 
-.input-container {
+.input-button-container {
   display: flex;
   align-items: center;
 }
 
+.url-input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
 .generate-button {
-  margin-left: 10px;
+  flex-shrink: 0;
   background-color: #5e81ac;
   color: #ffffff;
   font-family: 'Noto Sans KR';
@@ -379,5 +387,21 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
 .generate-button:hover {
   background-color: #81a1c1;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.url-info {
+  color: #4c566a;
+  margin-top: 5px;
+  font-size: 12px;
+  display: block;
+}
+
+/* Adjust the layout for better spacing */
+.inputBox {
+  margin-bottom: 15px;
+}
+
+.inputTitle {
+  margin-bottom: 0;
 }
 </style>
