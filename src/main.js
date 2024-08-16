@@ -19,4 +19,5 @@ const app = createApp(App);
 app.use(pinia)
 app.use(BootstrapVue3)
 app.use(router)
+window.__ROUTER__ = router;
 app.mount("#app");
