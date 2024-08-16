@@ -28,7 +28,7 @@ const addDBConfig = () => {
   const newIndex = dbConfigs.value.length + 1;
   dbConfigs.value.push({ id:null, teamProjectInfoId : selectedConfigId , url: '', schemaName: '', username: '', password: '',
   isEditing: false,configName :`환경설정 ${newIndex}`,
-  attatchFile : null,
+  attatchFile : null,urlGenerated: false,
    });
   console.log(dbConfigs.value);
 };
@@ -56,6 +56,14 @@ const handleFileUpload = (event, index) => {
     dbConfigs.value[index].attachedFile = file;
   }
 };
+
+const generateUrl = (index) => {
+  const config = dbConfigs.value[index];
+  config.url = `jdbc:mysql://mysql-${config.teamProjectInfoId}:3306/ssafy?serverTimezone=UTC&useUniCode=yes&characterEncoding=UTF-8`;
+  config.urlGenerated = true;
+};
+
+
 
 watch(() => props.selectedConfigId, (newConfigId) => {
   const config = props.allConfigs.find(c => c.id === newConfigId);
@@ -101,16 +109,27 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
                   </b-col>
                   <b-col sm="8">
                     <b-form-input
-                      :id="'db-' + type + '-' + index"
-                      v-model="db[type]"
-                      :state="dbStates[index][type]"
-                      aria-describedby="'input-live-feedback-db-' + type + '-' + index"
-                      placeholder="입력해주세요"
-                      trim
-                    ></b-form-input>
+                        :id="'db-' + type + '-' + index"
+                        v-model="db[type]"
+                        :state="dbStates[index][type]"
+                        aria-describedby="'input-live-feedback-db-' + type + '-' + index"
+                        placeholder="입력해주세요"
+                        trim
+                        :readonly="type === 'url'"
+                      ></b-form-input>
+                      <b-button 
+                        v-if="type === 'url'"
+                        @click="generateUrl(index)" 
+                        class="generate-button"
+                      >
+                        생성
+                      </b-button>
                     <b-form-invalid-feedback :id="'input-live-feedback-db-' + type + '-' + index">
                       아직 채워지지 않았군요!
                     </b-form-invalid-feedback>
+                    <small v-if="type === 'url' && db.urlGenerated" class="url-info">
+                        application jdbc url에 해당 주소를 입력해주세요.
+                      </small>
                   </b-col>
                 </b-row>
                 <b-row class="inputBox">
@@ -337,5 +356,28 @@ watch(() => props.selectedIndex, updateDBConfig, { immediate: true });
 
 .configHeader:hover{
   cursor: pointer;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+}
+
+.generate-button {
+  margin-left: 10px;
+  background-color: #5e81ac;
+  color: #ffffff;
+  font-family: 'Noto Sans KR';
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.generate-button:hover {
+  background-color: #81a1c1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 </style>
